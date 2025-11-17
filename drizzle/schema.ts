@@ -165,3 +165,24 @@ export const sessions = mysqlTable("sessions", {
 
 export type Session = typeof sessions.$inferSelect;
 export type InsertSession = typeof sessions.$inferInsert;
+
+/**
+ * Subscriptions table for tracking Stripe subscriptions
+ */
+export const subscriptions = mysqlTable("subscriptions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }),
+  stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
+  stripePriceId: varchar("stripePriceId", { length: 255 }),
+  productId: varchar("productId", { length: 64 }).notNull(),
+  status: mysqlEnum("status", ["active", "cancelled", "past_due", "unpaid"]).default("active").notNull(),
+  currentPeriodStart: timestamp("currentPeriodStart"),
+  currentPeriodEnd: timestamp("currentPeriodEnd"),
+  cancelledAt: timestamp("cancelledAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Subscription = typeof subscriptions.$inferSelect;
+export type InsertSubscription = typeof subscriptions.$inferInsert;
