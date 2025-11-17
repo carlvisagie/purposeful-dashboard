@@ -8,6 +8,7 @@ import {
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
 import { ZOOM_MEETING_URL } from "@/config/zoom";
+import { getPayPalSubscriptionUrl } from "@/config/paypal";
 
 /**
  * Individual Coaching Landing Page - Master Prompt Compliant
@@ -563,10 +564,11 @@ export default function Individual() {
                 <Button 
                   className="w-full bg-gray-900 hover:bg-gray-800"
                   size="lg"
-                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
+                  onClick={() => window.open(getPayPalSubscriptionUrl('starter'), '_blank')}
                 >
-                  Start Essential Plan
+                  Subscribe with PayPal - $99/mo
                 </Button>
+                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via PayPal</p>
               </CardContent>
             </Card>
 
@@ -613,10 +615,11 @@ export default function Individual() {
                 <Button 
                   className="w-full bg-rose-500 hover:bg-rose-600"
                   size="lg"
-                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
+                  onClick={() => window.open(getPayPalSubscriptionUrl('professional'), '_blank')}
                 >
-                  Start Growth Plan
+                  Subscribe with PayPal - $199/mo
                 </Button>
+                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via PayPal</p>
               </CardContent>
             </Card>
 
@@ -658,10 +661,11 @@ export default function Individual() {
                 <Button 
                   className="w-full bg-gray-900 hover:bg-gray-800"
                   size="lg"
-                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
+                  onClick={() => window.open(getPayPalSubscriptionUrl('premium'), '_blank')}
                 >
-                  Start Transformation Plan
+                  Subscribe with PayPal - $299/mo
                 </Button>
+                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via PayPal</p>
               </CardContent>
             </Card>
           </div>

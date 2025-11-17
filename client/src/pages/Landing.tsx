@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
 import { ZOOM_MEETING_URL } from "@/config/zoom";
+import { getPayPalBuyNowUrl } from "@/config/paypal";
 import { 
   Shield, 
   TrendingUp, 
@@ -501,10 +502,23 @@ export default function Landing() {
                   <Button 
                     className={`w-full ${pkg.featured ? 'bg-blue-600 hover:bg-blue-700' : ''}`} 
                     variant={pkg.featured ? 'default' : 'outline'}
-                    onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
+                    onClick={() => {
+                      // For Starter and Professional, offer PayPal payment option
+                      if (pkg.name === 'Starter') {
+                        window.open(getPayPalBuyNowUrl(2500, 'Enterprise Starter Package - $2,500/month'), '_blank');
+                      } else if (pkg.name === 'Professional') {
+                        window.open(getPayPalBuyNowUrl(7500, 'Enterprise Professional Package - $7,500/month'), '_blank');
+                      } else {
+                        // Enterprise custom pricing goes to Calendly
+                        window.open('https://calendly.com/carlhvisagie-rxgb', '_blank');
+                      }
+                    }}
                   >
-                    {pkg.cta}
+                    {pkg.name === 'Enterprise' ? pkg.cta : `Pay with PayPal`}
                   </Button>
+                  {pkg.name !== 'Enterprise' && (
+                    <p className="text-xs text-gray-500 text-center mt-2">Secure payment via PayPal</p>
+                  )}
                 </CardContent>
               </Card>
             ))}

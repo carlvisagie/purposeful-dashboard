@@ -180,3 +180,11 @@
 - [x] Add Zoom session button to client detail pages
 - [x] Add Zoom info to coach profile setup
 - [ ] Test all Zoom links work correctly
+
+## PAYPAL INTEGRATION
+
+- [x] Replace Stripe with PayPal Business account (carl@keepyourcontracts.com)
+- [x] Add PayPal subscription buttons for Individual packages ($99, $199, $299/month)
+- [x] Add PayPal buy now buttons for Enterprise packages
+- [ ] Remove Stripe dependencies and code
+- [ ] Test PayPal payment flow
