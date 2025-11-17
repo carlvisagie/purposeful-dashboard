@@ -204,3 +204,57 @@
 - [ ] Test webhook integration with Stripe CLI (requires user setup)
 - [x] Create setup guide for webhook configuration
 - [ ] Add email notification settings to admin panel (future enhancement)
+
+## NATIVE SCHEDULING SYSTEM
+
+### Database Schema
+- [x] Create sessions table (client, coach, date/time, status, type, notes)
+- [x] Create coach availability table (recurring weekly schedule)
+- [x] Create availability exceptions table (time off, holidays)
+- [x] Add session reminders table for tracking sent notifications
+
+### Backend API (tRPC)
+- [x] Create session booking procedure (check availability, create session)
+- [x] Create session rescheduling procedure (validate new time, update session)
+- [x] Create session cancellation procedure (update status, handle refunds)
+- [x] Create get available slots procedure (calculate from coach availability)
+- [x] Create coach availability management procedures (CRUD)
+- [x] Create session list procedures (upcoming, past, cancelled)
+
+### Coach Dashboard Features
+- [x] Availability management interface (set weekly schedule)
+- [x] Time-off/exception management (block specific dates)
+- [ ] Session calendar view with all bookings (future enhancement)
+- [ ] Session details modal (view/edit/cancel) (future enhancement)
+- [ ] Upcoming sessions list with client info (future enhancement)
+
+### Client Booking Features
+- [x] Session booking page with calendar picker
+- [x] Available time slots display based on coach availability
+- [x] Session type selection (initial consultation, follow-up, etc.)
+- [x] Booking confirmation with calendar invite
+- [x] My sessions page (upcoming, past, cancelled)
+- [ ] Reschedule interface (select new time from available slots) (future enhancement)
+- [x] Cancel session with confirmation dialog
+
+### Notifications & Reminders
+- [x] Email notification on new booking (to coach and client)
+- [x] Email notification on reschedule (to both parties)
+- [x] Email notification on cancellation (to both parties)
+- [x] 24-hour reminder email before session
+- [x] 1-hour reminder email before session
+- [x] Integration with existing email service
+
+### UI Components
+- [x] Calendar component for date selection
+- [x] Time slot picker component
+- [x] Session card component (display session details)
+- [x] Availability editor component (weekly schedule grid)
+- [x] Session status badges (scheduled, completed, cancelled, no-show)
+
+### Integration
+- [ ] Replace Calendly links with native booking links (manual task for Carl)
+- [ ] Add "Book Session" CTA to client dashboard (future enhancement)
+- [ ] Add "Manage Availability" to coach dashboard (future enhancement)
+- [ ] Generate .ics calendar files for email invites (future enhancement)
+- [x] Add Zoom meeting link to session confirmations

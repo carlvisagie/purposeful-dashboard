@@ -186,3 +186,49 @@ export const subscriptions = mysqlTable("subscriptions", {
 
 export type Subscription = typeof subscriptions.$inferSelect;
 export type InsertSubscription = typeof subscriptions.$inferInsert;
+/**
+ * Coach availability - recurring weekly schedule
+ */
+export const coachAvailability = mysqlTable("coachAvailability", {
+  id: int("id").autoincrement().primaryKey(),
+  coachId: int("coachId").notNull().references(() => coaches.id, { onDelete: "cascade" }),
+  dayOfWeek: int("dayOfWeek").notNull(), // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  startTime: varchar("startTime", { length: 5 }).notNull(), // HH:MM format (e.g., "09:00")
+  endTime: varchar("endTime", { length: 5 }).notNull(), // HH:MM format (e.g., "17:00")
+  isActive: mysqlEnum("isActive", ["true", "false"]).default("true").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type CoachAvailability = typeof coachAvailability.$inferSelect;
+export type InsertCoachAvailability = typeof coachAvailability.$inferInsert;
+
+/**
+ * Availability exceptions - time off, holidays, blocked dates
+ */
+export const availabilityExceptions = mysqlTable("availabilityExceptions", {
+  id: int("id").autoincrement().primaryKey(),
+  coachId: int("coachId").notNull().references(() => coaches.id, { onDelete: "cascade" }),
+  startDate: timestamp("startDate").notNull(),
+  endDate: timestamp("endDate").notNull(),
+  reason: varchar("reason", { length: 255 }), // vacation, holiday, personal, etc.
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AvailabilityException = typeof availabilityExceptions.$inferSelect;
+export type InsertAvailabilityException = typeof availabilityExceptions.$inferInsert;
+
+/**
+ * Session reminders - track sent reminder emails
+ */
+export const sessionReminders = mysqlTable("sessionReminders", {
+  id: int("id").autoincrement().primaryKey(),
+  sessionId: int("sessionId").notNull().references(() => sessions.id, { onDelete: "cascade" }),
+  reminderType: mysqlEnum("reminderType", ["24_hour", "1_hour"]).notNull(),
+  sentAt: timestamp("sentAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type SessionReminder = typeof sessionReminders.$inferSelect;
+export type InsertSessionReminder = typeof sessionReminders.$inferInsert;

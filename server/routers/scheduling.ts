@@ -1,0 +1,443 @@
+/**
+ * Scheduling router - session booking, rescheduling, cancellation
+ */
+
+import { z } from "zod";
+import { protectedProcedure, router } from "../_core/trpc";
+import { TRPCError } from "@trpc/server";
+import { sendSessionNotification } from "../services/sessionNotifications";
+import {
+  getCoachAvailability,
+  upsertCoachAvailability,
+  deleteCoachAvailability,
+  getAvailabilityExceptions,
+  createAvailabilityException,
+  deleteAvailabilityException,
+  getCoachSessions,
+  getClientSessions,
+  getUpcomingClientSessions,
+  createSession,
+  updateSession,
+  getSessionById,
+  cancelSession,
+  isTimeSlotAvailable,
+} from "../db/scheduling";
+
+export const schedulingRouter = router({
+  /**
+   * Get available time slots for a coach on a specific date
+   */
+  getAvailableSlots: protectedProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        date: z.date(),
+        duration: z.number().default(60), // session duration in minutes
+      })
+    )
+    .query(async ({ input }) => {
+      const { coachId, date, duration } = input;
+
+      // Get day of week (0 = Sunday, 6 = Saturday)
+      const dayOfWeek = date.getDay();
+
+      // Get coach availability for this day
+      const availability = await getCoachAvailability(coachId, dayOfWeek);
+
+      if (availability.length === 0) {
+        return { slots: [] };
+      }
+
+      // Get exceptions for this date
+      const startOfDay = new Date(date);
+      startOfDay.setHours(0, 0, 0, 0);
+      const endOfDay = new Date(date);
+      endOfDay.setHours(23, 59, 59, 999);
+
+      const exceptions = await getAvailabilityExceptions(coachId, startOfDay, endOfDay);
+
+      // Check if this date has an exception
+      const hasException = exceptions.some(exc => {
+        const excStart = new Date(exc.startDate);
+        const excEnd = new Date(exc.endDate);
+        return date >= excStart && date <= excEnd;
+      });
+
+      if (hasException) {
+        return { slots: [] };
+      }
+
+      // Get existing sessions for this date
+      const sessions = await getCoachSessions(coachId, startOfDay, endOfDay, ["scheduled"]);
+
+      // Generate time slots
+      const slots: string[] = [];
+
+      for (const avail of availability) {
+        const [startHour, startMin] = avail.startTime.split(":").map(Number);
+        const [endHour, endMin] = avail.endTime.split(":").map(Number);
+
+        const slotStart = new Date(date);
+        slotStart.setHours(startHour, startMin, 0, 0);
+
+        const slotEnd = new Date(date);
+        slotEnd.setHours(endHour, endMin, 0, 0);
+
+        // Generate slots every 30 minutes
+        let currentSlot = new Date(slotStart);
+
+        while (currentSlot.getTime() + duration * 60000 <= slotEnd.getTime()) {
+          // Check if slot is in the past
+          if (currentSlot > new Date()) {
+            // Check if slot conflicts with existing session
+            const hasConflict = sessions.some(s => {
+              const sessionStart = new Date(s.session!.scheduledDate);
+              const sessionEnd = new Date(sessionStart.getTime() + (s.session!.duration || 60) * 60000);
+              const slotEndTime = new Date(currentSlot.getTime() + duration * 60000);
+
+              return (
+                (currentSlot >= sessionStart && currentSlot < sessionEnd) ||
+                (slotEndTime > sessionStart && slotEndTime <= sessionEnd) ||
+                (currentSlot <= sessionStart && slotEndTime >= sessionEnd)
+              );
+            });
+
+            if (!hasConflict) {
+              slots.push(currentSlot.toISOString());
+            }
+          }
+
+          // Move to next slot (30 min intervals)
+          currentSlot = new Date(currentSlot.getTime() + 30 * 60000);
+        }
+      }
+
+      return { slots };
+    }),
+
+  /**
+   * Book a new session
+   */
+  bookSession: protectedProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        clientId: z.number(),
+        scheduledDate: z.date(),
+        duration: z.number().default(60),
+        sessionType: z.string().optional(),
+        notes: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      // Check if time slot is available
+      const available = await isTimeSlotAvailable(
+        input.coachId,
+        input.scheduledDate,
+        input.duration
+      );
+
+      if (!available) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "This time slot is no longer available",
+        });
+      }
+
+      // Create session
+      await createSession({
+        coachId: input.coachId,
+        clientId: input.clientId,
+        scheduledDate: input.scheduledDate,
+        duration: input.duration,
+        sessionType: input.sessionType,
+        notes: input.notes,
+        status: "scheduled",
+      });
+
+      // Send booking confirmation email
+      await sendSessionNotification({
+        type: "booking",
+        clientEmail: "client@example.com", // TODO: Get from client record
+        clientName: "Client", // TODO: Get from client record
+        coachEmail: "coach@example.com", // TODO: Get from coach record
+        coachName: "Coach", // TODO: Get from coach record
+        sessionDate: input.scheduledDate,
+        sessionType: input.sessionType,
+        duration: input.duration,
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Reschedule a session
+   */
+  rescheduleSession: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.number(),
+        newDate: z.date(),
+        newDuration: z.number().optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      // Get existing session
+      const sessionData = await getSessionById(input.sessionId);
+
+      if (!sessionData || !sessionData.session) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Session not found",
+        });
+      }
+
+      const session = sessionData.session;
+
+      // Check if user has permission (coach or client)
+      // For now, allow any authenticated user
+      // TODO: Add proper permission check
+
+      // Check if new time slot is available
+      const available = await isTimeSlotAvailable(
+        session.coachId,
+        input.newDate,
+        input.newDuration || session.duration
+      );
+
+      if (!available) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "The new time slot is not available",
+        });
+      }
+
+      // Update session
+      await updateSession(input.sessionId, {
+        scheduledDate: input.newDate,
+        duration: input.newDuration || session.duration,
+      });
+
+      // Send reschedule notification
+      await sendSessionNotification({
+        type: "reschedule",
+        clientEmail: "client@example.com", // TODO: Get from client record
+        clientName: "Client", // TODO: Get from client record
+        sessionDate: input.newDate,
+        duration: input.newDuration || session.duration,
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Cancel a session
+   */
+  cancelSession: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.number(),
+        cancelledBy: z.enum(["coach", "client"]),
+        reason: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const sessionData = await getSessionById(input.sessionId);
+
+      if (!sessionData || !sessionData.session) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Session not found",
+        });
+      }
+
+      // Cancel session
+      await cancelSession(input.sessionId, input.cancelledBy);
+
+      // Update notes with cancellation reason
+      if (input.reason) {
+        await updateSession(input.sessionId, {
+          notes: `Cancelled by ${input.cancelledBy}: ${input.reason}`,
+        });
+      }
+
+      // Send cancellation notification
+      await sendSessionNotification({
+        type: "cancellation",
+        clientEmail: "client@example.com", // TODO: Get from client record
+        clientName: "Client", // TODO: Get from client record
+        sessionDate: sessionData.session.scheduledDate,
+        duration: sessionData.session.duration,
+        cancellationReason: input.reason,
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Get sessions for a client
+   */
+  getClientSessions: protectedProcedure
+    .input(
+      z.object({
+        clientId: z.number(),
+        status: z.array(z.enum(["scheduled", "completed", "cancelled", "no-show"])).optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      const sessions = await getClientSessions(input.clientId, input.status);
+      return { sessions };
+    }),
+
+  /**
+   * Get upcoming sessions for a client
+   */
+  getUpcomingClientSessions: protectedProcedure
+    .input(z.object({ clientId: z.number() }))
+    .query(async ({ input }) => {
+      const sessions = await getUpcomingClientSessions(input.clientId);
+      return { sessions };
+    }),
+
+  /**
+   * Get sessions for a coach in a date range
+   */
+  getCoachSessions: protectedProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        startDate: z.date(),
+        endDate: z.date(),
+        status: z.array(z.enum(["scheduled", "completed", "cancelled", "no-show"])).optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      const sessions = await getCoachSessions(
+        input.coachId,
+        input.startDate,
+        input.endDate,
+        input.status
+      );
+      return { sessions };
+    }),
+
+  /**
+   * Get session by ID
+   */
+  getSession: protectedProcedure
+    .input(z.object({ sessionId: z.number() }))
+    .query(async ({ input }) => {
+      const session = await getSessionById(input.sessionId);
+
+      if (!session) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Session not found",
+        });
+      }
+
+      return session;
+    }),
+
+  /**
+   * Get coach availability
+   */
+  getCoachAvailability: protectedProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        dayOfWeek: z.number().min(0).max(6).optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      const availability = await getCoachAvailability(input.coachId, input.dayOfWeek);
+      return { availability };
+    }),
+
+  /**
+   * Set coach availability
+   */
+  setCoachAvailability: protectedProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        dayOfWeek: z.number().min(0).max(6),
+        startTime: z.string().regex(/^\d{2}:\d{2}$/),
+        endTime: z.string().regex(/^\d{2}:\d{2}$/),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await upsertCoachAvailability({
+        coachId: input.coachId,
+        dayOfWeek: input.dayOfWeek,
+        startTime: input.startTime,
+        endTime: input.endTime,
+        isActive: "true",
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Delete coach availability slot
+   */
+  deleteCoachAvailability: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      await deleteCoachAvailability(input.id);
+      return { success: true };
+    }),
+
+  /**
+   * Get availability exceptions
+   */
+  getAvailabilityExceptions: protectedProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        startDate: z.date(),
+        endDate: z.date(),
+      })
+    )
+    .query(async ({ input }) => {
+      const exceptions = await getAvailabilityExceptions(
+        input.coachId,
+        input.startDate,
+        input.endDate
+      );
+      return { exceptions };
+    }),
+
+  /**
+   * Create availability exception (time off)
+   */
+  createAvailabilityException: protectedProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        startDate: z.date(),
+        endDate: z.date(),
+        reason: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await createAvailabilityException({
+        coachId: input.coachId,
+        startDate: input.startDate,
+        endDate: input.endDate,
+        reason: input.reason,
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Delete availability exception
+   */
+  deleteAvailabilityException: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      await deleteAvailabilityException(input.id);
+      return { success: true };
+    }),
+});
