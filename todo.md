@@ -137,3 +137,12 @@
 - [x] Add Calendly to all "Book Strategy Call" CTAs
 - [ ] Test both landing pages (enterprise and individual)
 - [ ] Publish updated platform with dual landing pages
+
+## CRITICAL FIXES - USER REPORTED
+
+- [x] Fix broken bottom button on both landing pages (final CTA section)
+- [x] Enhance individual landing page to match enterprise conversion power
+- [x] Apply Master Prompt standards to individual page
+- [x] Apply High-Conversion Agency Mode tactics to individual page
+- [x] Make individual coaching the primary revenue focus
+- [ ] Test all buttons on published site before delivery

@@ -557,7 +557,11 @@ export default function Landing() {
             Book a complimentary 30-minute strategy call to discuss your specific needs and see if we're the right fit.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-6">
+            <Button 
+              size="lg" 
+              className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-6"
+              onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
+            >
               Book Your Strategy Call
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
