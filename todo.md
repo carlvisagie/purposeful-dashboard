@@ -121,3 +121,19 @@
 - [x] Create pattern analysis for journal entries
 - [x] Build automated coaching recommendations
 - [ ] Test AI features with OpenAI API key (requires user to add OPENAI_API_KEY)
+
+## CRITICAL BUG - USER REPORTED
+
+- [ ] Fix broken "Book Strategy Call" button (user reports it doesn't work)
+- [ ] Test all CTA buttons on published platform
+- [ ] Verify button functionality after republishing
+
+## NEW FEATURES - INDIVIDUAL COACHING
+
+- [x] Create individual coaching landing page (B2C focus)
+- [x] Add personal transformation messaging
+- [x] Create individual pricing tiers ($99-$299/month)
+- [ ] Integrate Calendly booking system
+- [ ] Add Calendly to all "Book Strategy Call" CTAs
+- [ ] Test both landing pages (enterprise and individual)
+- [ ] Publish updated platform with dual landing pages

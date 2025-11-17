@@ -11,12 +11,14 @@ import Clients from "./pages/Clients";
 import NewClient from "./pages/NewClient";
 import CoachSetup from "./pages/CoachSetup";
 import ClientDetail from "./pages/ClientDetail";
+import Individual from "./pages/Individual";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Landing} />
+      <Route path="/individual" component={Individual} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/clients" component={Clients} />
       <Route path="/clients/new" component={NewClient} />
