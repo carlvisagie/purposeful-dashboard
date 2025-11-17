@@ -146,3 +146,37 @@
 - [x] Apply High-Conversion Agency Mode tactics to individual page
 - [x] Make individual coaching the primary revenue focus
 - [ ] Test all buttons on published site before delivery
+
+## USER-REPORTED ISSUE - LANDING PAGE FIX
+
+- [ ] Remove separate /individual page (wrong approach)
+- [ ] Add "Individual Coaching" section to main landing page
+- [ ] Include B2C pricing ($99-$299/month) for individuals
+- [ ] Keep enterprise section for organizations
+- [ ] Make ONE unified landing page serving both audiences
+- [ ] Test all buttons work correctly
+
+## RESEARCH REQUIRED - LANDING PAGE STRATEGY
+
+- [x] Research B2B vs B2C landing page best practices
+- [x] Research conversion data for combined vs separate landing pages
+- [x] Research user psychology - does mixing enterprise and individual pricing hurt conversion?
+- [x] Analyze findings and recommend optimal strategy
+- [ ] Implement research-backed solution (IN PROGRESS)
+
+## COMPETITIVE ANALYSIS - INDIVIDUAL PRICING
+
+- [x] Research competitor pricing for emotional resilience/mental wellness coaching
+- [x] Research competitor features and service offerings
+- [x] Analyze pricing tiers and value propositions
+- [x] Compare our platform to competitors
+- [x] Validate $99-$299/month pricing strategy
+- [x] Deliver competitive analysis report with recommendations
+
+## ZOOM INTEGRATION
+
+- [x] Add Zoom PMI (820 180 8284) to landing pages
+- [x] Add Zoom link to coach dashboard
+- [x] Add Zoom session button to client detail pages
+- [x] Add Zoom info to coach profile setup
+- [ ] Test all Zoom links work correctly

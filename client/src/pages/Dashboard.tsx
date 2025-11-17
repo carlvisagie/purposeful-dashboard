@@ -3,7 +3,8 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
-import { Users, BookOpen, Brain, Calendar, TrendingUp, AlertCircle } from "lucide-react";
+import { Users, BookOpen, Brain, Calendar, TrendingUp, AlertCircle, Video } from "lucide-react";
+import { ZOOM_MEETING_URL } from "@/config/zoom";
 
 export default function Dashboard() {
   const { data: user } = trpc.auth.me.useQuery();
@@ -56,6 +57,15 @@ export default function Dashboard() {
               <p className="text-sm text-gray-600 mt-1">Empowering emotional resilience through data-driven insights</p>
             </div>
             <div className="flex items-center gap-4">
+              <Button 
+                variant="default" 
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => window.open(ZOOM_MEETING_URL, '_blank')}
+              >
+                <Video className="h-4 w-4 mr-2" />
+                Start Video Session
+              </Button>
               <div className="text-right">
                 <p className="text-sm font-medium text-gray-900">{user.name || user.email}</p>
                 <p className="text-xs text-gray-500">{coach ? "Coach" : "User"}</p>

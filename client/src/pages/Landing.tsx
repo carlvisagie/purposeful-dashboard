@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
+import { ZOOM_MEETING_URL } from "@/config/zoom";
 import { 
   Shield, 
   TrendingUp, 
@@ -34,6 +35,12 @@ export default function Landing() {
                 onClick={() => window.location.href = getLoginUrl()}
               >
                 Sign In
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => window.open(ZOOM_MEETING_URL, '_blank')}
+              >
+                Join Video Call
               </Button>
               <Button 
                 className="bg-blue-600 hover:bg-blue-700"

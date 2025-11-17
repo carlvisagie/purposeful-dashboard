@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
+import { ZOOM_MEETING_URL } from "@/config/zoom";
 
 /**
  * Individual Coaching Landing Page - Master Prompt Compliant
@@ -32,6 +33,12 @@ export default function Individual() {
                 onClick={() => window.location.href = getLoginUrl()}
               >
                 Sign In
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => window.open(ZOOM_MEETING_URL, '_blank')}
+              >
+                Join Video Call
               </Button>
               <Button 
                 className="bg-rose-500 hover:bg-rose-600"
