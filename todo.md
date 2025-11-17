@@ -103,3 +103,13 @@
 - [ ] Add insurance partnership data export
 - [x] Build conversion-optimized landing page
 - [ ] Add booking/scheduling system for strategy calls
+
+
+## CRITICAL BUGS TO FIX
+
+- [x] Fix broken "Book Your Strategy Call" button URL
+- [ ] Test all CTAs and navigation links
+- [ ] Verify OAuth login flow works correctly
+- [ ] Test Stripe checkout flow end-to-end
+- [x] Fix broken /login page (404 error)
+- [x] Create proper login/authentication page

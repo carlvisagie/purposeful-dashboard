@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
+import { getLoginUrl } from "@/const";
 import { 
   Shield, 
   TrendingUp, 
@@ -28,14 +29,18 @@ export default function Landing() {
               <span className="text-xl font-bold text-gray-900">Purposeful Live Coaching</span>
             </div>
             <div className="flex items-center gap-4">
-              <Link href="/login">
-                <Button variant="ghost">Sign In</Button>
-              </Link>
-              <Link href="#book-call">
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  Book Strategy Call
-                </Button>
-              </Link>
+              <Button 
+                variant="ghost"
+                onClick={() => window.location.href = getLoginUrl()}
+              >
+                Sign In
+              </Button>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => document.getElementById('book-call')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                Book Strategy Call
+              </Button>
             </div>
           </div>
         </div>
@@ -57,17 +62,22 @@ export default function Landing() {
                 $4,380 annual savings per member through proven emotional resilience tracking and AI-powered insights.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link href="#book-call">
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6">
-                    Book Your Strategy Call
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="#packages">
-                  <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-                    View Packages
-                  </Button>
-                </Link>
+                <Button 
+                  size="lg" 
+                  className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6"
+                  onClick={() => document.getElementById('book-call')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Book Your Strategy Call
+                  <ChevronRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="text-lg px-8 py-6"
+                  onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  View Packages
+                </Button>
               </div>
               <div className="flex items-center gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
@@ -481,11 +491,13 @@ export default function Landing() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="#book-call">
-                    <Button className={`w-full ${pkg.featured ? 'bg-blue-600 hover:bg-blue-700' : ''}`} variant={pkg.featured ? 'default' : 'outline'}>
-                      {pkg.cta}
-                    </Button>
-                  </Link>
+                  <Button 
+                    className={`w-full ${pkg.featured ? 'bg-blue-600 hover:bg-blue-700' : ''}`} 
+                    variant={pkg.featured ? 'default' : 'outline'}
+                    onClick={() => document.getElementById('book-call')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    {pkg.cta}
+                  </Button>
                 </CardContent>
               </Card>
             ))}
