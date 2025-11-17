@@ -44,6 +44,18 @@ export default function BookSessionNew() {
   // Get selected type details
   const selectedType = typesData?.sessionTypes.find(t => t.id === selectedTypeId);
 
+  // Fetch weekly availability for scarcity display
+  const { data: weeklyData } = trpc.scheduling.getWeeklyAvailability.useQuery(
+    {
+      coachId,
+      sessionDuration: selectedType?.duration || 60,
+    },
+    {
+      enabled: selectedType !== null,
+      refetchInterval: 30000, // Refresh every 30 seconds for real-time updates
+    }
+  );
+
   // Fetch available slots when date and type are selected
   const { data: slotsData, isLoading: loadingSlots } = trpc.scheduling.getAvailableSlots.useQuery(
     {
@@ -191,6 +203,31 @@ export default function BookSessionNew() {
                 Select the session that aligns with your goals
               </p>
             </div>
+
+            {/* Scarcity Display */}
+            {weeklyData && weeklyData.remainingSpots > 0 && weeklyData.remainingSpots <= 10 && (
+              <div className={`
+                mx-auto max-w-md mb-8 px-6 py-4 rounded-lg border-2 text-center font-semibold
+                ${weeklyData.remainingSpots <= 2 ? 'bg-red-50 border-red-300 text-red-800' : 
+                  weeklyData.remainingSpots <= 4 ? 'bg-orange-50 border-orange-300 text-orange-800' : 
+                  'bg-yellow-50 border-yellow-300 text-yellow-800'}
+              `}>
+                <div className="flex items-center justify-center gap-2">
+                  {weeklyData.remainingSpots <= 2 && (
+                    <span className="animate-pulse text-xl">🔥</span>
+                  )}
+                  <span>
+                    Only <span className="text-2xl font-bold">{weeklyData.remainingSpots}</span> spot{weeklyData.remainingSpots !== 1 ? 's' : ''} remaining this week
+                  </span>
+                  {weeklyData.remainingSpots <= 2 && (
+                    <span className="animate-pulse text-xl">🔥</span>
+                  )}
+                </div>
+                <p className="text-sm mt-1 opacity-80">
+                  {weeklyData.remainingSpots === 1 ? "Last spot available!" : "Book now before they're gone"}
+                </p>
+              </div>
+            )}
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {typesData?.sessionTypes.map((type, index) => {

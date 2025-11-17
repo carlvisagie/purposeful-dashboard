@@ -25,6 +25,91 @@ import {
 
 export const schedulingRouter = router({
   /**
+   * Get available spots remaining for the current week
+   */
+  getWeeklyAvailability: protectedProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        sessionDuration: z.number().optional().default(60),
+      })
+    )
+    .query(async ({ input }) => {
+      // Get start and end of current week (Sunday to Saturday)
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const weekStart = new Date(now);
+      weekStart.setDate(now.getDate() - dayOfWeek);
+      weekStart.setHours(0, 0, 0, 0);
+      
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+      weekEnd.setHours(23, 59, 59, 999);
+
+      // Count booked sessions for this week
+      const bookedSessions = await getCoachSessions(
+        input.coachId,
+        weekStart,
+        weekEnd,
+        ["scheduled"]
+      );
+      const bookedCount = bookedSessions.length;
+
+      // Calculate total weekly capacity from availability
+      const availability = await getCoachAvailability(input.coachId);
+      const exceptions = await getAvailabilityExceptions(
+        input.coachId,
+        weekStart,
+        weekEnd
+      );
+
+      // Calculate total available hours this week
+      let totalMinutes = 0;
+      const daysInWeek = 7;
+      
+      for (let i = 0; i < daysInWeek; i++) {
+        const currentDate = new Date(weekStart);
+        currentDate.setDate(weekStart.getDate() + i);
+        const currentDayOfWeek = currentDate.getDay();
+
+        // Check if this day is blocked by exception
+        const isBlocked = exceptions.some(exc => {
+          const excStart = new Date(exc.startDate);
+          const excEnd = new Date(exc.endDate);
+          excStart.setHours(0, 0, 0, 0);
+          excEnd.setHours(23, 59, 59, 999);
+          return currentDate >= excStart && currentDate <= excEnd;
+        });
+
+        if (isBlocked) continue;
+
+        // Add available hours for this day
+        const dayAvailability = availability.filter(
+          a => a.dayOfWeek === currentDayOfWeek && a.isActive === "true"
+        );
+
+        for (const slot of dayAvailability) {
+          const [startHour, startMin] = slot.startTime.split(":").map(Number);
+          const [endHour, endMin] = slot.endTime.split(":").map(Number);
+          const slotMinutes = (endHour * 60 + endMin) - (startHour * 60 + startMin);
+          totalMinutes += slotMinutes;
+        }
+      }
+
+      // Calculate max sessions based on duration
+      const maxSessions = Math.floor(totalMinutes / input.sessionDuration);
+      const remainingSpots = Math.max(0, maxSessions - bookedCount);
+
+      return {
+        totalCapacity: maxSessions,
+        bookedCount,
+        remainingSpots,
+        weekStart: weekStart.toISOString(),
+        weekEnd: weekEnd.toISOString(),
+      };
+    }),
+
+  /**
    * Get available time slots for a coach on a specific date
    */
   getAvailableSlots: protectedProcedure

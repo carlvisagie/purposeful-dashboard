@@ -295,3 +295,15 @@
 - [ ] Update session status after successful payment (webhook handler exists, needs testing)
 - [ ] Send payment receipt email (email service exists, needs webhook integration)
 - [ ] Handle refunds for cancelled sessions (future enhancement)
+
+## REAL-TIME SCARCITY FEATURE
+
+- [x] Create backend procedure to calculate weekly available spots
+- [x] Count booked sessions for current week
+- [x] Calculate total weekly capacity from coach availability
+- [x] Return remaining spots count
+- [x] Add scarcity display component to booking page
+- [x] Show "X spots remaining this week" with urgency styling
+- [x] Update count dynamically when session type changes
+- [x] Add color-coded urgency (green: 5+, yellow: 2-4, red: 1)
+- [x] Test scarcity calculations with different availability settings
