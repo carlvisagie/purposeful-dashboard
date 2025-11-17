@@ -430,3 +430,14 @@
 - [ ] Add "Or pay with PayPal" button below Stripe checkout
 - [ ] Test PayPal fallback flow
 - [ ] Ensure smooth transition if Stripe fails
+
+
+## ENTERPRISE PAGE - PAYPAL REMOVAL (USER REQUESTED)
+
+- [x] Remove all PayPal buttons from Enterprise landing page
+- [x] Replace with Calendly consultation CTAs for all tiers
+- [x] Update button text: "Start Pilot Program", "Book Strategy Call", "Contact Sales"
+- [x] Add "Schedule consultation for pricing" messaging
+- [x] Verify Enterprise page already has Master Prompt structure (Hero→Stakes→Services→Process→Proof→FAQ→CTA)
+- [x] Test Enterprise page - all tiers now go to Calendly
+- [x] Verify PayPal completely removed from codebase
