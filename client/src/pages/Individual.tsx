@@ -22,10 +22,9 @@ export default function Individual() {
   const { user } = useAuth();
   const coachId = 1;
 
-  // Fetch session types for pricing
-  const { data: typesData } = trpc.sessionTypes.list.useQuery({
+  // Fetch session types for pricing (PUBLIC endpoint - no auth required)
+  const { data: typesData } = trpc.sessionTypes.getAll.useQuery({
     coachId,
-    activeOnly: true,
   });
 
   // Fetch weekly availability for scarcity
@@ -96,8 +95,44 @@ export default function Individual() {
             </h1>
             
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Join 10,000+ people who reduced anxiety by 60% in 30 days using our AI-powered coaching system—without expensive therapy or waiting months for appointments.
+              Join 10,000+ people who reduced anxiety by 60% in 30 days using our <strong>AI-powered coaching system</strong>—without expensive therapy or waiting months for appointments.
             </p>
+            
+            {/* AI Features Highlight */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mb-8 border-2 border-rose-200 shadow-lg">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500 to-purple-600 flex items-center justify-center">
+                  <Brain className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">AI-Powered Features Included</h3>
+                  <p className="text-sm text-gray-600">Advanced technology meets compassionate care</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">24/7 AI Coach Chat</p>
+                    <p className="text-xs text-gray-600">Instant support anytime</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">Emotion Pattern Detection</p>
+                    <p className="text-xs text-gray-600">Identify triggers automatically</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">Personalized Insights</p>
+                    <p className="text-xs text-gray-600">Data-driven recommendations</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* High-Impact Bullets */}
             <div className="grid md:grid-cols-3 gap-4 mb-10 text-left">

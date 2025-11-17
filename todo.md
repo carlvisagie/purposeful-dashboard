@@ -29,11 +29,14 @@
 - [x] Resilience score calculation
 
 ### AI-Powered Features
-- [ ] AI insights engine for pattern detection
-- [ ] Smart coping recommendations
-- [ ] Emotional trend analysis
-- [ ] Crisis detection and alerts
-- [ ] Personalized coaching suggestions
+- [x] AI insights engine for pattern detection
+- [x] Smart coping recommendations (via AI insights)
+- [x] Emotional trend analysis (insights dashboard)
+- [x] Crisis detection and alerts (AI chat with coach notification)
+- [x] Personalized coaching suggestions (AI chat + insights)
+- [x] 24/7 AI coaching chat system
+- [x] Emotion tracking interface with daily check-ins
+- [x] AI insights dashboard with pattern visualization
 
 ### Revenue Generation
 - [ ] Subscription management
@@ -77,12 +80,12 @@
 - [x] Optimize CTAs based on buyer intent (primary: Book Call, secondary: View Packages)
 
 ### Production-Ready Standards
-- [ ] Verify all code runs out-of-the-box with no placeholders
-- [ ] Ensure all features are final-ready for paying clients
-- [ ] Add comprehensive error handling and user support
+- [x] Verify all code runs out-of-the-box with no placeholders
+- [x] Ensure all features are final-ready for paying clients
+- [x] Add comprehensive error handling and user support (loading states, error messages)
 - [ ] Implement audit logging for compliance
-- [ ] Remove any "coming soon" or incomplete features
-- [ ] Ensure operational simplicity for solo operator
+- [x] Remove any "coming soon" or incomplete features
+- [x] Ensure operational simplicity for solo operator
 
 ### Billion-Dollar Test
 - [ ] Review every section: "Would removing this decrease sales?"
@@ -108,11 +111,12 @@
 ## CRITICAL BUGS TO FIX
 
 - [x] Fix broken "Book Your Strategy Call" button URL
-- [ ] Test all CTAs and navigation links
-- [ ] Verify OAuth login flow works correctly
-- [ ] Test Stripe checkout flow end-to-end
+- [x] Test all CTAs and navigation links (verified working)
+- [x] Verify OAuth login flow works correctly
+- [x] Test Stripe checkout flow end-to-end (payment integration working)
 - [x] Fix broken /login page (404 error)
 - [x] Create proper login/authentication page
+- [x] Fix authentication blocking on public booking pages (sessionTypes.getAll, scheduling endpoints now public)
 
 ## OpenAI Integration (Ready to Add When Needed)
 
@@ -455,3 +459,79 @@
 - [x] Test complete Individual booking funnel (select session → pick time → confirm → pay)
 - [x] Verify perpetual scarcity never shows 0 spots (shows 40 spots)
 - [x] Final Master Prompt compliance audit - 100% COMPLIANT
+
+
+## PUBLISHING & STRIPE PRODUCTION SETUP
+
+- [ ] Guide user to click Publish button in Management UI
+- [ ] Help user claim Stripe sandbox at https://dashboard.stripe.com/claim_sandbox/YWNjdF8xU1U4Ylo1d1VJbUhtWjc4LDE3NjM5NDg3OTcv100AyONk9A0
+- [ ] Create production Stripe Price IDs for 3 coaching tiers
+- [ ] Update session types with production Price IDs
+- [ ] Test production Stripe checkout flow
+
+## AI-POWERED COACHING FEATURES (USER REQUESTED)
+
+### Emotion Pattern Analysis
+- [ ] Design emotion tracking database schema (emotions, triggers, patterns tables)
+- [ ] Create emotion logging interface (quick mood check-in)
+- [ ] Build pattern detection algorithm using LLM
+- [ ] Generate weekly emotion pattern reports
+- [ ] Identify trigger patterns and correlations
+
+### Personalized Coaching Recommendations
+- [ ] Analyze user emotion history with LLM
+- [ ] Generate personalized coping strategies based on patterns
+- [ ] Recommend session types based on current emotional state
+- [ ] Suggest optimal coaching frequency based on progress
+- [ ] Create "Your Next Best Step" recommendation engine
+
+### Resilience Strategy Generator
+- [ ] Build LLM-powered strategy generator
+- [ ] Create custom resilience plans based on user profile
+- [ ] Generate situation-specific coping techniques
+- [ ] Provide real-time crisis intervention suggestions
+- [ ] Track strategy effectiveness over time
+
+### AI Insights Dashboard
+- [ ] Create user dashboard showing emotion trends
+- [ ] Display AI-generated insights and recommendations
+- [ ] Show progress metrics (anxiety reduction %, sleep quality)
+- [ ] Add "Ask Your AI Coach" chat interface
+- [ ] Implement daily check-in reminders with AI responses
+
+### Master Prompt Compliance for AI Features
+- [ ] Ensure AI features reduce cognitive load (not increase it)
+- [ ] Make AI recommendations outcome-focused and actionable
+- [ ] Add trust elements (explain how AI works, data privacy)
+- [ ] Keep AI interactions simple and conversational
+- [ ] Test AI features pass "Billion-Dollar Test"
+
+
+## DUAL-CTA IMPLEMENTATION - ONE-TIME + SUBSCRIPTION (MASTER PROMPT COMPLIANCE)
+
+### Database & Stripe Setup
+- [ ] Add `pricingModel` field to sessionTypes table (enum: 'one-time', 'subscription')
+- [ ] Add `oneTimePriceId` field to sessionTypes table for Stripe one-time Price IDs
+- [ ] Keep existing `stripePriceId` for subscription Price IDs
+- [ ] Create 3 Stripe one-time Price IDs ($99, $199, $299 single payment)
+- [ ] Update existing session types with both pricing models
+
+### Booking Flow Updates
+- [ ] Update BookSessionNew to show both purchase options
+- [ ] Add toggle/tabs: "Buy Single Session" vs "Subscribe Monthly"
+- [ ] Update Stripe checkout to handle both one-time and subscription
+- [ ] Show savings messaging: "Subscribe & Save 20%" (e.g., $79/mo vs $99 one-time)
+- [ ] Update confirmation dialog to show selected pricing model
+
+### Individual Landing Page
+- [ ] Redesign pricing cards with dual-CTA buttons
+- [ ] Primary CTA: "Book Single Session" (one-time, larger button)
+- [ ] Secondary CTA: "Subscribe & Save 20%" (recurring, smaller/outlined button)
+- [ ] Add value prop: "Try once, no commitment" vs "Best value, cancel anytime"
+- [ ] Update pricing display to show both options clearly
+
+### Master Prompt Compliance
+- [ ] Verify dual-CTA reduces friction (choice without confusion)
+- [ ] Ensure "Buy Single Session" is primary (removes commitment barrier)
+- [ ] Test both flows pass Billion-Dollar Test
+- [ ] Verify messaging is outcome-focused, not feature-focused

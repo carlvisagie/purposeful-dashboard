@@ -3,7 +3,7 @@
  */
 
 import { z } from "zod";
-import { protectedProcedure, router } from "../_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { sendSessionNotification } from "../services/sessionNotifications";
 import {
@@ -25,9 +25,9 @@ import {
 
 export const schedulingRouter = router({
   /**
-   * Get available spots remaining for the current week
+   * Get available spots remaining for the current week (PUBLIC - for scarcity display)
    */
-  getWeeklyAvailability: protectedProcedure
+  getWeeklyAvailability: publicProcedure
     .input(
       z.object({
         coachId: z.number(),
@@ -110,9 +110,9 @@ export const schedulingRouter = router({
     }),
 
   /**
-   * Get available time slots for a coach on a specific date
+   * Get available time slots for a coach on a specific date (PUBLIC - for booking)
    */
-  getAvailableSlots: protectedProcedure
+  getAvailableSlots: publicProcedure
     .input(
       z.object({
         coachId: z.number(),

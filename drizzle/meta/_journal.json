@@ -50,6 +50,20 @@
       "when": 1763386353500,
       "tag": "0006_cynical_sunfire",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1763403775498,
+      "tag": "0007_tricky_shen",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1763407711099,
+      "tag": "0008_daffy_mesmero",
+      "breakpoints": true
     }
   ]
 }

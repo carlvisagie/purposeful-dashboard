@@ -21,6 +21,7 @@ export const stripeRouter = router({
         sessionTypeId: z.number(),
         scheduledDate: z.string(),
         notes: z.string().optional(),
+        pricingModel: z.enum(['one-time', 'subscription']).default('one-time'), // Master Prompt: Primary = one-time
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -38,19 +39,24 @@ export const stripeRouter = router({
         throw new Error("Session type not found");
       }
 
-      if (!sessionType.stripePriceId) {
-        throw new Error("This session type is not available for online purchase. Please contact support.");
+      // Determine which Stripe Price ID to use based on pricing model
+      const priceId = input.pricingModel === 'one-time' 
+        ? sessionType.oneTimePriceId 
+        : sessionType.stripePriceId;
+
+      if (!priceId) {
+        throw new Error(`This session type is not available for ${input.pricingModel} purchase. Please contact support.`);
       }
 
       const origin = ctx.req.headers.origin || "http://localhost:3000";
 
       // Create Stripe checkout session
       const session = await stripe.checkout.sessions.create({
-        mode: "subscription",
+        mode: input.pricingModel === 'one-time' ? 'payment' : 'subscription',
         payment_method_types: ["card"],
         line_items: [
           {
-            price: sessionType.stripePriceId,
+            price: priceId,
             quantity: 1,
           },
         ],

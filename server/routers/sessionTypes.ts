@@ -3,7 +3,7 @@
  */
 
 import { z } from "zod";
-import { protectedProcedure, router } from "../_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
 import {
   getCoachSessionTypes,
@@ -15,6 +15,22 @@ import {
 } from "../db/sessionTypes";
 
 export const sessionTypesRouter = router({
+  /**
+   * Get all ACTIVE session types (PUBLIC - no auth required)
+   * Used by booking page and landing pages
+   */
+  getAll: publicProcedure
+    .input(
+      z.object({
+        coachId: z.number().optional().default(1), // Default to first coach
+      })
+    )
+    .query(async ({ input }) => {
+      const sessionTypes = await getCoachSessionTypes(input.coachId, true); // activeOnly = true
+      return { sessionTypes };
+    }),
+
+
   /**
    * Get all session types for a coach
    */

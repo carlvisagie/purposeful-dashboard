@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Calendar, Clock, CheckCircle2, Shield, Award, TrendingUp, AlertCircle } from "lucide-react";
+import { Calendar, Clock, CheckCircle2, Shield, Award, TrendingUp, AlertCircle, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 
@@ -28,16 +28,16 @@ export default function BookSessionNew() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [notes, setNotes] = useState("");
+  const [pricingModel, setPricingModel] = useState<'one-time' | 'subscription'>('one-time'); // Master Prompt: Primary CTA = one-time
   
   // UI state
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isBooking, setIsBooking] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // Fetch active session types
-  const { data: typesData } = trpc.sessionTypes.list.useQuery({
+  // Fetch active session types (PUBLIC endpoint - no auth required)
+  const { data: typesData, isLoading: typesLoading, error: typesError } = trpc.sessionTypes.getAll.useQuery({
     coachId,
-    activeOnly: true,
   });
 
   // Get selected type details
@@ -101,6 +101,7 @@ export default function BookSessionNew() {
         sessionTypeId: selectedType.id,
         scheduledDate,
         notes: notes || undefined,
+        pricingModel, // Pass selected pricing model to Stripe
       });
     } else {
       toast.error("Free sessions are not yet supported. Please contact support.");
@@ -207,7 +208,33 @@ export default function BookSessionNew() {
                 <CardTitle>1. Choose Your Session</CardTitle>
                 <CardDescription>Select the session type that fits your needs</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
+                {/* Pricing Model Toggle - Master Prompt: Primary CTA = One-Time */}
+                <div className="flex gap-2 p-1 bg-gray-100 rounded-lg">
+                  <button
+                    onClick={() => setPricingModel('one-time')}
+                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                      pricingModel === 'one-time'
+                        ? 'bg-white shadow-sm text-primary'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Single Session
+                  </button>
+                  <button
+                    onClick={() => setPricingModel('subscription')}
+                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                      pricingModel === 'subscription'
+                        ? 'bg-white shadow-sm text-primary'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      <span>Monthly</span>
+                      <Badge variant="secondary" className="text-xs">Save 20%</Badge>
+                    </div>
+                  </button>
+                </div>
                 {typesData?.sessionTypes.map((type) => (
                   <button
                     key={type.id}
@@ -220,7 +247,16 @@ export default function BookSessionNew() {
                   >
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold">{type.name}</h3>
-                      <Badge variant="secondary">${(type.price / 100).toFixed(2)}</Badge>
+                      <div className="text-right">
+                        {pricingModel === 'one-time' ? (
+                          <Badge variant="secondary">${(type.price / 100).toFixed(2)}</Badge>
+                        ) : (
+                          <div>
+                            <Badge variant="secondary">${((type.subscriptionPrice || type.price) / 100).toFixed(2)}/mo</Badge>
+                            <p className="text-xs text-muted-foreground mt-1">Save ${((type.price - (type.subscriptionPrice || type.price)) / 100).toFixed(0)}/mo</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">{type.description}</p>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -230,10 +266,27 @@ export default function BookSessionNew() {
                   </button>
                 ))}
 
-                {(!typesData || typesData.sessionTypes.length === 0) && (
-                  <p className="text-center text-muted-foreground py-8">
-                    No session types available. Please check back later.
-                  </p>
+                {typesLoading && (
+                  <div className="text-center py-8">
+                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+                    <p className="text-sm text-muted-foreground mt-2">Loading session types...</p>
+                  </div>
+                )}
+
+                {typesError && (
+                  <div className="text-center py-8">
+                    <AlertCircle className="h-8 w-8 mx-auto text-red-500 mb-2" />
+                    <p className="text-sm text-red-600">Failed to load session types</p>
+                    <p className="text-xs text-muted-foreground mt-1">{typesError.message}</p>
+                  </div>
+                )}
+
+                {!typesLoading && !typesError && (!typesData || typesData.sessionTypes.length === 0) && (
+                  <div className="text-center py-8">
+                    <AlertCircle className="h-8 w-8 mx-auto text-yellow-500 mb-2" />
+                    <p className="text-sm text-muted-foreground">No session types available</p>
+                    <p className="text-xs text-muted-foreground mt-1">Please check back later</p>
+                  </div>
                 )}
               </CardContent>
             </Card>

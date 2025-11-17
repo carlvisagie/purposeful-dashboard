@@ -16,6 +16,9 @@ import BookSessionNew from "./pages/BookSessionNew";
 import MySessions from "./pages/MySessions";
 import CoachAvailability from "./pages/CoachAvailability";
 import ManageSessionTypes from "./pages/ManageSessionTypes";
+import AICoach from "./pages/AICoach";
+import EmotionTracker from "./pages/EmotionTracker";
+import InsightsDashboard from "./pages/InsightsDashboard";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -32,6 +35,9 @@ function Router() {
       <Route path="/my-sessions" component={MySessions} />
       <Route path="/coach/availability" component={CoachAvailability} />
       <Route path="/coach/session-types" component={ManageSessionTypes} />
+      <Route path="/ai-coach" component={AICoach} />
+      <Route path="/emotions" component={EmotionTracker} />
+      <Route path="/insights" component={InsightsDashboard} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

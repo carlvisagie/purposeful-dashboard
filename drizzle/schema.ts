@@ -158,6 +158,8 @@ export const sessionTypes = mysqlTable("sessionTypes", {
   duration: int("duration").notNull(), // in minutes
   price: int("price").notNull(), // in cents (e.g., 7500 = $75.00)
   stripePriceId: varchar("stripePriceId", { length: 255 }), // Stripe recurring price ID for subscriptions
+  oneTimePriceId: varchar("oneTimePriceId", { length: 255 }), // Stripe one-time price ID for single sessions
+  subscriptionPrice: int("subscriptionPrice"), // Monthly subscription price in cents (optional, defaults to price)
   isActive: mysqlEnum("isActive", ["true", "false"]).default("true").notNull(),
   displayOrder: int("displayOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -289,3 +291,35 @@ export const discountCodeUsage = mysqlTable("discountCodeUsage", {
 
 export type DiscountCodeUsage = typeof discountCodeUsage.$inferSelect;
 export type InsertDiscountCodeUsage = typeof discountCodeUsage.$inferInsert;
+
+/**
+ * AI chat conversations - 24/7 AI coaching chat history
+ */
+export const aiChatConversations = mysqlTable("aiChatConversations", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  clientId: int("clientId").references(() => clients.id, { onDelete: "cascade" }), // Optional link to client profile
+  title: varchar("title", { length: 255 }), // Auto-generated conversation title
+  lastMessageAt: timestamp("lastMessageAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AiChatConversation = typeof aiChatConversations.$inferSelect;
+export type InsertAiChatConversation = typeof aiChatConversations.$inferInsert;
+
+/**
+ * AI chat messages - individual messages in conversations
+ */
+export const aiChatMessages = mysqlTable("aiChatMessages", {
+  id: int("id").autoincrement().primaryKey(),
+  conversationId: int("conversationId").notNull().references(() => aiChatConversations.id, { onDelete: "cascade" }),
+  role: mysqlEnum("role", ["user", "assistant", "system"]).notNull(),
+  content: text("content").notNull(),
+  emotionDetected: varchar("emotionDetected", { length: 100 }), // AI-detected emotion from user message
+  crisisFlag: mysqlEnum("crisisFlag", ["none", "low", "medium", "high", "critical"]).default("none").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type AiChatMessage = typeof aiChatMessages.$inferSelect;
+export type InsertAiChatMessage = typeof aiChatMessages.$inferInsert;

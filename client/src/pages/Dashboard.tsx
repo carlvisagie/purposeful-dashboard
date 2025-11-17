@@ -153,23 +153,29 @@ export default function Dashboard() {
                 <CardDescription>Common tasks to manage your coaching practice</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Link href="/clients/new">
-                    <Button className="w-full" variant="outline">
-                      <Users className="mr-2 h-4 w-4" />
-                      Add New Client
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Link href="/ai-coach">
+                    <Button className="w-full bg-gradient-to-r from-rose-500 to-purple-600 text-white hover:from-rose-600 hover:to-purple-700">
+                      <Brain className="mr-2 h-4 w-4" />
+                      AI Coach Chat
                     </Button>
                   </Link>
-                  <Link href="/clients">
+                  <Link href="/emotions">
                     <Button className="w-full" variant="outline">
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      View All Clients
+                      <TrendingUp className="mr-2 h-4 w-4" />
+                      Track Emotions
                     </Button>
                   </Link>
                   <Link href="/insights">
                     <Button className="w-full" variant="outline">
                       <Brain className="mr-2 h-4 w-4" />
-                      AI Insights
+                      View Insights
+                    </Button>
+                  </Link>
+                  <Link href="/clients">
+                    <Button className="w-full" variant="outline">
+                      <Users className="mr-2 h-4 w-4" />
+                      Manage Clients
                     </Button>
                   </Link>
                 </div>
