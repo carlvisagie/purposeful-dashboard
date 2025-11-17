@@ -37,7 +37,7 @@ export default function Landing() {
               </Button>
               <Button 
                 className="bg-blue-600 hover:bg-blue-700"
-                onClick={() => document.getElementById('book-call')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
               >
                 Book Strategy Call
               </Button>
@@ -65,7 +65,7 @@ export default function Landing() {
                 <Button 
                   size="lg" 
                   className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6"
-                  onClick={() => document.getElementById('book-call')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
                 >
                   Book Your Strategy Call
                   <ChevronRight className="ml-2 h-5 w-5" />
@@ -494,7 +494,7 @@ export default function Landing() {
                   <Button 
                     className={`w-full ${pkg.featured ? 'bg-blue-600 hover:bg-blue-700' : ''}`} 
                     variant={pkg.featured ? 'default' : 'outline'}
-                    onClick={() => document.getElementById('book-call')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
                   >
                     {pkg.cta}
                   </Button>

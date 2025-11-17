@@ -43,7 +43,7 @@ export default function Individual() {
               </Button>
               <Button 
                 className="bg-rose-500 hover:bg-rose-600"
-                onClick={() => document.getElementById('start-journey')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
               >
                 Start Your Journey
               </Button>
@@ -73,7 +73,7 @@ export default function Individual() {
                 <Button 
                   size="lg" 
                   className="bg-rose-500 hover:bg-rose-600 text-lg px-8 py-6"
-                  onClick={() => document.getElementById('start-journey')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
                 >
                   Start Your Journey
                   <ChevronRight className="ml-2 h-5 w-5" />
@@ -398,7 +398,7 @@ export default function Individual() {
                 <Button 
                   className="w-full bg-gray-900 hover:bg-gray-800"
                   size="lg"
-                  onClick={() => document.getElementById('start-journey')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
                 >
                   Start Essential Plan
                 </Button>
@@ -442,7 +442,7 @@ export default function Individual() {
                 <Button 
                   className="w-full bg-rose-500 hover:bg-rose-600"
                   size="lg"
-                  onClick={() => document.getElementById('start-journey')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
                 >
                   Start Growth Plan
                 </Button>
@@ -483,7 +483,7 @@ export default function Individual() {
                 <Button 
                   className="w-full bg-gray-900 hover:bg-gray-800"
                   size="lg"
-                  onClick={() => document.getElementById('start-journey')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
                 >
                   Start Transformation Plan
                 </Button>

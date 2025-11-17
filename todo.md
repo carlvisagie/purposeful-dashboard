@@ -133,7 +133,7 @@
 - [x] Create individual coaching landing page (B2C focus)
 - [x] Add personal transformation messaging
 - [x] Create individual pricing tiers ($99-$299/month)
-- [ ] Integrate Calendly booking system
-- [ ] Add Calendly to all "Book Strategy Call" CTAs
+- [x] Integrate Calendly booking system
+- [x] Add Calendly to all "Book Strategy Call" CTAs
 - [ ] Test both landing pages (enterprise and individual)
 - [ ] Publish updated platform with dual landing pages
