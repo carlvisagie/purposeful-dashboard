@@ -332,3 +332,7 @@
 - [x] Add "Book This Session" buttons linking to booking flow
 - [ ] Test pricing section with real session types (needs user to create session types)
 - [x] Verify scarcity counter updates in real-time
+
+## BUG FIXES
+
+- [ ] Fix broken "View Packages" link at bottom of Individual page
