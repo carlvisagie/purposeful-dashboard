@@ -15,18 +15,18 @@
 - [x] Landing page with high-conversion design
 - [x] Coach dashboard with client overview
 - [x] Client management interface (CRUD)
-- [ ] Journal entry interface with emotional tracking
-- [ ] Emotional resilience dashboard with charts
+- [x] Journal entry interface with emotional tracking
+- [x] Emotional resilience dashboard with charts
 - [x] Login/authentication UI
 - [x] Responsive design for mobile and desktop
 
 ### Emotional Resilience Features
-- [ ] Emotion logging with intensity tracking
-- [ ] Trigger identification and tracking
-- [ ] Coping strategy effectiveness analysis
-- [ ] Pattern detection and insights
-- [ ] Progress visualization (charts and graphs)
-- [ ] Resilience score calculation
+- [x] Emotion logging with intensity tracking
+- [x] Trigger identification and tracking
+- [x] Coping strategy effectiveness analysis
+- [x] Pattern detection and insights
+- [x] Progress visualization (charts and graphs)
+- [x] Resilience score calculation
 
 ### AI-Powered Features
 - [ ] AI insights engine for pattern detection

@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
 import NewClient from "./pages/NewClient";
+import CoachSetup from "./pages/CoachSetup";
+import ClientDetail from "./pages/ClientDetail";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -16,6 +18,8 @@ function Router() {
       <Route path={"/"} component={Dashboard} />
       <Route path="/clients" component={Clients} />
       <Route path="/clients/new" component={NewClient} />
+      <Route path="/clients/:id" component={ClientDetail} />
+      <Route path="/coach/setup" component={CoachSetup} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
