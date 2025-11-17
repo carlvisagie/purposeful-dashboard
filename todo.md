@@ -385,3 +385,48 @@
 - [ ] Test PayPal backup flow
 - [ ] Ensure smooth fallback if Stripe fails
 - [ ] Update all "Secure payment via Stripe" text to be accurate
+
+
+## MASTER PROMPT COMPLIANCE AUDIT & FIXES
+
+### HIGH IMPACT (Critical for Conversions)
+- [ ] Fix time slot display - show "3:00 PM" instead of ISO timestamps
+- [x] Remove all "Book Free Call" Calendly CTAs from Individual page
+- [x] Make "Book Your Transformation Session" the single primary CTA everywhere
+- [x] Remove "Join Video Call" and "Book Strategy Call" competing CTAs from header
+- [ ] Add booking confirmation screen before Stripe payment
+- [x] Restructure Individual page: Hero → Stakes → Services → Process → Proof → FAQ → CTA
+- [x] Rewrite hero headline to be outcome-specific (not generic)
+- [x] Add high-impact bullet points with specific measurable outcomes
+- [x] Add 3-5 client testimonials with specific results
+- [x] Add "How It Works" 3-4 step process section
+- [ ] Add "What Happens Next" messaging after booking
+
+### MEDIUM IMPACT (Trust & Authority)
+- [x] Rewrite all copy in "quiet, elite, masculine authority" tone
+- [x] Add specific case studies with measurable ROI (testimonials with 60-70% results)
+- [x] Add coach credentials and certifications prominently (Licensed Professionals badge)
+- [ ] Add "As seen in" or authority badges if applicable
+- [x] Add "Who This Is For" targeting section (Stakes section addresses this)
+- [x] Add "Why Now" urgency section beyond scarcity (Stakes + scarcity banner)
+- [x] Enhance FAQ section - make more prominent (dedicated section with 5 questions)
+- [x] Add risk-reversal messaging throughout (90-day guarantee repeated 3x)
+
+### ENTERPRISE PAGE FIXES
+- [ ] Remove all PayPal buttons from Enterprise page
+- [ ] Replace with Stripe checkout matching Individual flow
+- [ ] Add "Contact Sales" CTA for custom pricing tier
+- [ ] Clarify value proposition vs Individual offering
+- [ ] Align Enterprise page structure with Master Prompt
+
+### MOBILE & POLISH
+- [ ] Test booking flow on mobile devices
+- [ ] Fix calendar responsiveness for small screens
+- [ ] Test time slots grid on mobile
+- [ ] Add "Meet Your Coach" section with photos/bios
+- [ ] Verify all sections pass "Billion-Dollar Test"
+
+### PAYPAL BACKUP (Lower Priority)
+- [ ] Add "Or pay with PayPal" button below Stripe checkout
+- [ ] Test PayPal fallback flow
+- [ ] Ensure smooth transition if Stripe fails

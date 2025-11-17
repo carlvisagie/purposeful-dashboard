@@ -201,7 +201,7 @@ export default function BookSessionNew() {
                   >
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold">{type.name}</h3>
-                      <Badge variant="secondary">${type.price}</Badge>
+                      <Badge variant="secondary">${(type.price / 100).toFixed(2)}</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">{type.description}</p>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
