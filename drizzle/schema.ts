@@ -148,17 +148,40 @@ export type AiInsight = typeof aiInsights.$inferSelect;
 export type InsertAiInsight = typeof aiInsights.$inferInsert;
 
 /**
+ * Session types - configurable session offerings with pricing
+ */
+export const sessionTypes = mysqlTable("sessionTypes", {
+  id: int("id").autoincrement().primaryKey(),
+  coachId: int("coachId").notNull().references(() => coaches.id, { onDelete: "cascade" }),
+  name: varchar("name", { length: 100 }).notNull(),
+  description: text("description"),
+  duration: int("duration").notNull(), // in minutes
+  price: int("price").notNull(), // in cents (e.g., 7500 = $75.00)
+  isActive: mysqlEnum("isActive", ["true", "false"]).default("true").notNull(),
+  displayOrder: int("displayOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SessionType = typeof sessionTypes.$inferSelect;
+export type InsertSessionType = typeof sessionTypes.$inferInsert;
+
+/**
  * Sessions/appointments between coach and client
  */
 export const sessions = mysqlTable("sessions", {
   id: int("id").autoincrement().primaryKey(),
   coachId: int("coachId").notNull().references(() => coaches.id),
   clientId: int("clientId").notNull().references(() => clients.id),
+  sessionTypeId: int("sessionTypeId").references(() => sessionTypes.id),
   scheduledDate: timestamp("scheduledDate").notNull(),
   duration: int("duration").notNull(), // in minutes
-  sessionType: varchar("sessionType", { length: 100 }), // initial, follow-up, crisis, etc.
+  price: int("price"), // in cents - captured at booking time
+  sessionType: varchar("sessionType", { length: 100 }), // legacy field, kept for backward compatibility
   notes: text("notes"),
   status: mysqlEnum("status", ["scheduled", "completed", "cancelled", "no-show"]).default("scheduled").notNull(),
+  paymentStatus: mysqlEnum("paymentStatus", ["pending", "paid", "refunded", "failed"]).default("pending"),
+  stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

@@ -13,6 +13,8 @@ import {
 import { aiInsightsRouter } from "./routers/aiInsights";
 import { stripeRouter } from "./routers/stripe";
 import { schedulingRouter } from "./routers/scheduling";
+import { sessionTypesRouter } from "./routers/sessionTypes";
+import { sessionPaymentsRouter } from "./routers/sessionPayments";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -38,6 +40,8 @@ export const appRouter = router({
   sessions: sessionsRouter,
   stripe: stripeRouter,
   scheduling: schedulingRouter,
+  sessionTypes: sessionTypesRouter,
+  sessionPayments: sessionPaymentsRouter,
 });
 
 export type AppRouter = typeof appRouter;

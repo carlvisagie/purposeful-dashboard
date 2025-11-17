@@ -12,9 +12,10 @@ import NewClient from "./pages/NewClient";
 import CoachSetup from "./pages/CoachSetup";
 import ClientDetail from "./pages/ClientDetail";
 import Individual from "./pages/Individual";
-import BookSession from "./pages/BookSession";
+import BookSessionNew from "./pages/BookSessionNew";
 import MySessions from "./pages/MySessions";
 import CoachAvailability from "./pages/CoachAvailability";
+import ManageSessionTypes from "./pages/ManageSessionTypes";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -27,9 +28,10 @@ function Router() {
       <Route path="/clients/new" component={NewClient} />
       <Route path="/clients/:id" component={ClientDetail} />
       <Route path="/coach/setup" component={CoachSetup} />
-      <Route path="/book-session" component={BookSession} />
+      <Route path="/book-session" component={BookSessionNew} />
       <Route path="/my-sessions" component={MySessions} />
       <Route path="/coach/availability" component={CoachAvailability} />
+      <Route path="/coach/session-types" component={ManageSessionTypes} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

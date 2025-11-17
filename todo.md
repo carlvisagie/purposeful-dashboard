@@ -258,3 +258,40 @@
 - [ ] Add "Manage Availability" to coach dashboard (future enhancement)
 - [ ] Generate .ics calendar files for email invites (future enhancement)
 - [x] Add Zoom meeting link to session confirmations
+
+## SESSION TYPES WITH PRICING
+
+### Database Schema
+- [x] Create sessionTypes table (name, description, duration, price, isActive)
+- [x] Add sessionTypeId foreign key to sessions table
+- [x] Add paymentStatus field to sessions table (pending, paid, refunded)
+- [x] Add stripePaymentIntentId to sessions table
+
+### Backend API
+- [x] Create session type management procedures (CRUD)
+- [ ] Update booking procedure to require payment (Stripe integration pending)
+- [ ] Create Stripe payment intent for session booking (next phase)
+- [x] Update available slots to filter by session type duration
+- [x] Add session type pricing to booking confirmation
+
+### Admin Interface
+- [x] Create session types management page
+- [x] Add/edit/delete session types
+- [x] Set pricing and duration for each type
+- [x] Toggle active/inactive status
+- [x] Preview how types appear to clients
+
+### Client Booking Flow
+- [x] Update session type selector with prices
+- [x] Show price prominently during booking
+- [ ] Integrate Stripe checkout before booking confirmation (next phase)
+- [ ] Handle payment success/failure (next phase)
+- [x] Update booking confirmation to show payment receipt
+- [ ] Add payment status to session cards (after Stripe integration)
+
+### Payment Integration
+- [x] Create Stripe checkout session for one-time payments
+- [ ] Handle payment webhooks for session bookings (webhook handler exists, needs testing)
+- [ ] Update session status after successful payment (webhook handler exists, needs testing)
+- [ ] Send payment receipt email (email service exists, needs webhook integration)
+- [ ] Handle refunds for cancelled sessions (future enhancement)
