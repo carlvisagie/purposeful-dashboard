@@ -255,3 +255,36 @@ export const sessionReminders = mysqlTable("sessionReminders", {
 
 export type SessionReminder = typeof sessionReminders.$inferSelect;
 export type InsertSessionReminder = typeof sessionReminders.$inferInsert;
+
+/**
+ * Discount codes table - for promotional offers and exit-intent popups
+ */
+export const discountCodes = mysqlTable("discountCodes", {
+  id: int("id").autoincrement().primaryKey(),
+  code: varchar("code", { length: 50 }).notNull().unique(),
+  discountPercent: int("discountPercent").notNull(), // 10 for 10%
+  discountAmount: int("discountAmount"), // Fixed amount in cents (optional)
+  maxUses: int("maxUses"), // null = unlimited
+  usedCount: int("usedCount").default(0).notNull(),
+  expiresAt: timestamp("expiresAt"),
+  isActive: mysqlEnum("isActive", ["true", "false"]).default("true").notNull(),
+  createdBy: int("createdBy").references(() => users.id),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type DiscountCode = typeof discountCodes.$inferSelect;
+export type InsertDiscountCode = typeof discountCodes.$inferInsert;
+
+/**
+ * Discount code usage tracking
+ */
+export const discountCodeUsage = mysqlTable("discountCodeUsage", {
+  id: int("id").autoincrement().primaryKey(),
+  discountCodeId: int("discountCodeId").notNull().references(() => discountCodes.id),
+  userId: int("userId").references(() => users.id),
+  sessionId: int("sessionId").references(() => sessions.id),
+  usedAt: timestamp("usedAt").defaultNow().notNull(),
+});
+
+export type DiscountCodeUsage = typeof discountCodeUsage.$inferSelect;
+export type InsertDiscountCodeUsage = typeof discountCodeUsage.$inferInsert;

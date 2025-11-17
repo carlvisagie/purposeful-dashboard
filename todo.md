@@ -307,3 +307,29 @@
 - [x] Update count dynamically when session type changes
 - [x] Add color-coded urgency (green: 5+, yellow: 2-4, red: 1)
 - [x] Test scarcity calculations with different availability settings
+
+## EXIT-INTENT POPUP WITH DISCOUNT
+
+- [ ] Create discount codes table in database
+- [ ] Add discount code validation procedure
+- [ ] Create exit-intent detection hook
+- [ ] Build popup component with 10% discount offer
+- [ ] Add urgency messaging and countdown timer
+- [ ] Implement single-use discount code generation
+- [ ] Track popup displays and conversions
+- [ ] Integrate discount into Stripe checkout
+- [ ] Apply discount to session price calculation
+- [ ] Test exit-intent trigger on mouse movement
+- [ ] Prevent popup from showing multiple times per session
+
+## INDIVIDUAL PAGE MODERNIZATION
+
+- [x] Replace PayPal pricing section with Stripe session types
+- [x] Add real-time scarcity display above pricing
+- [x] Update "View Pricing" CTAs to scroll to session types
+- [x] Update "Book" CTAs to link to /book-session
+- [x] Integrate session types data from backend
+- [x] Show session type cards with pricing
+- [x] Add "Book This Session" buttons linking to booking flow
+- [ ] Test pricing section with real session types (needs user to create session types)
+- [x] Verify scarcity counter updates in real-time

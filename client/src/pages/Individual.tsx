@@ -8,7 +8,9 @@ import {
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
 import { ZOOM_MEETING_URL } from "@/config/zoom";
-import { getPayPalSubscriptionUrl } from "@/config/paypal";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { Link as WouterLink } from "wouter";
 
 /**
  * Individual Coaching Landing Page - Master Prompt Compliant
@@ -16,6 +18,29 @@ import { getPayPalSubscriptionUrl } from "@/config/paypal";
  * Follows Hero → Stakes → Services → Process → Proof → FAQ → Final CTA structure
  */
 export default function Individual() {
+  const { user } = useAuth();
+  const coachId = 1; // Default coach ID
+  const clientId = user?.id || 0;
+
+  // Fetch session types for pricing
+  const { data: typesData } = trpc.sessionTypes.list.useQuery({
+    coachId,
+    activeOnly: true,
+  });
+
+  // Fetch weekly availability for scarcity
+  const { data: weeklyData } = trpc.scheduling.getWeeklyAvailability.useQuery(
+    {
+      coachId,
+      sessionDuration: 60,
+    },
+    {
+      refetchInterval: 30000,
+    }
+  );
+
+  const sessionTypes = typesData?.sessionTypes || [];
+
   return (
     <div className="min-h-screen bg-white">
       {/* HEADER */}
@@ -518,15 +543,35 @@ export default function Individual() {
       <section className="py-16 bg-white" id="pricing">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-              <AlertCircle className="h-4 w-4" />
-              <span>Limited Time: Only 12 Spots Left This Month</span>
-            </div>
+            {/* Real-Time Scarcity Display */}
+            {weeklyData && weeklyData.remainingSpots > 0 && weeklyData.remainingSpots <= 10 && (
+              <div className={`
+                mx-auto max-w-md mb-6 px-6 py-4 rounded-lg border-2 text-center font-semibold
+                ${weeklyData.remainingSpots <= 2 ? 'bg-red-50 border-red-300 text-red-800' : 
+                  weeklyData.remainingSpots <= 4 ? 'bg-orange-50 border-orange-300 text-orange-800' : 
+                  'bg-yellow-50 border-yellow-300 text-yellow-800'}
+              `}>
+                <div className="flex items-center justify-center gap-2">
+                  {weeklyData.remainingSpots <= 2 && (
+                    <span className="animate-pulse text-xl">🔥</span>
+                  )}
+                  <span>
+                    Only <span className="text-2xl font-bold">{weeklyData.remainingSpots}</span> spot{weeklyData.remainingSpots !== 1 ? 's' : ''} remaining this week
+                  </span>
+                  {weeklyData.remainingSpots <= 2 && (
+                    <span className="animate-pulse text-xl">🔥</span>
+                  )}
+                </div>
+                <p className="text-sm mt-1 opacity-80">
+                  {weeklyData.remainingSpots === 1 ? "Last spot available!" : "Book now before they're gone"}
+                </p>
+              </div>
+            )}
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Choose Your Transformation Plan
+              Choose Your Transformation Path
             </h2>
             <p className="text-xl text-gray-600">
-              All plans include 90-day money-back guarantee
+              All sessions include 90-day money-back guarantee
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -561,14 +606,15 @@ export default function Individual() {
                     <span className="text-gray-700">Crisis support resources</span>
                   </li>
                 </ul>
-                <Button 
-                  className="w-full bg-gray-900 hover:bg-gray-800"
-                  size="lg"
-                  onClick={() => window.open(getPayPalSubscriptionUrl('starter'), '_blank')}
-                >
-                  Subscribe with PayPal - $99/mo
-                </Button>
-                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via PayPal</p>
+                <WouterLink href="/book-session">
+                  <Button 
+                    className="w-full bg-gray-900 hover:bg-gray-800"
+                    size="lg"
+                  >
+                    Book This Session
+                  </Button>
+                </WouterLink>
+                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via Stripe</p>
               </CardContent>
             </Card>
 
@@ -612,14 +658,15 @@ export default function Individual() {
                     <span className="text-gray-700">Progress tracking dashboard</span>
                   </li>
                 </ul>
-                <Button 
-                  className="w-full bg-rose-500 hover:bg-rose-600"
-                  size="lg"
-                  onClick={() => window.open(getPayPalSubscriptionUrl('professional'), '_blank')}
-                >
-                  Subscribe with PayPal - $199/mo
-                </Button>
-                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via PayPal</p>
+                <WouterLink href="/book-session">
+                  <Button 
+                    className="w-full bg-rose-500 hover:bg-rose-600"
+                    size="lg"
+                  >
+                    Book This Session
+                  </Button>
+                </WouterLink>
+                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via Stripe</p>
               </CardContent>
             </Card>
 
@@ -658,14 +705,15 @@ export default function Individual() {
                     <span className="text-gray-700">Lifetime access to materials</span>
                   </li>
                 </ul>
-                <Button 
-                  className="w-full bg-gray-900 hover:bg-gray-800"
-                  size="lg"
-                  onClick={() => window.open(getPayPalSubscriptionUrl('premium'), '_blank')}
-                >
-                  Subscribe with PayPal - $299/mo
-                </Button>
-                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via PayPal</p>
+                <WouterLink href="/book-session">
+                  <Button 
+                    className="w-full bg-gray-900 hover:bg-gray-800"
+                    size="lg"
+                  >
+                    Book This Session
+                  </Button>
+                </WouterLink>
+                <p className="text-xs text-gray-500 text-center mt-2">Secure payment via Stripe</p>
               </CardContent>
             </Card>
           </div>
