@@ -43,6 +43,13 @@
       "when": 1763375911558,
       "tag": "0005_violet_grey_gargoyle",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1763386353500,
+      "tag": "0006_cynical_sunfire",
+      "breakpoints": true
     }
   ]
 }

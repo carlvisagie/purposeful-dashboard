@@ -3,7 +3,7 @@ import { protectedProcedure, publicProcedure, router } from "../_core/trpc";
 import Stripe from "stripe";
 import { ENV } from "../_core/env";
 import { getDb } from "../db";
-import { subscriptions } from "../../drizzle/schema";
+import { subscriptions, sessionTypes } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { PRODUCTS, type ProductId } from "../products";
 
@@ -12,6 +12,70 @@ const stripe = new Stripe(ENV.stripeSecretKey, {
 });
 
 export const stripeRouter = router({
+  /**
+   * Create Stripe checkout session for coaching session booking
+   */
+  createSessionCheckout: protectedProcedure
+    .input(
+      z.object({
+        sessionTypeId: z.number(),
+        scheduledDate: z.string(),
+        notes: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      // Get session type details
+      const [sessionType] = await db
+        .select()
+        .from(sessionTypes)
+        .where(eq(sessionTypes.id, input.sessionTypeId))
+        .limit(1);
+
+      if (!sessionType) {
+        throw new Error("Session type not found");
+      }
+
+      if (!sessionType.stripePriceId) {
+        throw new Error("This session type is not available for online purchase. Please contact support.");
+      }
+
+      const origin = ctx.req.headers.origin || "http://localhost:3000";
+
+      // Create Stripe checkout session
+      const session = await stripe.checkout.sessions.create({
+        mode: "subscription",
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price: sessionType.stripePriceId,
+            quantity: 1,
+          },
+        ],
+        customer_email: ctx.user.email || undefined,
+        client_reference_id: ctx.user.id.toString(),
+        metadata: {
+          user_id: ctx.user.id.toString(),
+          customer_email: ctx.user.email || "",
+          customer_name: ctx.user.name || "",
+          session_type_id: sessionType.id.toString(),
+          session_type_name: sessionType.name,
+          scheduled_date: input.scheduledDate,
+          notes: input.notes || "",
+        },
+        success_url: `${origin}/my-sessions?payment=success`,
+        cancel_url: `${origin}/book-session?payment=cancelled`,
+        allow_promotion_codes: true,
+      });
+
+      return {
+        url: session.url,
+        sessionId: session.id,
+      };
+    }),
+
   /**
    * Create Stripe checkout session for subscription purchase
    */

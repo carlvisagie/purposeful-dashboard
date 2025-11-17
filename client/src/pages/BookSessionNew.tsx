@@ -61,17 +61,20 @@ export default function BookSessionNew() {
     { enabled: !!selectedDate && !!selectedType }
   );
 
-  // Book session mutation
-  const bookMutation = trpc.scheduling.bookSession.useMutation({
-    onSuccess: () => {
-      toast.success("Session booked successfully!");
-      setLocation("/my-sessions");
+    // Stripe checkout mutation
+  const stripeCheckoutMutation = trpc.stripe.createSessionCheckout.useMutation({
+    onSuccess: (data) => {
+      if (data.url) {
+        window.location.href = data.url;
+      }
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to book session");
+      toast.error(error.message || "Failed to create checkout session");
       setIsBooking(false);
     },
   });
+
+
 
   // Handle booking
   const handleBook = async () => {
@@ -82,24 +85,20 @@ export default function BookSessionNew() {
 
     setIsBooking(true);
 
-    try {
-      // If session type has a price, redirect to Stripe checkout
-      if (selectedType && selectedType.price > 0) {
-        // TODO: Create Stripe checkout session
-        toast.info("Redirecting to payment...");
-        // For now, just book without payment
-      }
-
-      await bookMutation.mutateAsync({
-        coachId,
-        clientId,
-        scheduledDate: new Date(`${selectedDate.toISOString().split('T')[0]}T${selectedSlot}`),
-        duration: selectedType?.duration || 60,
-        sessionType: selectedType?.name || '',
+    // If session type has a price, redirect to Stripe checkout
+    if (selectedType && selectedType.price > 0) {
+      toast.info("Redirecting to Stripe checkout...");
+      
+      const scheduledDate = `${selectedDate.toISOString().split('T')[0]}T${selectedSlot}`;
+      
+      stripeCheckoutMutation.mutate({
+        sessionTypeId: selectedType.id,
+        scheduledDate,
         notes: notes || undefined,
       });
-    } catch (error) {
-      // Error handled by mutation
+    } else {
+      toast.error("Free sessions are not yet supported. Please contact support.");
+      setIsBooking(false);
     }
   };
 
@@ -155,27 +154,30 @@ export default function BookSessionNew() {
       </div>
 
       <div className="container py-12">
-        {/* Scarcity Banner */}
-        {weeklyData && (
-          <Card className="mb-8 border-2 border-orange-200 bg-orange-50">
-            <CardContent className="py-4">
-              <div className="flex items-center justify-center gap-3">
-                <AlertCircle className="h-5 w-5 text-orange-600" />
-                <p className="text-lg font-semibold text-orange-900">
-                  {weeklyData.remainingSpots <= 2 && (
-                    <>Only {weeklyData.remainingSpots} spot{weeklyData.remainingSpots !== 1 ? 's' : ''} remaining this week!</>
-                  )}
-                  {weeklyData.remainingSpots > 2 && weeklyData.remainingSpots <= 5 && (
-                    <>{weeklyData.remainingSpots} spots left this week - Book now!</>
-                  )}
-                  {weeklyData.remainingSpots > 5 && (
-                    <>{weeklyData.remainingSpots} spots available this week</>
-                  )}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {/* Scarcity Banner - Always show at least 1 spot */}
+        {weeklyData && (() => {
+          const displaySpots = Math.max(1, weeklyData.remainingSpots);
+          return (
+            <Card className="mb-8 border-2 border-orange-200 bg-orange-50">
+              <CardContent className="py-4">
+                <div className="flex items-center justify-center gap-3">
+                  <AlertCircle className="h-5 w-5 text-orange-600" />
+                  <p className="text-lg font-semibold text-orange-900">
+                    {displaySpots <= 2 && (
+                      <>Only {displaySpots} spot{displaySpots !== 1 ? 's' : ''} remaining this week!</>
+                    )}
+                    {displaySpots > 2 && displaySpots <= 5 && (
+                      <>{displaySpots} spots left this week - Book now!</>
+                    )}
+                    {displaySpots > 5 && (
+                      <>{displaySpots} spots available this week</>
+                    )}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })()}
 
         {/* Single-Page Booking Form */}
         <div className="grid lg:grid-cols-3 gap-8">

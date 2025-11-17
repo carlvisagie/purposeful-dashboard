@@ -548,30 +548,33 @@ export default function Individual() {
       <section className="py-16 bg-white" id="pricing">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            {/* Real-Time Scarcity Display */}
-            {weeklyData && weeklyData.remainingSpots > 0 && weeklyData.remainingSpots <= 10 && (
-              <div className={`
-                mx-auto max-w-md mb-6 px-6 py-4 rounded-lg border-2 text-center font-semibold
-                ${weeklyData.remainingSpots <= 2 ? 'bg-red-50 border-red-300 text-red-800' : 
-                  weeklyData.remainingSpots <= 4 ? 'bg-orange-50 border-orange-300 text-orange-800' : 
-                  'bg-yellow-50 border-yellow-300 text-yellow-800'}
-              `}>
-                <div className="flex items-center justify-center gap-2">
-                  {weeklyData.remainingSpots <= 2 && (
-                    <span className="animate-pulse text-xl">🔥</span>
-                  )}
-                  <span>
-                    Only <span className="text-2xl font-bold">{weeklyData.remainingSpots}</span> spot{weeklyData.remainingSpots !== 1 ? 's' : ''} remaining this week
-                  </span>
-                  {weeklyData.remainingSpots <= 2 && (
-                    <span className="animate-pulse text-xl">🔥</span>
-                  )}
+            {/* Real-Time Scarcity Display - Always show at least 1 spot */}
+            {weeklyData && (() => {
+              const displaySpots = Math.max(1, weeklyData.remainingSpots);
+              return displaySpots <= 10 && (
+                <div className={`
+                  mx-auto max-w-md mb-6 px-6 py-4 rounded-lg border-2 text-center font-semibold
+                  ${displaySpots <= 2 ? 'bg-red-50 border-red-300 text-red-800' : 
+                    displaySpots <= 4 ? 'bg-orange-50 border-orange-300 text-orange-800' : 
+                    'bg-yellow-50 border-yellow-300 text-yellow-800'}
+                `}>
+                  <div className="flex items-center justify-center gap-2">
+                    {displaySpots <= 2 && (
+                      <span className="animate-pulse text-xl">🔥</span>
+                    )}
+                    <span>
+                      Only <span className="text-2xl font-bold">{displaySpots}</span> spot{displaySpots !== 1 ? 's' : ''} remaining this week
+                    </span>
+                    {displaySpots <= 2 && (
+                      <span className="animate-pulse text-xl">🔥</span>
+                    )}
+                  </div>
+                  <p className="text-sm mt-1 opacity-80">
+                    {displaySpots === 1 ? "Last spot available!" : "Book now before they're gone"}
+                  </p>
                 </div>
-                <p className="text-sm mt-1 opacity-80">
-                  {weeklyData.remainingSpots === 1 ? "Last spot available!" : "Book now before they're gone"}
-                </p>
-              </div>
-            )}
+              );
+            })()}
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Choose Your Transformation Path
             </h2>

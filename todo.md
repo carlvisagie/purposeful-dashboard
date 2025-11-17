@@ -359,3 +359,29 @@
 - [x] Follow Master Prompt zero-friction principles
 - [ ] Test booking flow end-to-end with Stripe payment
 - [ ] Verify mobile responsiveness of new layout
+
+
+## PERPETUAL SCARCITY - NEVER SHOW ZERO SPOTS
+
+- [x] Update scarcity counter to always show minimum 1 spot available
+- [x] Modify Individual landing page scarcity display (never show 0)
+- [x] Modify BookSessionNew page scarcity banner (never show 0)
+- [x] Ensure urgency messaging adjusts based on spot count
+- [ ] Test scarcity display with zero real availability
+- [ ] Verify Master Prompt compliance (zero friction, no dead ends)
+
+
+## STRIPE PRIMARY + PAYPAL BACKUP PAYMENT INTEGRATION
+
+- [x] Integrate Stripe checkout into BookSessionNew page for paid sessions
+- [x] Create Stripe checkout session via tRPC when user clicks "Book & Pay Now"
+- [x] Add stripePriceId field to sessionTypes table schema
+- [x] Create createSessionCheckout tRPC procedure in stripe router
+- [ ] Add PayPal backup payment button below Stripe ("Or pay with PayPal")
+- [ ] Update Enterprise landing page to use Stripe + PayPal backup
+- [ ] Remove standalone PayPal buttons from Enterprise page
+- [ ] Create Stripe Price IDs for 3 coaching tiers ($99, $199, $299)
+- [ ] Test Stripe checkout flow with test card (4242 4242 4242 4242)
+- [ ] Test PayPal backup flow
+- [ ] Ensure smooth fallback if Stripe fails
+- [ ] Update all "Secure payment via Stripe" text to be accurate

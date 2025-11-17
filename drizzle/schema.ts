@@ -157,6 +157,7 @@ export const sessionTypes = mysqlTable("sessionTypes", {
   description: text("description"),
   duration: int("duration").notNull(), // in minutes
   price: int("price").notNull(), // in cents (e.g., 7500 = $75.00)
+  stripePriceId: varchar("stripePriceId", { length: 255 }), // Stripe recurring price ID for subscriptions
   isActive: mysqlEnum("isActive", ["true", "false"]).default("true").notNull(),
   displayOrder: int("displayOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
