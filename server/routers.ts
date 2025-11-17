@@ -8,9 +8,9 @@ import {
   journalRouter,
   emotionLogsRouter,
   copingStrategiesRouter,
-  aiInsightsRouter,
   sessionsRouter,
 } from "./routers/coaching";
+import { aiInsightsRouter } from "./routers/aiInsights";
 import { stripeRouter } from "./routers/stripe";
 
 export const appRouter = router({

@@ -113,3 +113,11 @@
 - [ ] Test Stripe checkout flow end-to-end
 - [x] Fix broken /login page (404 error)
 - [x] Create proper login/authentication page
+
+## OpenAI Integration (Ready to Add When Needed)
+
+- [x] Implement AI insights generation using invokeLLM
+- [x] Add crisis detection and red flag monitoring
+- [x] Create pattern analysis for journal entries
+- [x] Build automated coaching recommendations
+- [ ] Test AI features with OpenAI API key (requires user to add OPENAI_API_KEY)

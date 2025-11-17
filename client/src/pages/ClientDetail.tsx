@@ -17,7 +17,7 @@ export default function ClientDetail() {
   const { data: journalEntries } = trpc.journal.list.useQuery({ clientId, limit: 10 });
   const { data: emotionLogs } = trpc.emotionLogs.list.useQuery({ clientId, limit: 20 });
   const { data: copingStrategies } = trpc.copingStrategies.list.useQuery({ clientId });
-  const { data: aiInsights } = trpc.aiInsights.list.useQuery({ clientId, limit: 5 });
+  const { data: aiInsights } = trpc.aiInsights.list.useQuery({ clientId });
 
   if (isLoading) {
     return (
