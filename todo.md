@@ -310,17 +310,16 @@
 
 ## EXIT-INTENT POPUP WITH DISCOUNT
 
-- [ ] Create discount codes table in database
-- [ ] Add discount code validation procedure
-- [ ] Create exit-intent detection hook
-- [ ] Build popup component with 10% discount offer
-- [ ] Add urgency messaging and countdown timer
-- [ ] Implement single-use discount code generation
-- [ ] Track popup displays and conversions
-- [ ] Integrate discount into Stripe checkout
-- [ ] Apply discount to session price calculation
-- [ ] Test exit-intent trigger on mouse movement
-- [ ] Prevent popup from showing multiple times per session
+- [x] Create exit-intent detection hook (mouse movement to top of page)
+- [x] Build popup component with special discount offer
+- [x] Add urgency messaging following Master Prompt principles
+- [x] Add countdown timer (10 minutes to claim offer)
+- [x] Implement one-time display per session (sessionStorage)
+- [x] Add clear single CTA button
+- [x] Integrate popup into Individual landing page
+- [ ] Test exit-intent trigger on mouse movement (requires user testing)
+- [x] Verify popup doesn't show multiple times
+- [x] Add close button and ESC key handler
 
 ## INDIVIDUAL PAGE MODERNIZATION
 

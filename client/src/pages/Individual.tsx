@@ -11,6 +11,8 @@ import { ZOOM_MEETING_URL } from "@/config/zoom";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Link as WouterLink } from "wouter";
+import { useExitIntent } from "@/hooks/useExitIntent";
+import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 
 /**
  * Individual Coaching Landing Page - Master Prompt Compliant
@@ -40,6 +42,9 @@ export default function Individual() {
   );
 
   const sessionTypes = typesData?.sessionTypes || [];
+
+  // Exit-intent popup
+  const { showExitIntent, dismissExitIntent } = useExitIntent(true);
 
   return (
     <div className="min-h-screen bg-white">
@@ -895,6 +900,9 @@ export default function Individual() {
           </div>
         </div>
       </footer>
+
+      {/* Exit-Intent Popup */}
+      <ExitIntentPopup open={showExitIntent} onClose={dismissExitIntent} />
     </div>
   );
 }
