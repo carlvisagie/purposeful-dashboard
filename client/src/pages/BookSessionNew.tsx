@@ -32,6 +32,7 @@ export default function BookSessionNew() {
   // UI state
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isBooking, setIsBooking] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   // Fetch active session types
   const { data: typesData } = trpc.sessionTypes.list.useQuery({
@@ -77,19 +78,24 @@ export default function BookSessionNew() {
 
 
   // Handle booking
-  const handleBook = async () => {
+   const handleBooking = () => {
     if (!selectedTypeId || !selectedDate || !selectedSlot) {
       toast.error("Please select a session type, date, and time");
       return;
     }
 
+    // Show confirmation dialog instead of immediately redirecting
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmPayment = () => {
     setIsBooking(true);
 
     // If session type has a price, redirect to Stripe checkout
     if (selectedType && selectedType.price > 0) {
       toast.info("Redirecting to Stripe checkout...");
       
-      const scheduledDate = `${selectedDate.toISOString().split('T')[0]}T${selectedSlot}`;
+      const scheduledDate = `${selectedDate!.toISOString().split('T')[0]}T${selectedSlot}`;
       
       stripeCheckoutMutation.mutate({
         sessionTypeId: selectedType.id,
@@ -131,6 +137,19 @@ export default function BookSessionNew() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return date >= today;
+  };
+
+  const formatTime = (timeString: string) => {
+    try {
+      const date = new Date(timeString);
+      return date.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+    } catch {
+      return timeString;
+    }
   };
 
   const formatDate = (date: Date) => {
@@ -335,7 +354,7 @@ export default function BookSessionNew() {
                               : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
-                          {slot}
+                          {formatTime(slot)}
                         </button>
                       ))}
                     </div>
@@ -374,7 +393,7 @@ export default function BookSessionNew() {
                     <div>
                       <p className="font-semibold text-lg">{selectedType?.name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {formatDate(selectedDate!)} at {selectedSlot}
+                        {formatDate(selectedDate!)} at {formatTime(selectedSlot)}
                       </p>
                     </div>
                     <div className="text-right">
@@ -383,7 +402,7 @@ export default function BookSessionNew() {
                     </div>
                   </div>
                   <Button
-                    onClick={handleBook}
+                    onClick={handleBooking}
                     disabled={isBooking}
                     className="w-full text-lg py-6"
                     size="lg"
@@ -412,6 +431,109 @@ export default function BookSessionNew() {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      {showConfirmation && selectedType && selectedDate && selectedSlot && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <Card className="max-w-lg w-full">
+            <CardHeader>
+              <CardTitle className="text-2xl">Confirm Your Booking</CardTitle>
+              <CardDescription>Review your session details before payment</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Session Details */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-semibold text-lg">{selectedType.name}</p>
+                    <p className="text-sm text-muted-foreground">{selectedType.description}</p>
+                  </div>
+                  <Badge variant="secondary" className="text-lg px-3 py-1">
+                    ${(selectedType.price / 100).toFixed(2)}
+                  </Badge>
+                </div>
+
+                <div className="border-t pt-4 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-5 w-5 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium">Date & Time</p>
+                      <p className="text-sm text-muted-foreground">
+                        {formatDate(selectedDate)} at {formatTime(selectedSlot)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Clock className="h-5 w-5 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium">Duration</p>
+                      <p className="text-sm text-muted-foreground">{selectedType.duration} minutes</p>
+                    </div>
+                  </div>
+                  {notes && (
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-muted-foreground mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium">Your Notes</p>
+                        <p className="text-sm text-muted-foreground">{notes}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* What Happens Next */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="font-semibold text-sm mb-2 text-blue-900">What Happens Next:</p>
+                <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
+                  <li>You'll be redirected to secure Stripe payment</li>
+                  <li>After payment, you'll receive instant email confirmation</li>
+                  <li>Your coach will contact you 24 hours before the session</li>
+                  <li>Join via the video link sent to your email</li>
+                </ol>
+              </div>
+
+              {/* Trust Elements */}
+              <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <Shield className="h-4 w-4 text-green-600" />
+                  <span>90-Day Guarantee</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Award className="h-4 w-4 text-green-600" />
+                  <span>Licensed Coaches</span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowConfirmation(false)}
+                  className="flex-1"
+                  disabled={isBooking}
+                >
+                  Go Back
+                </Button>
+                <Button
+                  onClick={handleConfirmPayment}
+                  disabled={isBooking}
+                  className="flex-1 bg-primary"
+                >
+                  {isBooking ? (
+                    "Processing..."
+                  ) : (
+                    <>
+                      <CheckCircle2 className="mr-2 h-5 w-5" />
+                      Confirm & Pay
+                    </>
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
