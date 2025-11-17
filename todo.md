@@ -336,3 +336,26 @@
 ## BUG FIXES
 
 - [ ] Fix broken "View Packages" link at bottom of Individual page
+
+## BOOKING FLOW OPTIMIZATION (MASTER PROMPT COMPLIANCE)
+
+- [ ] Remove 3-step wizard, replace with single-page booking
+- [ ] Show all booking elements on one screen (session type, calendar, time slots)
+- [ ] Reduce cognitive load by eliminating step progression
+- [ ] Add clear visual hierarchy following Master Prompt principles
+- [ ] Keep single CTA "Book & Pay Now" at bottom
+- [ ] Test zero-friction booking experience
+
+
+## BOOKING FLOW REDESIGN - ZERO FRICTION
+
+- [x] Redesign BookSessionNew.tsx from 3-step wizard to single-page layout
+- [x] Remove multi-step pagination (Step 1 → Step 2 → Step 3)
+- [x] Display all elements simultaneously: session types, calendar, time slots
+- [x] Implement progressive disclosure (calendar shows after type selection, slots after date)
+- [x] Add single clear CTA at bottom ("Book & Pay Now")
+- [x] Integrate real-time scarcity counter at top
+- [x] Add trust elements throughout (guarantee, certifications, results)
+- [x] Follow Master Prompt zero-friction principles
+- [ ] Test booking flow end-to-end with Stripe payment
+- [ ] Verify mobile responsiveness of new layout
