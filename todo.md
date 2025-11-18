@@ -595,3 +595,16 @@
 - ✅ Enterprise page: Every element passes (increases trust/clarity/conversions)
 - ✅ Booking flow: Every element passes (reduces friction, increases focus)
 - ✅ Individual page: All violations fixed, now passes completely
+
+
+## SMART SCARCITY IMPLEMENTATION (Option 1) ✅ COMPLETE
+
+- [x] Update scarcity logic to cap at maximum 3 spots remaining this week
+- [x] Keep perpetual scarcity (never show 0)
+- [x] Maintain full calendar availability (all dates bookable)
+- [x] Test scarcity display on Individual landing page (showing "Only 3 spots remaining this week")
+- [x] Test scarcity display on BookSessionNew page (showing "3 spots left this week - Book now!")
+- [x] Verify urgency messaging matches low spot count (orange/red styling, urgent copy)
+- [x] Save checkpoint with Smart Scarcity implementation
+
+**Goal**: Create EXTREME urgency ("Only 3 spots left THIS WEEK") while keeping full calendar flexibility (users can book any future date)

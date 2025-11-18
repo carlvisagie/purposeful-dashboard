@@ -39,7 +39,9 @@ export default function Individual() {
   );
 
   const sessionTypes = typesData?.sessionTypes || [];
-  const availableSpots = Math.max(1, weeklyData?.remainingSpots || 1); // Never show 0
+  // Smart Scarcity: Cap at 3 spots max for urgency, never show 0
+  const realSpots = weeklyData?.remainingSpots || 1;
+  const availableSpots = Math.max(1, Math.min(3, realSpots));
 
   // Exit-intent popup
   const { showExitIntent, dismissExitIntent } = useExitIntent(true);

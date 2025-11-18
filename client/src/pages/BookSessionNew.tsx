@@ -174,9 +174,10 @@ export default function BookSessionNew() {
       </div>
 
       <div className="container py-12">
-        {/* Scarcity Banner - Always show at least 1 spot */}
+        {/* Scarcity Banner - Smart Scarcity: Cap at 3 spots max */}
         {weeklyData && (() => {
-          const displaySpots = Math.max(1, weeklyData.remainingSpots);
+          const realSpots = weeklyData.remainingSpots;
+          const displaySpots = Math.max(1, Math.min(3, realSpots));
           return (
             <Card className="mb-8 border-2 border-orange-200 bg-orange-50">
               <CardContent className="py-4">
