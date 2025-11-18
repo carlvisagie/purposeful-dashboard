@@ -71,12 +71,18 @@ export default function Individual() {
               >
                 Sign In
               </Button>
-              <Button 
-                className="bg-rose-500 hover:bg-rose-600"
-                onClick={scrollToPricing}
-              >
-                Book Your Session
-              </Button>
+              <div className="flex items-center gap-3">
+                <Button 
+                  className="bg-rose-500 hover:bg-rose-600"
+                  onClick={scrollToPricing}
+                >
+                  Book Your Session
+                </Button>
+                <span className="inline-flex items-center gap-1 bg-orange-100 text-orange-700 px-3 py-1.5 rounded-full text-sm font-semibold animate-pulse">
+                  <Zap className="h-3.5 w-3.5" />
+                  {availableSpots} spots left
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -163,14 +169,19 @@ export default function Individual() {
             </div>
 
             {/* Primary CTA */}
-            <Button 
-              size="lg"
-              className="bg-rose-500 hover:bg-rose-600 text-white px-8 py-6 text-lg font-semibold"
-              onClick={scrollToPricing}
-            >
-              Book Your Transformation Session
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button 
+                className="bg-rose-500 hover:bg-rose-600 text-white px-8 py-6 text-lg font-semibold"
+                onClick={scrollToPricing}
+              >
+                Book Your Transformation Session
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <span className="inline-flex items-center gap-1.5 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-base font-semibold animate-pulse">
+                <Zap className="h-4 w-4" />
+                Only {availableSpots} spots left!
+              </span>
+            </div>
 
             {/* Trust Badges */}
             <div className="flex items-center justify-center gap-6 mt-8 text-sm text-gray-600">

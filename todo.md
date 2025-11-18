@@ -623,3 +623,17 @@
 - [x] Save checkpoint with social proof feature
 
 **Goal**: Increase conversions by 15-30% through real-time social proof showing recent booking activity
+
+
+## REAL-TIME BOOKING COUNTER NEXT TO CTA ✅ COMPLETE
+
+- [x] Add inline booking counter next to primary CTA buttons
+- [x] Show "⚡ 3 spots left" with urgency styling
+- [x] Add pulsing animation for attention (animate-pulse class)
+- [x] Use red/orange colors for urgency (orange-100 bg, orange-700 text)
+- [x] Ensure responsive design (mobile + desktop) (flex-col sm:flex-row)
+- [x] Test counter visibility and readability (verified in header, hero, and final CTA)
+- [x] Verify Master Prompt compliance (increases urgency without friction)
+- [x] Save checkpoint with booking counter feature
+
+**Goal**: Maximize urgency by showing real-time slot availability directly next to booking CTAs
