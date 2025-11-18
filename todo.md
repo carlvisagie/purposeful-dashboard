@@ -637,3 +637,76 @@
 - [x] Save checkpoint with booking counter feature
 
 **Goal**: Maximize urgency by showing real-time slot availability directly next to booking CTAs
+
+
+## COACH AVAILABILITY SCHEDULE CONFIGURATION
+
+- [ ] Update database schema to support weekly availability patterns
+- [ ] Create weeklyAvailability table (day of week, start time, end time, coach ID)
+- [ ] Seed default availability: Mon-Fri 6PM-8PM, Sat-Sun 9AM-8PM
+- [ ] Update scheduling router to respect weekly patterns
+- [ ] Block this Sunday (working day)
+- [ ] Open next Thu-Mon for full-day bookings
+- [ ] Test booking calendar shows correct available slots
+- [ ] Verify weekday slots only show 6PM-8PM
+- [ ] Verify weekend slots show full day
+- [ ] Save checkpoint with availability configuration
+
+**Schedule Requirements:**
+- Weekdays (Mon-Fri): 6:00 PM - 8:00 PM (last booking start time)
+- Weekends (Sat-Sun): 9:00 AM - 8:00 PM (full day)
+- Session durations: 60 min (Essential/Growth), 90 min (Transformation)
+- Block this Sunday (user working)
+- Open next Thu-Mon for full availability
+
+
+## FREE DISCOVERY CALL (CONVERSION ENTRY POINT)
+
+- [ ] Add Discovery Call session type to database ($0, 15 minutes)
+- [ ] Create compelling copy for Discovery Call
+- [ ] Position Discovery Call as PRIMARY CTA (above other packages)
+- [ ] Add "FREE" badge/highlight to Discovery Call card
+- [ ] Update Individual landing page to feature Discovery Call
+- [ ] Test Discovery Call booking flow end-to-end
+- [ ] Verify Stripe handles $0 bookings correctly
+- [ ] Save checkpoint with Discovery Call feature
+
+
+## COACHING SCRIPT TELEPROMPTER SYSTEM
+
+- [ ] Create comprehensive script library (50+ scripts)
+  - [ ] Money/price objection scripts (COST, EXPENSIVE, BUDGET)
+  - [ ] Time objection scripts (TIME, BUSY)
+  - [ ] Skepticism scripts (DOUBT, TRIED)
+  - [ ] Decision delay scripts (THINK, LATER)
+  - [ ] Crisis/emotional scripts (CRISIS, ANXIETY, HOPELESS)
+  - [ ] Upsell scripts (UPGRADE, MONTHLY)
+- [ ] Build teleprompter UI component
+- [ ] Implement trigger word detection system
+- [ ] Add keyboard shortcuts (ESC to dismiss, hotkeys for common triggers)
+- [ ] Make mobile-responsive for tablet use
+- [ ] Create practice mode for script rehearsal
+- [ ] Add analytics tracking (script usage, success rates)
+- [ ] Integrate into coaching dashboard
+- [ ] Test trigger phrase: "I understand how you feel, however let me point out [TRIGGER]"
+- [ ] Save checkpoint with Script Teleprompter System
+
+
+## MONTHLY PRICING DISCOUNT FIX
+
+- [ ] Investigate monthly pricing toggle on booking page
+- [ ] Verify 20% discount calculation is correct
+- [ ] Ensure price updates immediately when toggling Monthly
+- [ ] Test with all session types (Discovery, Essential, Growth, Transformation)
+- [ ] Fix any display or calculation issues
+
+
+## $1 DISCOVERY CALL (BETTER THAN FREE)
+
+- [x] Update Discovery Call price from $0 to $1 (100 cents)
+- [x] Update copy: "Breakthrough Discovery Session - Just $1"
+- [x] Add positioning: "Normally $50, today just $1"
+- [x] Create Stripe Product and Price for $1 Discovery Session (prod_TReUqXaruDrZ5u)
+- [x] Update database with Stripe Price IDs (oneTimePriceId, stripePriceId)
+- [ ] Test $1 Discovery Call booking through Stripe
+- [ ] Verify higher conversion and show-up rates

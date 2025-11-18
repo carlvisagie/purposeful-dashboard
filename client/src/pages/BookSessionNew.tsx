@@ -78,35 +78,23 @@ export default function BookSessionNew() {
 
 
   // Handle booking
-   const handleBooking = () => {
+  const handleBooking = () => {
     if (!selectedTypeId || !selectedDate || !selectedSlot) {
       toast.error("Please select a session type, date, and time");
       return;
     }
 
-    // Show confirmation dialog instead of immediately redirecting
-    setShowConfirmation(true);
-  };
-
-  const handleConfirmPayment = () => {
     setIsBooking(true);
-
-    // If session type has a price, redirect to Stripe checkout
-    if (selectedType && selectedType.price > 0) {
-      toast.info("Redirecting to Stripe checkout...");
-      
-      const scheduledDate = `${selectedDate!.toISOString().split('T')[0]}T${selectedSlot}`;
-      
-      stripeCheckoutMutation.mutate({
-        sessionTypeId: selectedType.id,
-        scheduledDate,
-        notes: notes || undefined,
-        pricingModel, // Pass selected pricing model to Stripe
-      });
-    } else {
-      toast.error("Free sessions are not yet supported. Please contact support.");
-      setIsBooking(false);
-    }
+    toast.info("Redirecting to Stripe checkout...");
+    
+    const scheduledDate = `${selectedDate!.toISOString().split('T')[0]}T${selectedSlot}`;
+    
+    stripeCheckoutMutation.mutate({
+      sessionTypeId: selectedType!.id,
+      scheduledDate,
+      notes: notes || undefined,
+      pricingModel, // Pass selected pricing model to Stripe
+    });
   };
 
   // Calendar helpers
@@ -451,7 +439,15 @@ export default function BookSessionNew() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold">${selectedType?.price}</p>
+                      <p className="text-2xl font-bold">
+                        ${pricingModel === 'subscription' 
+                          ? ((selectedType?.subscriptionPrice || selectedType?.price || 0) / 100).toFixed(2)
+                          : ((selectedType?.price || 0) / 100).toFixed(2)}
+                        {pricingModel === 'subscription' && '/mo'}
+                      </p>
+                      {pricingModel === 'subscription' && selectedType && selectedType.subscriptionPrice && selectedType.subscriptionPrice < selectedType.price && (
+                        <p className="text-xs text-green-600 font-medium">Save ${((selectedType.price - selectedType.subscriptionPrice) / 100).toFixed(0)}/mo</p>
+                      )}
                       <p className="text-xs text-muted-foreground">{selectedType?.duration} minutes</p>
                     </div>
                   </div>
@@ -503,8 +499,16 @@ export default function BookSessionNew() {
                     <p className="text-sm text-muted-foreground">{selectedType.description}</p>
                   </div>
                   <Badge variant="secondary" className="text-lg px-3 py-1">
-                    ${(selectedType.price / 100).toFixed(2)}
+                    ${pricingModel === 'subscription' 
+                      ? ((selectedType.subscriptionPrice || selectedType.price) / 100).toFixed(2)
+                      : (selectedType.price / 100).toFixed(2)}
+                    {pricingModel === 'subscription' && '/mo'}
                   </Badge>
+                  {pricingModel === 'subscription' && selectedType.subscriptionPrice && selectedType.subscriptionPrice < selectedType.price && (
+                    <Badge variant="outline" className="text-xs text-green-600 border-green-600">
+                      Save ${((selectedType.price - selectedType.subscriptionPrice) / 100).toFixed(0)}/mo
+                    </Badge>
+                  )}
                 </div>
 
                 <div className="border-t pt-4 space-y-3">
@@ -570,7 +574,7 @@ export default function BookSessionNew() {
                   Go Back
                 </Button>
                 <Button
-                  onClick={handleConfirmPayment}
+                  onClick={handleBooking}
                   disabled={isBooking}
                   className="flex-1 bg-primary"
                 >

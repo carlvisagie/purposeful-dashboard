@@ -201,7 +201,73 @@ export const schedulingRouter = router({
     }),
 
   /**
-   * Book a new session
+   * Book a free session (PUBLIC - no auth required)
+   * Used for free Discovery Calls
+   */
+  bookFreeSession: publicProcedure
+    .input(
+      z.object({
+        sessionTypeId: z.number(),
+        scheduledDate: z.string(), // ISO datetime string
+        clientEmail: z.string().email(),
+        clientName: z.string(),
+        notes: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const coachId = 1; // TODO: Get from session type
+      const scheduledDateTime = new Date(input.scheduledDate);
+      const duration = 15; // Discovery calls are 15 minutes
+
+      // Check if time slot is available
+      const available = await isTimeSlotAvailable(
+        coachId,
+        scheduledDateTime,
+        duration
+      );
+
+      if (!available) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "This time slot is no longer available",
+        });
+      }
+
+      // For free sessions, create a temporary client record or use guest booking
+      // TODO: Implement proper guest booking flow
+      const tempClientId = 999; // Placeholder
+
+      // Create session
+      await createSession({
+        coachId,
+        clientId: tempClientId,
+        scheduledDate: scheduledDateTime,
+        duration,
+        sessionType: "Free Discovery Call",
+        notes: input.notes,
+        status: "scheduled",
+      });
+
+      // Send booking confirmation
+      await sendSessionNotification({
+        type: "booking",
+        clientEmail: input.clientEmail,
+        clientName: input.clientName,
+        coachEmail: "coach@purposefullive.com", // TODO: Get from coach record
+        coachName: "Coach",
+        sessionDate: scheduledDateTime,
+        sessionType: "Free Discovery Call",
+        duration,
+      });
+
+      return { 
+        success: true,
+        message: "Your free discovery call has been booked! Check your email for confirmation."
+      };
+    }),
+
+  /**
+   * Book a new session (PROTECTED - requires auth)
    */
   bookSession: protectedProcedure
     .input(
