@@ -710,3 +710,14 @@
 - [x] Update database with Stripe Price IDs (oneTimePriceId, stripePriceId)
 - [ ] Test $1 Discovery Call booking through Stripe
 - [ ] Verify higher conversion and show-up rates
+
+
+## CRITICAL BUG: Post-Payment Booking Creation
+
+- [x] Fix booking creation after successful Stripe payment
+- [x] Investigate why "book your session first" error appears after payment succeeds
+- [x] Ensure booking is created in database after Stripe checkout success
+- [x] Added handleSessionBooking() function to webhook handler
+- [x] Webhook now detects one-time payments vs subscriptions
+- [x] Auto-creates client record for first-time bookings
+- [ ] Test complete flow: select session → pay → booking created → confirmation shown

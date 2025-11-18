@@ -2,7 +2,7 @@ import { Router } from "express";
 import Stripe from "stripe";
 import { ENV } from "../_core/env";
 import { getDb } from "../db";
-import { subscriptions, users } from "../../drizzle/schema";
+import { subscriptions, users, sessions, clients } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { sendSubscriptionEmail } from "../services/emailService";
 
@@ -94,6 +94,8 @@ function mapStripeStatus(status: string): "active" | "cancelled" | "past_due" | 
  */
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log("[Webhook] Processing checkout.session.completed");
+  console.log("[Webhook] Session mode:", session.mode);
+  console.log("[Webhook] Metadata:", session.metadata);
 
   const db = await getDb();
   if (!db) {
@@ -102,12 +104,25 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   const userId = session.metadata?.user_id;
-  const productId = session.metadata?.product_id;
   const customerEmail = session.customer_email || session.metadata?.customer_email;
   const customerName = session.metadata?.customer_name;
 
-  if (!userId || !productId) {
-    console.error("[Webhook] Missing metadata in checkout session");
+  if (!userId) {
+    console.error("[Webhook] Missing user_id in metadata");
+    return;
+  }
+
+  // Check if this is a one-time payment (coaching session booking) or subscription
+  if (session.mode === 'payment') {
+    // ONE-TIME PAYMENT: Create coaching session booking
+    await handleSessionBooking(session, db, parseInt(userId));
+    return;
+  }
+
+  // SUBSCRIPTION: Handle subscription creation
+  const productId = session.metadata?.product_id;
+  if (!productId) {
+    console.error("[Webhook] Missing product_id for subscription");
     return;
   }
 
@@ -147,6 +162,77 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       subscriptionId: subscriptionId,
     });
   }
+}
+
+/**
+ * Handle session booking from one-time payment
+ * Creates coaching session record after successful payment
+ */
+async function handleSessionBooking(session: Stripe.Checkout.Session, db: any, userId: number) {
+  console.log("[Webhook] Creating session booking for one-time payment");
+
+  const sessionTypeId = session.metadata?.session_type_id;
+  const scheduledDate = session.metadata?.scheduled_date;
+  const notes = session.metadata?.notes;
+  const sessionTypeName = session.metadata?.session_type_name;
+
+  if (!sessionTypeId || !scheduledDate) {
+    console.error("[Webhook] Missing session booking metadata");
+    return;
+  }
+
+  const customerEmail = session.customer_email || session.metadata?.customer_email;
+  
+  // Get or create client record for this user (lookup by email)
+  let clientRecord = customerEmail ? await db
+    .select()
+    .from(clients)
+    .where(eq(clients.email, customerEmail))
+    .limit(1) : [];
+
+  let clientId: number;
+
+  if (clientRecord.length === 0) {
+    // Create client record
+    const [newClient] = await db
+      .insert(clients)
+      .values({
+        coachId: 1, // Default coach ID - adjust if needed
+        name: session.metadata?.customer_name || "New Client",
+        email: customerEmail || "",
+        phone: "",
+        status: "active",
+      })
+      .$returningId();
+    clientId = newClient.id;
+    console.log("[Webhook] Created new client record:", clientId);
+  } else {
+    clientId = clientRecord[0].id;
+    console.log("[Webhook] Using existing client record:", clientId);
+  }
+
+  // Get session type details for duration and price
+  const sessionTypeDetails = await db.query.sessionTypes.findFirst({
+    where: (sessionTypes: any, { eq }: any) => eq(sessionTypes.id, parseInt(sessionTypeId)),
+  });
+
+  // Create session booking
+  await db.insert(sessions).values({
+    coachId: 1, // Default coach ID - adjust if needed
+    clientId: clientId,
+    sessionTypeId: parseInt(sessionTypeId),
+    scheduledDate: new Date(scheduledDate),
+    duration: sessionTypeDetails?.duration || 15,
+    price: session.amount_total || 0,
+    sessionType: sessionTypeName || "Breakthrough Discovery Session",
+    notes: notes || "",
+    status: "scheduled",
+    paymentStatus: "paid",
+    stripePaymentIntentId: session.payment_intent as string,
+  });
+
+  console.log("[Webhook] Session booking created successfully");
+  console.log("[Webhook] Client ID:", clientId, "Session Type:", sessionTypeName, "Date:", scheduledDate);
 }
 
 /**
