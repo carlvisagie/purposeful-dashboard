@@ -38,13 +38,19 @@ webhookRouter.post("/stripe", async (req, res) => {
 
   try {
     // Verify webhook signature
+    console.log("[Webhook] About to verify signature with secret:", ENV.stripeWebhookSecret ? `${ENV.stripeWebhookSecret.substring(0, 10)}...` : 'NOT SET');
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
       ENV.stripeWebhookSecret
     );
+    console.log("[Webhook] Signature verification successful!");
   } catch (err) {
-    console.error("[Webhook] Signature verification failed:", err);
+    console.error("[Webhook] Signature verification FAILED");
+    console.error("[Webhook] Error:", err);
+    console.error("[Webhook] Error message:", err instanceof Error ? err.message : 'Unknown error');
+    console.error("[Webhook] Secret configured:", !!ENV.stripeWebhookSecret);
+    console.error("[Webhook] Secret starts with:", ENV.stripeWebhookSecret ? ENV.stripeWebhookSecret.substring(0, 10) : 'N/A');
     return res.status(400).send(`Webhook Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
   }
 
