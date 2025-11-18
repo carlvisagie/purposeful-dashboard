@@ -19,9 +19,19 @@ export const webhookRouter = Router();
 webhookRouter.post("/stripe", async (req, res) => {
   const sig = req.headers["stripe-signature"];
 
+  console.log("[Webhook] Received webhook request");
+  console.log("[Webhook] Has signature:", !!sig);
+  console.log("[Webhook] Webhook secret configured:", !!ENV.stripeWebhookSecret);
+  console.log("[Webhook] Webhook secret length:", ENV.stripeWebhookSecret?.length || 0);
+
   if (!sig) {
     console.error("[Webhook] Missing Stripe signature");
     return res.status(400).send("Missing signature");
+  }
+
+  if (!ENV.stripeWebhookSecret) {
+    console.error("[Webhook] Webhook secret not configured!");
+    return res.status(500).send("Webhook secret not configured");
   }
 
   let event: Stripe.Event;
@@ -35,10 +45,10 @@ webhookRouter.post("/stripe", async (req, res) => {
     );
   } catch (err) {
     console.error("[Webhook] Signature verification failed:", err);
-    return res.status(400).send(`Webhook Error: \${err instanceof Error ? err.message : 'Unknown error'}`);
+    return res.status(400).send(`Webhook Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
   }
 
-  console.log(`[Webhook] Received event: \${event.type}`);
+  console.log(`[Webhook] Received event: ${event.type}`);
 
   try {
     switch (event.type) {

@@ -721,3 +721,10 @@
 - [x] Webhook now detects one-time payments vs subscriptions
 - [x] Auto-creates client record for first-time bookings
 - [ ] Test complete flow: select session → pay → booking created → confirmation shown
+
+
+## URGENT: Real Customers Cannot Book
+- [ ] Fix webhook handler - bookings not being created after payment
+- [ ] Real users are seeing signup notices but bookings fail
+- [ ] Check for any lost bookings from real customers
+- [ ] Manually recover any payments that didn't create bookings
