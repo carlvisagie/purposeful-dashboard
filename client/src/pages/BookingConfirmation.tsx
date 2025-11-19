@@ -22,6 +22,8 @@ export default function BookingConfirmation() {
   const [, setLocation] = useLocation();
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [bookingDetails, setBookingDetails] = useState<any>(null);
+  const [hasTimedOut, setHasTimedOut] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   // Extract session_id from URL
   useEffect(() => {
@@ -44,18 +46,31 @@ export default function BookingConfirmation() {
     },
     onError: (error) => {
       console.error('Payment verification failed:', error);
+      setErrorMessage(error.message || 'Payment verification failed');
     },
   });
 
   // Trigger verification when session_id is available
   useEffect(() => {
-    if (sessionId && !verifyPayment.isPending && !bookingDetails) {
+    if (sessionId && !verifyPayment.isPending && !bookingDetails && !hasTimedOut) {
       verifyPayment.mutate({ sessionId });
     }
-  }, [sessionId, verifyPayment, bookingDetails]);
+  }, [sessionId, verifyPayment, bookingDetails, hasTimedOut]);
 
-  // Loading state
-  if (verifyPayment.isPending) {
+  // Add timeout to prevent infinite loading (Master Prompt: Zero Cognitive Load)
+  useEffect(() => {
+    if (sessionId && verifyPayment.isPending) {
+      const timeout = setTimeout(() => {
+        setHasTimedOut(true);
+        setErrorMessage(`Verification is taking longer than expected. Your payment may have been successful. Please check your email or contact support with session ID: ${sessionId}`);
+      }, 15000); // 15 seconds
+
+      return () => clearTimeout(timeout);
+    }
+  }, [sessionId, verifyPayment.isPending]);
+
+  // Loading state (only show if not timed out)
+  if (verifyPayment.isPending && !hasTimedOut) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
         <Card className="w-full max-w-md">
@@ -71,8 +86,8 @@ export default function BookingConfirmation() {
     );
   }
 
-  // Error state
-  if (verifyPayment.isError) {
+  // Error state (API error or timeout)
+  if (verifyPayment.isError || errorMessage) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-orange-50">
         <Card className="w-full max-w-md">
@@ -80,15 +95,20 @@ export default function BookingConfirmation() {
             <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
               <CheckCircle2 className="h-6 w-6 text-red-600" />
             </div>
-            <CardTitle className="text-center text-red-900">Payment Verification Failed</CardTitle>
+            <CardTitle className="text-center text-red-900">Verification Delayed</CardTitle>
             <CardDescription className="text-center">
-              {verifyPayment.error?.message || 'We encountered an issue confirming your booking.'}
+              {errorMessage || verifyPayment.error?.message || 'We encountered an issue confirming your booking.'}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {sessionId && (
+              <div className="bg-gray-100 p-3 rounded text-xs font-mono text-center">
+                <strong>Session ID:</strong> {sessionId}
+              </div>
+            )}
             <p className="text-sm text-center text-muted-foreground">
-              Don't worry - if your payment was successful, we'll create your booking shortly.
-              Please check your email for confirmation.
+              Don't worry - if your payment was successful, we'll create your booking and send you an email confirmation.
+              Please save the session ID above and contact support if you don't receive confirmation within 10 minutes.
             </p>
             <div className="flex gap-2">
               <Button

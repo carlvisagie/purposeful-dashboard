@@ -87,7 +87,8 @@ export default function BookSessionNew() {
     setIsBooking(true);
     toast.info("Redirecting to Stripe checkout...");
     
-    const scheduledDate = `${selectedDate!.toISOString().split('T')[0]}T${selectedSlot}`;
+    // selectedSlot is already a full ISO datetime string from the API
+    const scheduledDate = selectedSlot!;
     
     stripeCheckoutMutation.mutate({
       sessionTypeId: selectedType!.id,

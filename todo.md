@@ -738,3 +738,11 @@
 - [x] CRITICAL: Fix booking creation after payment - verifyAndCreateBooking API requires auth but customers aren't logged in after Stripe checkout
 
 - [x] CRITICAL: MySessions page requires login, blocking payment verification - need dedicated confirmation page
+
+## CRITICAL: BOOKING VERIFICATION CRASH (USER TESTING NOW)
+
+- [x] Add 15-second timeout to confirmation page (stop infinite spin)
+- [x] Show error message with session ID after timeout
+- [x] Debug verification API 500 error - check Stripe session metadata
+- [x] Fix root cause of API crash (malformed date bug in BookSessionNew.tsx)
+- [ ] Test complete booking flow works end-to-end (requires publishing new version)
