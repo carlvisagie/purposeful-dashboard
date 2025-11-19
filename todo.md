@@ -787,3 +787,32 @@
 - [x] Verify crisis detection works for AI tier clients (crisis detection already implemented)
 - [x] Test daily check-ins for AI subscribers (emotion tracking already exists)
 - [x] Ensure AI insights dashboard accessible to AI tier clients (insights dashboard already exists)
+
+
+## COACH PREPARATION & SAFETY SYSTEM
+
+- [x] Create comprehensive Coach Preparation Guide (COACH_PREPARATION_GUIDE.md)
+- [x] Include professional presentation standards
+- [x] Include therapeutic language framework
+- [x] Include legal disclaimers and client protection
+- [x] Include coach training curriculum
+- [x] Include self-evolving platform architecture
+- [ ] Live test: Full end-to-end AI tier checkout flow
+- [ ] Live test: AI chat quality and responsiveness
+- [ ] Live test: Stripe payment processing with LIVE keys
+- [ ] Live test: Dashboard toggle functionality
+- [ ] Gather user feedback and iterate
+
+## AI-FIRST COACHING TIER - LIVE TESTING
+
+- [x] Create AI coaching landing page (/ai-coaching)
+- [x] Add 3 subscription tiers ($49, $79, $99/month)
+- [x] Integrate Stripe checkout for AI subscriptions
+- [x] Create dashboard toggle to activate/deactivate AI tier
+- [x] Add AI tier to platform settings database
+- [x] Fix TypeScript errors and schema issues
+- [ ] Test full checkout flow with LIVE Stripe keys
+- [ ] Verify payment processing works correctly
+- [ ] Test AI chat access after subscription
+- [ ] Verify dashboard toggle functionality
+- [ ] Test with real payment to ensure end-to-end works

@@ -330,9 +330,8 @@ export type InsertAiChatMessage = typeof aiChatMessages.$inferInsert;
  */
 export const platformSettings = mysqlTable("platformSettings", {
   id: int("id").autoincrement().primaryKey(),
-  settingKey: varchar("settingKey", { length: 100 }).notNull().unique(),
-  settingValue: text("settingValue").notNull(),
-  description: text("description"),
+  aiCoachingEnabled: mysqlEnum("aiCoachingEnabled", ["true", "false"]).default("false").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
