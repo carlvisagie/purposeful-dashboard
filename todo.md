@@ -903,3 +903,63 @@
 - [ ] Integrate with email service (Mailchimp/ConvertKit)
 - [ ] Create confirmation email templates
 - [ ] Test email capture on both pages
+
+
+## EXIT-INTENT EMAIL POPUP (PHASE 4)
+
+### Exit-Intent Popup Component
+- [ ] Build ExitIntentPopup component with mouse tracking
+- [ ] Detect mouse leaving viewport (top of page)
+- [ ] Show popup with compelling copy
+- [ ] Add email input field with validation
+- [ ] Create "Get Free ROI Analysis" CTA for corporate
+- [ ] Create "Start Free Trial" CTA for individual
+- [ ] Add close button and "Maybe Later" option
+- [ ] Implement popup animation (fade in/slide up)
+- [ ] Add cookie to prevent showing multiple times per session
+- [ ] Track popup impressions and conversions
+
+### Integration & Testing
+- [ ] Integrate popup into CorporateLanding page
+- [ ] Integrate popup into IndividualLanding page
+- [ ] Connect popup to email capture backend
+- [ ] Test exit-intent trigger on both pages
+- [ ] Verify email capture on form submission
+- [ ] Test cookie persistence
+- [ ] Measure conversion lift (target: 5-10%)
+
+
+## CONVERSION OPTIMIZATION PHASE 3 - COMPLETED ✅
+
+### Exit-Intent Email Popup (5-10% lift)
+- [x] Build ExitIntentPopup component with email capture
+- [x] Implement mouse tracking to detect exit intent
+- [x] Add urgency timer (10 minutes)
+- [x] Integrate with email capture backend
+- [x] Add to CorporateLanding page
+- [x] Add to IndividualLanding page
+- [x] Test email capture functionality
+
+### A/B Testing System (measurement)
+- [x] Create useABTest hook for variant assignment
+- [x] Build abTesting router with tracking
+- [x] Implement conversion tracking mutations
+- [x] Create results analytics endpoint
+- [x] Add localStorage persistence for consistency
+
+### Live Chat Widget (15-25% lift)
+- [x] Build LiveChatWidget component
+- [x] Implement message history and display
+- [x] Create chat router backend
+- [x] Add team routing (sales for corporate, support for individual)
+- [x] Integrate into CorporateLanding page
+- [x] Integrate into IndividualLanding page
+- [x] Test chat flow and messaging
+
+### Testing & Verification
+- [x] Test exit-intent popup trigger
+- [x] Test email capture submission
+- [x] Test live chat widget opening
+- [x] Test chat message sending
+- [x] Verify team routing logic
+- [x] Verify TypeScript compilation (no errors)

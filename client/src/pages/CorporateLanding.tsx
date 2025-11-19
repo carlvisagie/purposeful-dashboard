@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ROICalculator } from "@/components/ROICalculator";
 import { RecentBookingsNotification } from "@/components/RecentBookingsNotification";
+import { ExitIntentPopup } from "@/components/ExitIntentPopup";
+import { LiveChatWidget } from "@/components/LiveChatWidget";
 import {
   TrendingUp,
   BarChart3,
@@ -20,9 +22,31 @@ import {
  */
 export default function CorporateLanding() {
   const [emailCaptured, setEmailCaptured] = useState(false);
+  const [showExitPopup, setShowExitPopup] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (e.clientY <= window.innerHeight * 0.05 && !showExitPopup) {
+        const hasShown = sessionStorage.getItem("exitPopupCorporate");
+        if (!hasShown) {
+          setShowExitPopup(true);
+          sessionStorage.setItem("exitPopupCorporate", "true");
+        }
+      }
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    return () => document.removeEventListener("mousemove", handleMouseMove);
+  }, [showExitPopup]);
 
   return (
     <div className="min-h-screen bg-white">
+      <ExitIntentPopup
+        open={showExitPopup}
+        onClose={() => setShowExitPopup(false)}
+        type="corporate"
+      />
+      <LiveChatWidget type="corporate" routeToTeam="sales" />
       {/* HERO SECTION - Enterprise Focus */}
       <section className="py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

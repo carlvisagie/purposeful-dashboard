@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,8 @@ import {
   ArrowRight,
   Star,
 } from "lucide-react";
+import { ExitIntentPopup } from "@/components/ExitIntentPopup";
+import { LiveChatWidget } from "@/components/LiveChatWidget";
 
 /**
  * Individual Landing Page
@@ -19,9 +21,31 @@ import {
  */
 export default function IndividualLanding() {
   const [selectedTier, setSelectedTier] = useState("essential");
+  const [showExitPopup, setShowExitPopup] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (e.clientY <= window.innerHeight * 0.05 && !showExitPopup) {
+        const hasShown = sessionStorage.getItem("exitPopupIndividual");
+        if (!hasShown) {
+          setShowExitPopup(true);
+          sessionStorage.setItem("exitPopupIndividual", "true");
+        }
+      }
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    return () => document.removeEventListener("mousemove", handleMouseMove);
+  }, [showExitPopup]);
 
   return (
     <div className="min-h-screen bg-white">
+      <ExitIntentPopup
+        open={showExitPopup}
+        onClose={() => setShowExitPopup(false)}
+        type="individual"
+      />
+      <LiveChatWidget type="individual" routeToTeam="support" />
       {/* HERO SECTION - Emotional Focus */}
       <section className="py-20 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
