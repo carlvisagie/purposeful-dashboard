@@ -21,6 +21,7 @@ import EmotionTracker from "./pages/EmotionTracker";
 import InsightsDashboard from "./pages/InsightsDashboard";
 import CoachDashboard from "./pages/CoachDashboard";
 import BookingConfirmation from "./pages/BookingConfirmation";
+import AICoaching from "./pages/AICoaching";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -28,6 +29,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Landing} />
       <Route path="/individual" component={Individual} />
+      <Route path="/ai-coaching" component={AICoaching} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/clients" component={Clients} />
       <Route path="/clients/new" component={NewClient} />

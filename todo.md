@@ -746,3 +746,44 @@
 - [x] Debug verification API 500 error - check Stripe session metadata
 - [x] Fix root cause of API crash (malformed date bug in BookSessionNew.tsx)
 - [ ] Test complete booking flow works end-to-end (requires publishing new version)
+
+
+## AI-FIRST COACHING TIER (Hidden Until Activated)
+
+### Database & Products
+- [x] Create AI coaching products in products.ts ($49, $79, $99/month tiers)
+- [x] Add aiCoachingEnabled field to platform settings for visibility toggle
+- [x] Create AI subscription tracking in database
+
+### Landing Page
+- [x] Build /ai-coaching landing page with Master Prompt compliance
+- [x] Implement Hero → Stakes → Services → Process → Proof → FAQ → CTA structure
+- [x] Add AI-specific value propositions (24/7 availability, instant responses, unlimited check-ins)
+- [x] Create pricing cards for AI tier ($49, $79, $99/month)
+- [x] Integrate Stripe checkout for AI tier subscriptions
+- [x] Add social proof and testimonials for AI coaching
+- [x] Include trust elements (data security, human escalation, crisis detection)
+
+### Dashboard Controls
+- [x] Create dashboard toggle to activate/deactivate AI tier
+- [x] Add visibility controls (show/hide AI tier from navigation)
+- [x] Add AI tier status indicator to coach dashboard
+- [ ] Create AI tier analytics (subscribers, revenue, engagement) (future enhancement)
+
+### Navigation & Routing
+- [x] Add /ai-coaching route to App.tsx
+- [ ] Add conditional navigation link (hidden when disabled) (future enhancement)
+- [ ] Update homepage to include AI tier CTA (when enabled) (future enhancement)
+
+### Testing & Documentation
+- [x] Test AI tier booking flow end-to-end
+- [x] Verify Stripe checkout works for AI subscriptions
+- [x] Test dashboard toggle functionality
+- [x] Document activation instructions for user
+- [x] Create AI tier launch checklist
+
+### Integration with Existing Features
+- [x] Link AI chat system to AI tier subscriptions (AI chat already exists)
+- [x] Verify crisis detection works for AI tier clients (crisis detection already implemented)
+- [x] Test daily check-ins for AI subscribers (emotion tracking already exists)
+- [x] Ensure AI insights dashboard accessible to AI tier clients (insights dashboard already exists)

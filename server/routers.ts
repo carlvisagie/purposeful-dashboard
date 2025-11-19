@@ -16,6 +16,7 @@ import { schedulingRouter } from "./routers/scheduling";
 import { sessionTypesRouter } from "./routers/sessionTypes";
 import { sessionPaymentsRouter } from "./routers/sessionPayments";
 import { aiChatRouter } from "./routers/aiChat";
+import { platformSettingsRouter } from "./routers/platformSettings";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -44,6 +45,7 @@ export const appRouter = router({
   sessionTypes: sessionTypesRouter,
   sessionPayments: sessionPaymentsRouter,
   aiChat: aiChatRouter,
+  platformSettings: platformSettingsRouter,
 });
 
 export type AppRouter = typeof appRouter;

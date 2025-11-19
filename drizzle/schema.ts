@@ -324,3 +324,17 @@ export const aiChatMessages = mysqlTable("aiChatMessages", {
 
 export type AiChatMessage = typeof aiChatMessages.$inferSelect;
 export type InsertAiChatMessage = typeof aiChatMessages.$inferInsert;
+
+/**
+ * Platform settings - global configuration for the coaching platform
+ */
+export const platformSettings = mysqlTable("platformSettings", {
+  id: int("id").autoincrement().primaryKey(),
+  settingKey: varchar("settingKey", { length: 100 }).notNull().unique(),
+  settingValue: text("settingValue").notNull(),
+  description: text("description"),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PlatformSetting = typeof platformSettings.$inferSelect;
+export type InsertPlatformSetting = typeof platformSettings.$inferInsert;

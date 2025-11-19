@@ -16,7 +16,8 @@ export const PRODUCTS = {
       "Monthly reporting",
       "Email support",
       "Basic AI insights"
-    ]
+    ],
+    category: "enterprise" as const
   },
   PROFESSIONAL: {
     id: "professional",
@@ -33,7 +34,8 @@ export const PRODUCTS = {
       "Custom integrations",
       "Dedicated coach"
     ],
-    featured: true
+    featured: true,
+    category: "enterprise" as const
   },
   ENTERPRISE: {
     id: "enterprise",
@@ -51,7 +53,61 @@ export const PRODUCTS = {
       "Dedicated team",
       "Insurance integration"
     ],
-    contactSales: true
+    contactSales: true,
+    category: "enterprise" as const
+  },
+  // AI-First Coaching Tier (Hidden until activated)
+  AI_ESSENTIAL: {
+    id: "ai_essential",
+    name: "AI Essential",
+    description: "24/7 AI coaching support with unlimited check-ins and crisis detection",
+    priceMonthly: 4900, // $49 in cents
+    stripePriceId: process.env.STRIPE_PRICE_AI_ESSENTIAL_MONTHLY || "",
+    features: [
+      "24/7 AI coaching chat",
+      "Unlimited daily check-ins",
+      "Crisis detection & alerts",
+      "Emotion tracking & insights",
+      "Progress visualization",
+      "Email support"
+    ],
+    category: "ai" as const,
+    hidden: true // Hidden until activated by coach
+  },
+  AI_GROWTH: {
+    id: "ai_growth",
+    name: "AI Growth",
+    description: "Advanced AI coaching with personalized insights and monthly human coach check-ins",
+    priceMonthly: 7900, // $79 in cents
+    stripePriceId: process.env.STRIPE_PRICE_AI_GROWTH_MONTHLY || "",
+    features: [
+      "Everything in AI Essential",
+      "Advanced pattern detection",
+      "Personalized coping strategies",
+      "Monthly human coach check-in",
+      "Priority crisis escalation",
+      "Weekly progress reports"
+    ],
+    category: "ai" as const,
+    featured: true,
+    hidden: true // Hidden until activated by coach
+  },
+  AI_TRANSFORMATION: {
+    id: "ai_transformation",
+    name: "AI Transformation",
+    description: "Premium AI coaching with bi-weekly human sessions and custom goal tracking",
+    priceMonthly: 9900, // $99 in cents
+    stripePriceId: process.env.STRIPE_PRICE_AI_TRANSFORMATION_MONTHLY || "",
+    features: [
+      "Everything in AI Growth",
+      "Bi-weekly human coach sessions",
+      "Custom goal tracking",
+      "Unlimited crisis support",
+      "Family support resources",
+      "Lifetime access to insights"
+    ],
+    category: "ai" as const,
+    hidden: true // Hidden until activated by coach
   }
 } as const;
 
@@ -76,4 +132,26 @@ export function getAllProducts() {
  */
 export function getPurchasableProducts() {
   return Object.values(PRODUCTS).filter(p => !('contactSales' in p) || !p.contactSales);
+}
+
+/**
+ * Get AI coaching products only
+ */
+export function getAIProducts() {
+  return Object.values(PRODUCTS).filter(p => p.category === 'ai');
+}
+
+/**
+ * Get visible AI products (respects hidden flag)
+ */
+export function getVisibleAIProducts(aiTierEnabled: boolean = false) {
+  if (!aiTierEnabled) return [];
+  return Object.values(PRODUCTS).filter(p => p.category === 'ai' && (!('hidden' in p) || !p.hidden));
+}
+
+/**
+ * Get enterprise products only
+ */
+export function getEnterpriseProducts() {
+  return Object.values(PRODUCTS).filter(p => p.category === 'enterprise');
 }

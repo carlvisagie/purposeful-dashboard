@@ -88,11 +88,15 @@ export const stripeRouter = router({
   createCheckoutSession: protectedProcedure
     .input(
       z.object({
-        productId: z.enum(["STARTER", "PROFESSIONAL"]),
+        productId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const product = PRODUCTS[input.productId as ProductId];
+      
+      if (!product) {
+        throw new Error("Product not found");
+      }
       
       if (!product.stripePriceId) {
         throw new Error("Product not available for purchase. Please contact sales.");
@@ -301,5 +305,21 @@ export const stripeRouter = router({
    */
   getProducts: publicProcedure.query(() => {
     return Object.values(PRODUCTS);
+  }),
+
+  /**
+   * Get AI coaching products only
+   */
+  getAIProducts: publicProcedure.query(() => {
+    const { getAIProducts } = require('../products');
+    return getAIProducts();
+  }),
+
+  /**
+   * Get enterprise products only
+   */
+  getEnterpriseProducts: publicProcedure.query(() => {
+    const { getEnterpriseProducts } = require('../products');
+    return getEnterpriseProducts();
   }),
 });

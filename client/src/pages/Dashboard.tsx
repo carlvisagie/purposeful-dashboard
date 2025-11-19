@@ -6,6 +6,7 @@ import { Link } from "wouter";
 import { Users, BookOpen, Brain, Calendar, TrendingUp, AlertCircle, Video, DollarSign, Clock, CheckCircle2 } from "lucide-react";
 import { ZOOM_MEETING_URL } from "@/config/zoom";
 import { Badge } from "@/components/ui/badge";
+import AITierToggle from "@/components/AITierToggle";
 
 export default function Dashboard() {
   const { data: user } = trpc.auth.me.useQuery();
@@ -262,6 +263,11 @@ export default function Dashboard() {
                   </div>
                 </CardContent>
               </Card>
+            )}
+
+            {/* AI Tier Control - Admin Only */}
+            {user.role === 'admin' && (
+              <AITierToggle />
             )}
 
             {/* Quick Actions */}
