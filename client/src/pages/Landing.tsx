@@ -73,18 +73,18 @@ export default function Landing() {
                 <Button 
                   size="lg" 
                   className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6"
-                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
+                  onClick={() => document.getElementById('choose-path')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  Book Your Strategy Call
+                  Start Your Transformation
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button 
                   size="lg" 
                   variant="outline" 
                   className="text-lg px-8 py-6"
-                  onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
                 >
-                  View Packages
+                  Book Strategy Call
                 </Button>
               </div>
               <div className="flex items-center gap-6 text-sm text-gray-600">
@@ -419,7 +419,7 @@ export default function Landing() {
       </section>
 
       {/* CHOOSE YOUR PATH SECTION - DECISION TREE */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white" id="choose-path">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -456,13 +456,14 @@ export default function Landing() {
                     <span>Starting at $49/month</span>
                   </li>
                 </ul>
+              <Link href="/ai-coaching">
                 <Button 
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  onClick={() => window.location.href = '/ai-coaching'}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   Explore AI Coaching
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
+              </Link>
               </CardContent>
             </Card>
 
@@ -492,13 +493,14 @@ export default function Landing() {
                     <span>Starting at $99/month</span>
                   </li>
                 </ul>
-                <Button 
-                  className="w-full bg-purple-600 hover:bg-purple-700"
-                  onClick={() => window.location.href = '/book-session'}
-                >
-                  Book Your Session
-                  <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link href="/book-session">
+                  <Button 
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                  >
+                    Book Your Session
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 
@@ -529,7 +531,7 @@ export default function Landing() {
                   </li>
                 </ul>
                 <Button 
-                  className="w-full bg-orange-600 hover:bg-orange-700"
+                  className="w-full bg-orange-600 hover:bg-orange-700 text-white"
                   onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
                 >
                   Schedule Strategy Call
