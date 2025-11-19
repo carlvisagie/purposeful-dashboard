@@ -4,6 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { getLoginUrl } from "@/const";
 import { ZOOM_MEETING_URL } from "@/config/zoom";
+import { SocialProofWidget } from "@/components/SocialProofWidget";
+import { RecentBookingsNotification } from "@/components/RecentBookingsNotification";
+import { ROICalculator } from "@/components/ROICalculator";
 // PayPal removed - using Calendly for Enterprise sales
 import { 
   Shield, 
@@ -22,6 +25,8 @@ import {
 export default function Landing() {
   return (
     <div className="min-h-screen bg-white">
+      {/* Recent bookings notification */}
+      <RecentBookingsNotification />
       {/* Navigation */}
       <nav className="border-b border-gray-200 bg-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -428,6 +433,10 @@ export default function Landing() {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Select the option that best fits your needs
             </p>
+            {/* Social proof widget */}
+            <div className="mt-6 flex justify-center">
+              <SocialProofWidget pageType="decision-tree" variant="viewers" />
+            </div>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Individual Path */}
@@ -543,15 +552,30 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* PACKAGES SECTION */}
-      <section className="py-20 bg-gray-50" id="packages">
+      {/* ROI CALCULATOR SECTION */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Calculate Your ROI
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              See how much your organization can save with emotional resilience coaching
+            </p>
+          </div>
+          <ROICalculator />
+        </div>
+      </section>
+
+      {/* INVESTMENT OPTIONS SECTION */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Investment Options
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Flexible packages designed for organizations of all sizes
+              Flexible pricing for organizations of all sizes
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">

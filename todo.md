@@ -836,3 +836,36 @@
 - [ ] Verify all CTAs work on enterprise page
 - [ ] Verify all CTAs work on individual page
 - [ ] Test full booking flow end-to-end
+
+
+## CONVERSION OPTIMIZATION PHASE 2
+
+### Social Proof Widgets
+- [x] Build real-time activity notification system
+- [x] Create "X people viewing this page" widget
+- [x] Create "Y just booked a session" notification widget
+- [x] Add widgets to decision tree section
+- [x] Add widgets to checkout pages
+- [x] Implement notification animations (fade in/out)
+- [x] Test social proof impact on conversions
+
+### Enterprise ROI Calculator
+- [x] Build interactive ROI calculator component
+- [x] Add team size input field
+- [x] Add current healthcare cost input
+- [x] Calculate projected savings ($4,380 per member)
+- [x] Display ROI timeline (90 days, 12 months, 24 months)
+- [x] Show cost reduction percentage (15-30%)
+- [x] Add "Get Custom Quote" CTA after calculation
+- [x] Integrate calculator into landing page
+- [x] Test calculator usability and conversion impact
+
+### AI Coach Feedback Loop System
+- [x] Create feedback rating system (1-5 stars)
+- [x] Add "Was this helpful?" buttons after AI responses
+- [x] Store feedback in database for analysis
+- [x] Create feedback analytics dashboard
+- [x] Implement continuous improvement tracking
+- [x] Add feedback data to AI coaching context
+- [x] Build monthly improvement report
+- [x] Test feedback collection and storage
