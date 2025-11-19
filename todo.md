@@ -816,3 +816,23 @@
 - [ ] Test AI chat access after subscription
 - [ ] Verify dashboard toggle functionality
 - [ ] Test with real payment to ensure end-to-end works
+
+
+## FUNNEL REDESIGN - MASTER PROMPT COMPLIANCE
+
+- [x] Map buyer journey and define unified value proposition
+- [x] Design Master Prompt funnel structure (Hero→Stakes→Services→Process→Proof→FAQ→CTA)
+- [x] Create decision tree for AI tier vs. Individual coaching vs. Enterprise
+- [x] Add "Choose Your Path" section to homepage
+- [x] Eliminate cognitive load with clear buyer self-selection
+- [ ] Test all CTAs work correctly
+- [ ] Fix broken "View Packages" button on enterprise page
+- [ ] Verify full end-to-end booking flow
+
+## USER-REPORTED BUG - LIVE TESTING
+
+- [x] RESOLVED: $49 AI Essential tier now clearly positioned in decision tree
+- [ ] Fix broken "View Packages" button on enterprise landing page (bottom section)
+- [ ] Verify all CTAs work on enterprise page
+- [ ] Verify all CTAs work on individual page
+- [ ] Test full booking flow end-to-end

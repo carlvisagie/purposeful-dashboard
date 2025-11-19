@@ -418,6 +418,129 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* CHOOSE YOUR PATH SECTION - DECISION TREE */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Choose Your Path to Emotional Resilience
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Select the option that best fits your needs
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Individual Path */}
+            <Card className="hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-blue-600">
+              <CardContent className="pt-6">
+                <Brain className="h-12 w-12 text-blue-600 mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">I'm an Individual</h3>
+                <p className="text-gray-600 mb-6">
+                  I want personal coaching to transform my emotional resilience and performance
+                </p>
+                <ul className="space-y-2 mb-8 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>24/7 AI coaching access</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Emotion tracking & insights</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Crisis detection & support</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Starting at $49/month</span>
+                  </li>
+                </ul>
+                <Button 
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  onClick={() => window.location.href = '/ai-coaching'}
+                >
+                  Explore AI Coaching
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* 1-on-1 Coaching Path */}
+            <Card className="hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-purple-600">
+              <CardContent className="pt-6">
+                <Users className="h-12 w-12 text-purple-600 mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">I Want 1-on-1 Coaching</h3>
+                <p className="text-gray-600 mb-6">
+                  I need personalized guidance from a certified emotional resilience coach
+                </p>
+                <ul className="space-y-2 mb-8 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Dedicated coach assigned</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Custom resilience strategy</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Unlimited support access</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Starting at $99/month</span>
+                  </li>
+                </ul>
+                <Button 
+                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  onClick={() => window.location.href = '/book-session'}
+                >
+                  Book Your Session
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Enterprise Path */}
+            <Card className="hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-orange-600">
+              <CardContent className="pt-6">
+                <BarChart3 className="h-12 w-12 text-orange-600 mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">I'm an Organization</h3>
+                <p className="text-gray-600 mb-6">
+                  I want to transform emotional resilience across my entire team
+                </p>
+                <ul className="space-y-2 mb-8 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Unlimited team access</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Advanced analytics & ROI tracking</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Dedicated implementation team</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span>Custom pricing</span>
+                  </li>
+                </ul>
+                <Button 
+                  className="w-full bg-orange-600 hover:bg-orange-700"
+                  onClick={() => window.open('https://calendly.com/carlhvisagie-rxgb', '_blank')}
+                >
+                  Schedule Strategy Call
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* PACKAGES SECTION */}
       <section className="py-20 bg-gray-50" id="packages">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
