@@ -20,6 +20,7 @@ import AICoach from "./pages/AICoach";
 import EmotionTracker from "./pages/EmotionTracker";
 import InsightsDashboard from "./pages/InsightsDashboard";
 import CoachDashboard from "./pages/CoachDashboard";
+import BookingConfirmation from "./pages/BookingConfirmation";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -33,6 +34,7 @@ function Router() {
       <Route path="/clients/:id" component={ClientDetail} />
       <Route path="/coach/setup" component={CoachSetup} />
       <Route path="/book-session" component={BookSessionNew} />
+      <Route path="/booking-confirmation" component={BookingConfirmation} />
       <Route path="/my-sessions" component={MySessions} />
       <Route path="/coach/availability" component={CoachAvailability} />
       <Route path="/coach/session-types" component={ManageSessionTypes} />

@@ -736,3 +736,5 @@
 - [ ] Manually recover any payments that didn't create bookings
 
 - [x] CRITICAL: Fix booking creation after payment - verifyAndCreateBooking API requires auth but customers aren't logged in after Stripe checkout
+
+- [x] CRITICAL: MySessions page requires login, blocking payment verification - need dedicated confirmation page

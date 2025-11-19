@@ -71,7 +71,7 @@ export const stripeRouter = router({
           scheduled_date: input.scheduledDate,
           notes: input.notes || "",
         },
-        success_url: `${origin}/my-sessions?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${origin}/booking-confirmation?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/book-session?payment=cancelled`,
         allow_promotion_codes: true,
       });
