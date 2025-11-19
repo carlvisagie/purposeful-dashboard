@@ -71,7 +71,7 @@ export const stripeRouter = router({
           scheduled_date: input.scheduledDate,
           notes: input.notes || "",
         },
-        success_url: `${origin}/my-sessions?payment=success`,
+        success_url: `${origin}/my-sessions?payment=success&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/book-session?payment=cancelled`,
         allow_promotion_codes: true,
       });
@@ -182,6 +182,119 @@ export const stripeRouter = router({
         .where(eq(subscriptions.id, parseInt(input.subscriptionId)));
 
       return { success: true };
+    }),
+
+  /**
+   * Verify payment and create booking (fallback for webhook failures)
+   * Called from success page to ensure booking is created even if webhook fails
+   */
+  verifyAndCreateBooking: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      // Retrieve the checkout session from Stripe
+      const session = await stripe.checkout.sessions.retrieve(input.sessionId);
+
+      // Verify payment was successful
+      if (session.payment_status !== 'paid') {
+        throw new Error("Payment not completed");
+      }
+
+      // Verify this session belongs to the current user
+      if (session.client_reference_id !== ctx.user.id.toString()) {
+        throw new Error("Unauthorized");
+      }
+
+      // Extract metadata
+      const metadata = session.metadata;
+      if (!metadata) {
+        throw new Error("Missing session metadata");
+      }
+
+      // Check if booking already exists (prevent duplicates)
+      const { sessions: sessionsTable, clients: clientsTable } = await import('../../drizzle/schema');
+      const existingBooking = await db
+        .select()
+        .from(sessionsTable)
+        .where(eq(sessionsTable.stripeSessionId, input.sessionId))
+        .limit(1);
+
+      if (existingBooking.length > 0) {
+        // Booking already exists, return it
+        return {
+          success: true,
+          bookingId: existingBooking[0].id,
+          alreadyExists: true,
+        };
+      }
+
+      // Create or get client record
+      // Note: Clients are linked to coaches, not users directly
+      // We'll search by email to find existing client
+      let clientId: number;
+      const clientEmail = ctx.user.email || metadata.customer_email;
+      
+      if (clientEmail) {
+        const existingClient = await db
+          .select()
+          .from(clientsTable)
+          .where(eq(clientsTable.email, clientEmail))
+          .limit(1);
+
+        if (existingClient.length > 0) {
+          clientId = existingClient[0].id;
+        } else {
+          // Create new client
+          const [newClient] = await db
+            .insert(clientsTable)
+            .values({
+              coachId: 1, // Default coach ID (you)
+              name: ctx.user.name || metadata.customer_name || 'Unknown',
+              email: clientEmail,
+              phone: null,
+              status: 'active',
+            });
+          clientId = newClient.insertId;
+        }
+      } else {
+        throw new Error("Client email is required");
+      }
+
+      // Get session type to determine duration
+      const [sessionType] = await db
+        .select()
+        .from(sessionTypes)
+        .where(eq(sessionTypes.id, parseInt(metadata.session_type_id)))
+        .limit(1);
+
+      // Create booking
+      const [newSession] = await db
+        .insert(sessionsTable)
+        .values({
+          clientId,
+          coachId: 1, // Default coach ID (you)
+          sessionTypeId: parseInt(metadata.session_type_id),
+          scheduledDate: new Date(metadata.scheduled_date),
+          duration: sessionType?.duration || 60, // Default to 60 minutes
+          price: session.amount_total || 0, // in cents
+          status: 'scheduled',
+          notes: metadata.notes || null,
+          paymentStatus: 'paid',
+          stripePaymentIntentId: session.payment_intent as string || null,
+          stripeSessionId: input.sessionId,
+        });
+
+      return {
+        success: true,
+        bookingId: newSession.insertId,
+        alreadyExists: false,
+      };
     }),
 
   /**

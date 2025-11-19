@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,34 @@ export default function MySessions() {
   const [clientId] = useState(1); // TODO: Get from auth context
   const [cancellingSession, setCancellingSession] = useState<number | null>(null);
   const [, setLocation] = useLocation();
+
+  // Verify payment and create booking on success page load
+  const verifyPayment = trpc.stripe.verifyAndCreateBooking.useMutation({
+    onSuccess: (data) => {
+      if (!data.alreadyExists) {
+        toast.success("Booking confirmed! Your session has been scheduled.");
+      }
+      refetchUpcoming();
+      refetchAll();
+      // Remove payment param from URL
+      window.history.replaceState({}, '', '/my-sessions');
+    },
+    onError: (error) => {
+      toast.error(`Failed to confirm booking: ${error.message}`);
+    },
+  });
+
+  // Check for payment success and session_id in URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paymentStatus = params.get('payment');
+    const sessionId = params.get('session_id');
+
+    if (paymentStatus === 'success' && sessionId) {
+      // Verify payment and create booking
+      verifyPayment.mutate({ sessionId });
+    }
+  }, []);
 
   // Fetch sessions
   const { data: upcomingData, refetch: refetchUpcoming } = trpc.scheduling.getUpcomingClientSessions.useQuery({

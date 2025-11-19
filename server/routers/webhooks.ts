@@ -21,8 +21,10 @@ webhookRouter.post("/stripe", async (req, res) => {
 
   console.log("[Webhook] Received webhook request");
   console.log("[Webhook] Has signature:", !!sig);
+  console.log("[Webhook] Signature value:", typeof sig === 'string' ? sig.substring(0, 50) + '...' : sig);
   console.log("[Webhook] Webhook secret configured:", !!ENV.stripeWebhookSecret);
   console.log("[Webhook] Webhook secret length:", ENV.stripeWebhookSecret?.length || 0);
+  console.log("[Webhook] Webhook secret value:", ENV.stripeWebhookSecret);
 
   if (!sig) {
     console.error("[Webhook] Missing Stripe signature");
@@ -39,10 +41,18 @@ webhookRouter.post("/stripe", async (req, res) => {
   try {
     // Verify webhook signature
     console.log("[Webhook] About to verify signature with secret:", ENV.stripeWebhookSecret ? `${ENV.stripeWebhookSecret.substring(0, 10)}...` : 'NOT SET');
+    console.log("[Webhook] req.body type:", typeof req.body);
+    console.log("[Webhook] req.body is Buffer:", Buffer.isBuffer(req.body));
+    
+    // Stripe needs the raw Buffer, not a string!
+    // TEMPORARY: Hardcode secret for testing
+    const webhookSecret = ENV.stripeWebhookSecret || "whsec_7i3dtKBVGyg1bYj9PZ1Y3TvBrWAKh2cK";
+    console.log("[Webhook] Using secret:", webhookSecret.substring(0, 15) + '...');
+    
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
-      ENV.stripeWebhookSecret
+      webhookSecret
     );
     console.log("[Webhook] Signature verification successful!");
   } catch (err) {
