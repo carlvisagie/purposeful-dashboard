@@ -869,3 +869,37 @@
 - [x] Add feedback data to AI coaching context
 - [x] Build monthly improvement report
 - [x] Test feedback collection and storage
+
+
+## SPLIT LANDING PAGE STRATEGY (PHASE 3)
+
+### Corporate Landing Page (/)
+- [x] Redesign hero for enterprise buyers (ROI/cost-saving focus)
+- [x] Remove individual/1-on-1 paths from decision tree
+- [x] Make enterprise the ONLY path
+- [x] Add email capture to ROI calculator
+- [x] Integrate email capture with backend
+- [x] Update testimonials to corporate case studies
+- [x] Update proof section to business metrics
+- [x] Test corporate landing page conversion flow
+
+### Individual Landing Page (/individual-coaching)
+- [x] Create new landing page route
+- [x] Design hero for emotional transformation
+- [x] Focus on personal struggles (stress, anxiety, overwhelm)
+- [x] Show AI coaching as 24/7 support
+- [x] Add emotional testimonials (personal stories)
+- [x] Create Start Your Journey CTA
+- [x] Add email capture for trial signup
+- [x] Design warm, human-centered aesthetic
+- [x] Test individual landing page conversion flow
+
+### Email Capture System
+- [x] Create email capture backend endpoint
+- [x] Build backend endpoint for email storage
+- [x] Integrate email capture router with main router
+- [x] Add email validation
+- [x] Create analytics tracking for email captures
+- [ ] Integrate with email service (Mailchimp/ConvertKit)
+- [ ] Create confirmation email templates
+- [ ] Test email capture on both pages

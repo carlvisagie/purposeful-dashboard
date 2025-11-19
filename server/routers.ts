@@ -19,6 +19,7 @@ import { aiChatRouter } from "./routers/aiChat";
 import { platformSettingsRouter } from "./routers/platformSettings";
 import { socialProofRouter } from "./routers/socialProof";
 import { aiFeedbackRouter } from "./routers/aiFeedback";
+import { emailCaptureRouter } from "./routers/emailCapture";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -50,6 +51,7 @@ export const appRouter = router({
   platformSettings: platformSettingsRouter,
   socialProof: socialProofRouter,
   aiFeedback: aiFeedbackRouter,
+  emailCapture: emailCaptureRouter,
 });
 
 export type AppRouter = typeof appRouter;
