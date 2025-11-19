@@ -187,8 +187,9 @@ export const stripeRouter = router({
   /**
    * Verify payment and create booking (fallback for webhook failures)
    * Called from success page to ensure booking is created even if webhook fails
+   * PUBLIC: No auth required - session_id from Stripe is the authentication proof
    */
-  verifyAndCreateBooking: protectedProcedure
+  verifyAndCreateBooking: publicProcedure
     .input(
       z.object({
         sessionId: z.string(),
@@ -206,10 +207,8 @@ export const stripeRouter = router({
         throw new Error("Payment not completed");
       }
 
-      // Verify this session belongs to the current user
-      if (session.client_reference_id !== ctx.user.id.toString()) {
-        throw new Error("Unauthorized");
-      }
+      // No user verification needed - session_id from Stripe is proof of payment
+      // The customer might not be logged in after completing Stripe checkout
 
       // Extract metadata
       const metadata = session.metadata;
@@ -238,7 +237,7 @@ export const stripeRouter = router({
       // Note: Clients are linked to coaches, not users directly
       // We'll search by email to find existing client
       let clientId: number;
-      const clientEmail = ctx.user.email || metadata.customer_email;
+      const clientEmail = session.customer_email || metadata.customer_email;
       
       if (clientEmail) {
         const existingClient = await db
@@ -255,7 +254,7 @@ export const stripeRouter = router({
             .insert(clientsTable)
             .values({
               coachId: 1, // Default coach ID (you)
-              name: ctx.user.name || metadata.customer_name || 'Unknown',
+              name: session.customer_details?.name || metadata.customer_name || 'Unknown',
               email: clientEmail,
               phone: null,
               status: 'active',
