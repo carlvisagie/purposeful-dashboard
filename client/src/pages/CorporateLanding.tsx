@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +16,9 @@ import {
   Shield,
   CheckCircle2,
   ArrowRight,
+  Zap,
 } from "lucide-react";
+
 
 /**
  * Corporate Landing Page
@@ -22,6 +26,7 @@ import {
  * Single path: Enterprise emotional resilience platform
  */
 export default function CorporateLanding() {
+  const [, setLocation] = useLocation();
   const [emailCaptured, setEmailCaptured] = useState(false);
   const [showExitPopup, setShowExitPopup] = useState(false);
 
@@ -409,6 +414,30 @@ export default function CorporateLanding() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* AI COACHING ALTERNATIVE */}
+      <section className="py-20 bg-gradient-to-br from-purple-50 to-blue-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-6">
+            <Zap className="w-4 h-4" />
+            <span>Alternative: 24/7 AI Coaching</span>
+          </div>
+          <h2 className="text-3xl font-bold mb-4 text-gray-900">
+            Want Instant Support?
+          </h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Get 24/7 AI-powered emotional resilience coaching for your team. Available instantly, no scheduling required.
+          </p>
+          <Button
+            size="lg"
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+            onClick={() => setLocation("/ai-coaching")}
+          >
+            Explore AI Coaching Plans
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
         </div>
       </section>
 
