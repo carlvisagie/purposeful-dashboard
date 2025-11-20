@@ -16,7 +16,6 @@ import {
   Shield,
   CheckCircle2,
   ArrowRight,
-  Zap,
 } from "lucide-react";
 
 
@@ -154,7 +153,7 @@ export default function CorporateLanding() {
               Enterprise-Grade Emotional Resilience Platform
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              AI-powered coaching combined with human expertise for measurable outcomes
+              Proven human coaching combined with enterprise-grade security for measurable outcomes
             </p>
           </div>
 
@@ -163,14 +162,14 @@ export default function CorporateLanding() {
             <div className="space-y-6">
               {[
                 {
-                  title: "24/7 AI Coaching",
+                  title: "Expert Human Coaches",
                   description:
-                    "Instant support for employees anytime, anywhere. No wait times.",
+                    "Certified emotional resilience coaches with 10+ years of experience.",
                 },
                 {
                   title: "Crisis Detection & Response",
                   description:
-                    "AI identifies emotional distress and routes to human support when needed.",
+                    "Trained coaches identify emotional distress and provide immediate support.",
                 },
                 {
                   title: "Emotion Tracking & Analytics",
@@ -178,7 +177,7 @@ export default function CorporateLanding() {
                     "Real-time dashboards show team emotional health trends and risk indicators.",
                 },
                 {
-                  title: "Customizable Modules",
+                  title: "Customizable Programs",
                   description:
                     "Industry-specific coaching (healthcare, tech, finance stress patterns).",
                 },
@@ -414,30 +413,6 @@ export default function CorporateLanding() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* AI COACHING ALTERNATIVE */}
-      <section className="py-20 bg-gradient-to-br from-purple-50 to-blue-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-6">
-            <Zap className="w-4 h-4" />
-            <span>Alternative: 24/7 AI Coaching</span>
-          </div>
-          <h2 className="text-3xl font-bold mb-4 text-gray-900">
-            Want Instant Support?
-          </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Get 24/7 AI-powered emotional resilience coaching for your team. Available instantly, no scheduling required.
-          </p>
-          <Button
-            size="lg"
-            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold"
-            onClick={() => setLocation("/ai-coaching")}
-          >
-            Explore AI Coaching Plans
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
         </div>
       </section>
 
