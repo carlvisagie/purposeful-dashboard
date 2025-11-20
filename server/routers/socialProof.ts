@@ -1,7 +1,8 @@
 import { publicProcedure, router } from "../_core/trpc";
 import { z } from "zod";
 import { getDb } from "../db";
-import { sessions } from "../../drizzle/schema";
+import { sessions, clients } from "../../drizzle/schema";
+import { eq } from "drizzle-orm";
 import { desc } from "drizzle-orm";
 
 /**
@@ -31,14 +32,16 @@ export const socialProofRouter = router({
             id: sessions.id,
             sessionType: sessions.sessionType,
             bookedAt: sessions.createdAt,
+            clientName: clients.name,
           })
           .from(sessions)
+          .innerJoin(clients, eq(sessions.clientId, clients.id))
           .orderBy(desc(sessions.createdAt))
           .limit(input.limit);
 
         return bookings.map((booking) => ({
           id: booking.id.toString(),
-          name: `Client ${booking.id}`,
+          name: booking.clientName || `Client ${booking.id}`,
           sessionType: booking.sessionType || "Coaching Session",
           timeAgo: getTimeAgo(booking.bookedAt),
         }));
