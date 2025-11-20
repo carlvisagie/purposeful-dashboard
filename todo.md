@@ -1143,3 +1143,13 @@
 - [ ] Add "Join X,000+ users" social proof number
 - [ ] Test CTA button colors for contrast and conversion
 
+
+
+## PRICING OPTIMIZATION - REVENUE FIX
+
+- [x] Update IndividualLanding.tsx to display all 3 tiers ($49, $79, $99)
+- [x] Update AICoaching.tsx pricing display (already dynamic, will show $79 tier)
+- [x] Update Landing.tsx to show complete pricing spectrum
+- [ ] Verify all pricing pages match Stripe configuration
+- [ ] Test checkout flow for $79 tier specifically
+- [ ] Monitor conversion rates by tier after deployment

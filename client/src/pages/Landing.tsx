@@ -462,7 +462,7 @@ export default function Landing() {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span>Starting at $49/month</span>
+                    <span>Starting at $49/month (up to $99/month)</span>
                   </li>
                 </ul>
               <Link href="/ai-coaching">
@@ -499,7 +499,7 @@ export default function Landing() {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span>Starting at $99/month</span>
+                    <span>Starting at $99/month (1-on-1 coaching)</span>
                   </li>
                 </ul>
                 <Link href="/book-session">

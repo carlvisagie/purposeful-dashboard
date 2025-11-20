@@ -335,21 +335,36 @@ export default function IndividualLanding() {
                   "Cancel anytime",
                 ],
                 cta: "Start Essential",
-                highlight: true,
+                highlight: false,
               },
               {
                 name: "Growth",
-                price: "$99",
+                price: "$79",
                 period: "/month",
-                description: "Premium support & features",
+                description: "Advanced support & personalization",
                 features: [
                   "Everything in Essential",
-                  "Priority responses",
-                  "Advanced analytics",
-                  "Personalized modules",
-                  "Monthly coaching report",
+                  "Advanced pattern detection",
+                  "Personalized coping strategies",
+                  "Monthly human coach check-in",
+                  "Weekly progress reports",
                 ],
                 cta: "Start Growth",
+                highlight: true,
+              },
+              {
+                name: "Transformation",
+                price: "$99",
+                period: "/month",
+                description: "Premium AI + human coaching",
+                features: [
+                  "Everything in Growth",
+                  "Bi-weekly human sessions",
+                  "Custom goal tracking",
+                  "Unlimited crisis support",
+                  "Family support resources",
+                ],
+                cta: "Start Transformation",
                 highlight: false,
               },
             ].map((tier, idx) => (
@@ -393,6 +408,8 @@ export default function IndividualLanding() {
                         subscribeMutation.mutate({ productId: "AI_ESSENTIAL" });
                       } else if (tier.name === "Growth") {
                         subscribeMutation.mutate({ productId: "AI_GROWTH" });
+                      } else if (tier.name === "Transformation") {
+                        subscribeMutation.mutate({ productId: "AI_TRANSFORMATION" });
                       }
                     }}
                   >
