@@ -29,9 +29,7 @@ function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path={"/"} component={CorporateLanding} />
-      <Route path="/individual-coaching" component={IndividualLanding} />
-      <Route path="/individual" component={Individual} />
+      <Route path="/" component={CorporateLanding} />
       <Route path="/ai-coaching" component={AICoaching} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/clients" component={Clients} />
@@ -43,7 +41,7 @@ function Router() {
       <Route path="/my-sessions" component={MySessions} />
       <Route path="/coach/availability" component={CoachAvailability} />
       <Route path="/coach/session-types" component={ManageSessionTypes} />
-      <Route path="/ai-coach" component={AICoach} />
+
       <Route path="/emotions" component={EmotionTracker} />
       <Route path="/insights" component={InsightsDashboard} />
       <Route path="/coach/dashboard" component={CoachDashboard} />
