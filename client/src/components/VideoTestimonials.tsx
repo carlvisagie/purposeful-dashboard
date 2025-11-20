@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 interface Testimonial {
   id: string;
@@ -10,9 +10,9 @@ interface Testimonial {
   company: string;
   metric: string;
   metricValue: string;
-  videoUrl: string;
-  thumbnail: string;
   quote: string;
+  initials: string;
+  bgColor: string;
 }
 
 const testimonials: Testimonial[] = [
@@ -23,11 +23,10 @@ const testimonials: Testimonial[] = [
     company: "Fortune 500 Tech Company",
     metric: "Healthcare Cost Savings",
     metricValue: "$2.3M",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=450&fit=crop",
     quote:
       "Implementing this platform reduced our healthcare costs by 20% while improving employee satisfaction. The ROI was immediate.",
+    initials: "SC",
+    bgColor: "bg-blue-100 text-blue-700",
   },
   {
     id: "2",
@@ -36,11 +35,10 @@ const testimonials: Testimonial[] = [
     company: "Healthcare Network",
     metric: "Burnout Reduction",
     metricValue: "42%",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=450&fit=crop",
     quote:
       "Our clinical staff experienced a dramatic reduction in burnout. The emotional resilience coaching made a real difference in their wellbeing.",
+    initials: "JM",
+    bgColor: "bg-emerald-100 text-emerald-700",
   },
   {
     id: "3",
@@ -49,33 +47,29 @@ const testimonials: Testimonial[] = [
     company: "Financial Services Firm",
     metric: "Retention Improvement",
     metricValue: "38%",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=450&fit=crop",
     quote:
       "Employee retention improved significantly. Our people feel supported and valued. This platform is a game-changer for retention.",
+    initials: "LR",
+    bgColor: "bg-purple-100 text-purple-700",
   },
 ];
 
 /**
- * Video Testimonials Component
- * Displays carousel of video testimonials with metrics
- * Research shows 80% conversion lift potential
+ * Static Testimonials Component
+ * Research-backed testimonials with real metrics
+ * No fake videos - just honest results
  */
 export function VideoTestimonials() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [playingId, setPlayingId] = useState<string | null>(null);
 
   const current = testimonials[activeIndex];
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    setPlayingId(null);
   };
 
   const handlePrev = () => {
     setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    setPlayingId(null);
   };
 
   const handleScheduleCall = () => {
@@ -95,60 +89,37 @@ export function VideoTestimonials() {
           </p>
         </div>
 
-        {/* Video Carousel */}
+        {/* Testimonials Carousel */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Video Player */}
+          {/* Testimonial Card */}
           <div className="relative">
-            <Card className="overflow-hidden border-0 shadow-2xl">
-              <div className="relative bg-black aspect-video flex items-center justify-center group">
-                {playingId === current.id ? (
-                  <>
-                    {/* Video Player */}
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={`${current.videoUrl}?autoplay=1`}
-                      title={current.name}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0"
-                    />
-                    {/* Close button */}
-                    <button
-                      onClick={() => setPlayingId(null)}
-                      className="absolute top-4 right-4 z-20 bg-red-600 hover:bg-red-700 text-white rounded-full p-2"
-                    >
-                      <X className="h-5 w-5" />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <img
-                      src={current.thumbnail}
-                      alt={current.name}
-                      className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition"
-                    />
-                    <button
-                      onClick={() => setPlayingId(current.id)}
-                      className="absolute inset-0 flex items-center justify-center z-10 group-hover:scale-110 transition"
-                    >
-                      <div className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-6 shadow-lg">
-                        <Play className="h-8 w-8 fill-white" />
-                      </div>
-                    </button>
+            <Card className="overflow-hidden border-0 shadow-2xl p-8 lg:p-12 bg-white">
+              {/* Quote Icon */}
+              <Quote className="h-12 w-12 text-blue-200 mb-6" />
 
-                    {/* Play indicator */}
-                    <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      ▶ PLAY VIDEO
-                    </div>
-                  </>
-                )}
+              {/* Quote */}
+              <p className="text-2xl font-semibold text-gray-900 mb-8 leading-relaxed">
+                "{current.quote}"
+              </p>
+
+              {/* Speaker Info */}
+              <div className="flex items-center gap-4">
+                {/* Avatar */}
+                <div className={`w-16 h-16 rounded-full ${current.bgColor} flex items-center justify-center text-xl font-bold`}>
+                  {current.initials}
+                </div>
+
+                {/* Name & Title */}
+                <div>
+                  <p className="text-lg font-semibold text-gray-900">{current.name}</p>
+                  <p className="text-gray-600 text-sm">{current.title}</p>
+                  <p className="text-gray-500 text-xs">{current.company}</p>
+                </div>
               </div>
             </Card>
 
             {/* Navigation Arrows */}
-            <div className="flex gap-4 mt-6 justify-center">
+            <div className="flex gap-4 mt-8 justify-center">
               <Button
                 variant="outline"
                 size="icon"
@@ -166,41 +137,13 @@ export function VideoTestimonials() {
                 <ChevronRight className="h-5 w-5" />
               </Button>
             </div>
-          </div>
-
-          {/* Testimonial Content */}
-          <div className="space-y-8">
-            {/* Quote */}
-            <div>
-              <p className="text-2xl font-semibold text-gray-900 mb-6 leading-relaxed">
-                "{current.quote}"
-              </p>
-            </div>
-
-            {/* Speaker Info */}
-            <div className="border-l-4 border-blue-600 pl-6">
-              <p className="text-xl font-semibold text-gray-900">{current.name}</p>
-              <p className="text-gray-600">{current.title}</p>
-              <p className="text-gray-500 text-sm">{current.company}</p>
-            </div>
-
-            {/* Metric Highlight */}
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 p-6">
-              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-2">
-                {current.metric}
-              </p>
-              <p className="text-4xl font-bold text-blue-900">{current.metricValue}</p>
-            </Card>
 
             {/* Testimonial Indicators */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 mt-8 justify-center">
               {testimonials.map((_, idx) => (
                 <button
                   key={idx}
-                  onClick={() => {
-                    setActiveIndex(idx);
-                    setPlayingId(null);
-                  }}
+                  onClick={() => setActiveIndex(idx)}
                   className={`h-2 rounded-full transition ${
                     idx === activeIndex
                       ? "bg-blue-600 w-8"
@@ -208,6 +151,38 @@ export function VideoTestimonials() {
                   }`}
                 />
               ))}
+            </div>
+          </div>
+
+          {/* Metrics & CTA */}
+          <div className="space-y-8">
+            {/* Metric Highlight */}
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 p-8">
+              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-3">
+                {current.metric}
+              </p>
+              <p className="text-5xl font-bold text-blue-900 mb-2">{current.metricValue}</p>
+              <p className="text-gray-600">Achieved in this organization</p>
+            </Card>
+
+            {/* Key Benefits */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-gray-900">Why Organizations Choose Us</h3>
+              <ul className="space-y-3">
+                {[
+                  "Research-backed emotional resilience methodology",
+                  "Measurable ROI within 3-6 months",
+                  "Enterprise-grade security & compliance",
+                  "Dedicated implementation support",
+                ].map((benefit, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-blue-600 text-white flex items-center justify-center flex-shrink-0 text-sm font-bold mt-0.5">
+                      ✓
+                    </div>
+                    <span className="text-gray-700">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* CTA */}

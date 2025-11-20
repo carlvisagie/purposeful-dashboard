@@ -337,3 +337,29 @@ export const platformSettings = mysqlTable("platformSettings", {
 
 export type PlatformSetting = typeof platformSettings.$inferSelect;
 export type InsertPlatformSetting = typeof platformSettings.$inferInsert;
+
+
+/**
+ * Video Testimonials - real client video testimonials
+ */
+export const videoTestimonials = mysqlTable("videoTestimonials", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(), // Client name
+  title: varchar("title", { length: 255 }).notNull(), // Client title/role
+  company: varchar("company", { length: 255 }).notNull(), // Client company
+  quote: text("quote").notNull(), // Text quote/testimonial
+  metric: varchar("metric", { length: 255 }).notNull(), // Metric name (e.g., "Healthcare Cost Savings")
+  metricValue: varchar("metricValue", { length: 100 }).notNull(), // Metric value (e.g., "$2.3M")
+  videoUrl: text("videoUrl"), // S3 URL to video file
+  videoKey: varchar("videoKey", { length: 500 }), // S3 key for video file
+  thumbnailUrl: text("thumbnailUrl"), // S3 URL to thumbnail image
+  thumbnailKey: varchar("thumbnailKey", { length: 500 }), // S3 key for thumbnail
+  duration: int("duration"), // Video duration in seconds
+  isPublished: mysqlEnum("isPublished", ["true", "false"]).default("false").notNull(),
+  displayOrder: int("displayOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type VideoTestimonial = typeof videoTestimonials.$inferSelect;
+export type InsertVideoTestimonial = typeof videoTestimonials.$inferInsert;
