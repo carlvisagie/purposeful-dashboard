@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Star,
 } from "lucide-react";
+import { useRouter } from "wouter";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { LiveChatWidget } from "@/components/LiveChatWidget";
 

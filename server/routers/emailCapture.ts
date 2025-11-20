@@ -1,9 +1,11 @@
 import { publicProcedure, router } from "../_core/trpc";
 import { z } from "zod";
+import { addSubscriberToMailchimp } from "../services/mailchimp";
 
 /**
  * Email Capture Router
  * Collects emails from ROI calculator and landing page CTAs
+ * Integrates with Mailchimp for automated nurture sequences
  */
 
 // In-memory store for captured emails (in production, use database)
@@ -38,11 +40,8 @@ export const emailCaptureRouter = router({
 
       capturedEmails.push(emailRecord);
 
-      // TODO: In production, integrate with email service (Mailchimp, ConvertKit, etc.)
-      // await sendWelcomeEmail(input.email, {
-      //   teamSize: input.teamSize,
-      //   projectedSavings: calculateSavings(input.teamSize, input.currentCost)
-      // });
+      // Add to Mailchimp for automated nurture sequence
+      await addSubscriberToMailchimp(input.email, "roi_calculator", "corporate");
 
       return {
         success: true,
@@ -72,9 +71,8 @@ export const emailCaptureRouter = router({
 
       capturedEmails.push(emailRecord);
 
-      // TODO: In production, create trial account and send welcome email
-      // await createTrialAccount(input.email, input.plan);
-      // await sendIndividualWelcomeEmail(input.email);
+      // Add to Mailchimp for automated nurture sequence
+      await addSubscriberToMailchimp(input.email, "roi_calculator", "individual");
 
       return {
         success: true,
@@ -84,13 +82,13 @@ export const emailCaptureRouter = router({
     }),
 
   /**
-   * Capture email from corporate inquiry
+   * Capture email from corporate inquiry / exit-intent popup
    */
   captureCorporateEmail: publicProcedure
     .input(
       z.object({
         email: z.string().email(),
-        company: z.string().min(1),
+        company: z.string().min(1).optional(),
         teamSize: z.number().optional(),
       })
     )
@@ -98,16 +96,15 @@ export const emailCaptureRouter = router({
       const emailRecord = {
         id: Math.random().toString(36).substr(2, 9),
         email: input.email,
-        source: `corporate-inquiry-${input.company}`,
+        source: `corporate-inquiry-${input.company || "exit-intent"}`,
         timestamp: Date.now(),
         type: "corporate-inquiry" as const,
       };
 
       capturedEmails.push(emailRecord);
 
-      // TODO: In production, notify sales team and send confirmation
-      // await notifyEnterpriseTeam(input.email, input.company);
-      // await sendCorporateConfirmationEmail(input.email);
+      // Add to Mailchimp for automated nurture sequence
+      await addSubscriberToMailchimp(input.email, "exit_intent", "corporate");
 
       return {
         success: true,

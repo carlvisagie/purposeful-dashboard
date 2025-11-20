@@ -6,6 +6,7 @@ import { ROICalculator } from "@/components/ROICalculator";
 import { RecentBookingsNotification } from "@/components/RecentBookingsNotification";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { LiveChatWidget } from "@/components/LiveChatWidget";
+import { VideoTestimonials } from "@/components/VideoTestimonials";
 import {
   TrendingUp,
   BarChart3,
@@ -263,6 +264,9 @@ export default function CorporateLanding() {
           <ROICalculator />
         </div>
       </section>
+
+      {/* VIDEO TESTIMONIALS */}
+      <VideoTestimonials />
 
       {/* CASE STUDIES / PROOF */}
       <section className="py-20 bg-gray-50">
