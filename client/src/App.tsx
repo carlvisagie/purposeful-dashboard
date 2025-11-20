@@ -31,6 +31,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={CorporateLanding} />
       <Route path="/individual-coaching" component={IndividualLanding} />
+      <Route path="/ai-coaching" component={AICoaching} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/clients" component={Clients} />
       <Route path="/clients/new" component={NewClient} />
