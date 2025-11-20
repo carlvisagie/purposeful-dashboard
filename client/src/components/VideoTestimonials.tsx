@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { Play, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface Testimonial {
   id: string;
@@ -23,7 +23,7 @@ const testimonials: Testimonial[] = [
     company: "Fortune 500 Tech Company",
     metric: "Healthcare Cost Savings",
     metricValue: "$2.3M",
-    videoUrl: "https://example.com/video1.mp4",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     thumbnail:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=450&fit=crop",
     quote:
@@ -36,7 +36,7 @@ const testimonials: Testimonial[] = [
     company: "Healthcare Network",
     metric: "Burnout Reduction",
     metricValue: "42%",
-    videoUrl: "https://example.com/video2.mp4",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     thumbnail:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=450&fit=crop",
     quote:
@@ -49,7 +49,7 @@ const testimonials: Testimonial[] = [
     company: "Financial Services Firm",
     metric: "Retention Improvement",
     metricValue: "38%",
-    videoUrl: "https://example.com/video3.mp4",
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     thumbnail:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=450&fit=crop",
     quote:
@@ -78,6 +78,10 @@ export function VideoTestimonials() {
     setPlayingId(null);
   };
 
+  const handleScheduleCall = () => {
+    window.open("https://calendly.com/carlhvisagie-rxgb", "_blank");
+  };
+
   return (
     <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,24 +101,49 @@ export function VideoTestimonials() {
           <div className="relative">
             <Card className="overflow-hidden border-0 shadow-2xl">
               <div className="relative bg-black aspect-video flex items-center justify-center group">
-                <img
-                  src={current.thumbnail}
-                  alt={current.name}
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition"
-                />
-                <button
-                  onClick={() => setPlayingId(current.id)}
-                  className="absolute inset-0 flex items-center justify-center z-10 group-hover:scale-110 transition"
-                >
-                  <div className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-6 shadow-lg">
-                    <Play className="h-8 w-8 fill-white" />
-                  </div>
-                </button>
+                {playingId === current.id ? (
+                  <>
+                    {/* Video Player */}
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={`${current.videoUrl}?autoplay=1`}
+                      title={current.name}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0"
+                    />
+                    {/* Close button */}
+                    <button
+                      onClick={() => setPlayingId(null)}
+                      className="absolute top-4 right-4 z-20 bg-red-600 hover:bg-red-700 text-white rounded-full p-2"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src={current.thumbnail}
+                      alt={current.name}
+                      className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition"
+                    />
+                    <button
+                      onClick={() => setPlayingId(current.id)}
+                      className="absolute inset-0 flex items-center justify-center z-10 group-hover:scale-110 transition"
+                    >
+                      <div className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-6 shadow-lg">
+                        <Play className="h-8 w-8 fill-white" />
+                      </div>
+                    </button>
 
-                {/* Play indicator */}
-                <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  ▶ PLAY VIDEO
-                </div>
+                    {/* Play indicator */}
+                    <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      ▶ PLAY VIDEO
+                    </div>
+                  </>
+                )}
               </div>
             </Card>
 
@@ -182,7 +211,10 @@ export function VideoTestimonials() {
             </div>
 
             {/* CTA */}
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 px-8 text-lg w-full">
+            <Button
+              onClick={handleScheduleCall}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 px-8 text-lg w-full"
+            >
               Schedule Your Strategy Call
             </Button>
           </div>

@@ -183,6 +183,9 @@ export function ExitIntentPopup({ open, onClose, type = "corporate" }: ExitInten
           {/* Email Capture + CTA */}
           <form onSubmit={handleEmailSubmit} className="text-center mb-6">
             <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
+                Enter Your Email
+              </label>
               <Input
                 type="email"
                 placeholder={
@@ -191,7 +194,7 @@ export function ExitIntentPopup({ open, onClose, type = "corporate" }: ExitInten
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isSubmitting}
-                className="border-gray-300 mb-3"
+                className="border-2 border-gray-400 bg-white text-gray-900 placeholder-gray-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-200 mb-3 text-lg py-3 px-4"
               />
             </div>
             <Button

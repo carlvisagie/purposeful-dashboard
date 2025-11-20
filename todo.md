@@ -997,3 +997,12 @@
 - [ ] Display testimonial metrics ($2.3M savings, 42% burnout reduction)
 - [ ] Add testimonial quotes and company names
 - [ ] Optimize video for web (compression, formats)
+
+
+## CRITICAL BUGS - USER REPORTED (IMMEDIATE FIX REQUIRED)
+
+- [x] Fix email field visibility on exit-intent popup (added clear label and improved styling)
+- [x] Fix schedule strategy call button (added onClick handler to open Calendly)
+- [x] Fix video playback (implemented YouTube iframe player with play button)
+- [x] Audit all buttons and fix non-working ones (all CTAs tested and working)
+- [x] Test all CTAs end-to-end after fixes (verified in browser)
