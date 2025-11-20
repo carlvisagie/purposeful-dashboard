@@ -88,18 +88,7 @@ export default function IndividualLanding() {
                 Start Your Journey
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
-                onClick={() =>
-                  document
-                    .getElementById("how-it-works")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-              >
-                See How It Works
-              </Button>
+
             </div>
           </div>
         </div>
@@ -334,20 +323,6 @@ export default function IndividualLanding() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: "Breakthrough",
-                price: "$1",
-                period: "one-time",
-                description: "Try before you commit",
-                features: [
-                  "First coaching session",
-                  "Emotion assessment",
-                  "Personalized plan",
-                  "No credit card required",
-                ],
-                cta: "Start Free Session",
-                highlight: false,
-              },
-              {
                 name: "Essential",
                 price: "$49",
                 period: "/month",
@@ -414,9 +389,7 @@ export default function IndividualLanding() {
                         window.location.href = getLoginUrl();
                         return;
                       }
-                      if (tier.name === "Breakthrough") {
-                        window.location.href = '/dashboard';
-                      } else if (tier.name === "Essential") {
+                      if (tier.name === "Essential") {
                         subscribeMutation.mutate({ productId: "AI_ESSENTIAL" });
                       } else if (tier.name === "Growth") {
                         subscribeMutation.mutate({ productId: "AI_GROWTH" });

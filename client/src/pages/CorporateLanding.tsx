@@ -78,14 +78,7 @@ export default function CorporateLanding() {
                 Calculate Your ROI
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white/10"
-                onClick={() => window.open("https://calendly.com/carlhvisagie-rxgb", "_blank")}
-              >
-                Schedule Strategy Call
-              </Button>
+
             </div>
           </div>
         </div>
@@ -387,7 +380,7 @@ export default function CorporateLanding() {
                 description: "Perfect for small teams",
                 features: [
                   "Up to 50 employees",
-                  "24/7 AI coaching",
+                  "Expert human coaches",
                   "Basic analytics",
                   "Email support",
                 ],
@@ -399,7 +392,7 @@ export default function CorporateLanding() {
                 description: "For growing organizations",
                 features: [
                   "Up to 200 employees",
-                  "Advanced AI coaching",
+                  "Advanced human coaching",
                   "Real-time dashboards",
                   "Priority support",
                   "Custom modules",

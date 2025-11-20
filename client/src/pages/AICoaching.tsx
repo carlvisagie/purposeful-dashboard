@@ -73,7 +73,7 @@ export default function AICoaching() {
           <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg mb-8 ${getUrgencyColor(availableSpots)}`}>
             <Zap className="w-5 h-5 animate-pulse" />
             <span className="font-semibold">
-              Only {availableSpots} {availableSpots === 1 ? "spot" : "spots"} left this week
+              Join thousands getting results with 24/7 AI coaching
             </span>
           </div>
 
@@ -85,14 +85,7 @@ export default function AICoaching() {
             >
               Start Your Transformation
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg px-8 py-6"
-              onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              See How It Works
-            </Button>
+
           </div>
 
           {/* Trust Badges */}
