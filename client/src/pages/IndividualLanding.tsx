@@ -67,13 +67,13 @@ export default function IndividualLanding() {
               For You
             </Badge>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-gray-900">
-              Stop Anxiety in 30 Days
+              Feel Calm, Confident & In Control Again
             </h1>
             <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-              AI-powered emotional resilience coaching available 24/7. Proven to reduce anxiety by 60% in 30 days. 60-day money-back guarantee.
+              You're overwhelmed. Stressed. Maybe you can't sleep. Your mind won't stop racing. You know you need help, but therapy wait lists are months long.
             </p>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Join 10,000+ people who stopped waiting for therapy appointments and got instant support when they needed it most.
+            <p className="text-xl text-gray-700 mb-8 leading-relaxed font-semibold text-emerald-700">
+              What if you had a personal AI coach available 24/7? Someone who listens without judgment. Who helps you process emotions in real-time. Who's always there when you need them most.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
@@ -85,7 +85,7 @@ export default function IndividualLanding() {
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
               >
-                Start 7-Day Free Trial
+                Start Your Journey
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button
@@ -324,14 +324,11 @@ export default function IndividualLanding() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Choose Your Plan
+              Affordable Coaching Plans
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-              Start with a free trial or jump straight to unlimited support. All plans include 60-day guarantee.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Choose the plan that fits your needs. Cancel anytime.
             </p>
-            <div className="inline-block bg-emerald-100 border-2 border-emerald-600 rounded-lg px-6 py-3">
-              <p className="text-sm font-bold text-emerald-900">✓ 60-Day Money-Back Guarantee - No Questions Asked</p>
-            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -340,14 +337,14 @@ export default function IndividualLanding() {
                 name: "Breakthrough",
                 price: "$1",
                 period: "one-time",
-                description: "7-day free trial",
+                description: "Try before you commit",
                 features: [
                   "First coaching session",
                   "Emotion assessment",
                   "Personalized plan",
                   "No credit card required",
                 ],
-                cta: "Try Free for 7 Days",
+                cta: "Start Free Session",
                 highlight: false,
               },
               {
@@ -362,7 +359,7 @@ export default function IndividualLanding() {
                   "Progress insights",
                   "Cancel anytime",
                 ],
-                cta: "Subscribe to Essential",
+                cta: "Start Essential",
                 highlight: true,
               },
               {
@@ -377,7 +374,7 @@ export default function IndividualLanding() {
                   "Personalized modules",
                   "Monthly coaching report",
                 ],
-                cta: "Unlock Growth Plan",
+                cta: "Start Growth",
                 highlight: false,
               },
             ].map((tier, idx) => (
@@ -478,10 +475,10 @@ export default function IndividualLanding() {
       <section className="py-20 bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-6">
-            Stop Anxiety in 30 Days or Your Money Back
+            You Deserve to Feel Better
           </h2>
           <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
-            60-day money-back guarantee. No credit card required for free trial. Start your AI coaching today.
+            Your AI coach is ready to support you. Start your journey to emotional resilience today.
           </p>
           <Button
             size="lg"
@@ -492,7 +489,7 @@ export default function IndividualLanding() {
                 ?.scrollIntoView({ behavior: "smooth" })
             }
           >
-            Start Free Trial Now
+            Start Your Journey
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
