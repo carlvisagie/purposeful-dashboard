@@ -14,6 +14,9 @@ import {
 import { useRouter } from "wouter";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import { LiveChatWidget } from "@/components/LiveChatWidget";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { getLoginUrl } from "@/const";
+import { trpc } from "@/lib/trpc";
 
 /**
  * Individual Landing Page
@@ -21,8 +24,17 @@ import { LiveChatWidget } from "@/components/LiveChatWidget";
  * Emotional messaging, personal stories, AI coaching focus
  */
 export default function IndividualLanding() {
+  const { user } = useAuth();
   const [selectedTier, setSelectedTier] = useState("essential");
   const [showExitPopup, setShowExitPopup] = useState(false);
+
+  const subscribeMutation = trpc.stripe.createCheckoutSession.useMutation({
+    onSuccess: (data) => {
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    },
+  });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -80,6 +92,11 @@ export default function IndividualLanding() {
                 size="lg"
                 variant="outline"
                 className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+                onClick={() =>
+                  document
+                    .getElementById("how-it-works")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
               >
                 See How It Works
               </Button>
@@ -257,7 +274,7 @@ export default function IndividualLanding() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="py-20 bg-white">
+      <section id="how-it-works" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -392,7 +409,19 @@ export default function IndividualLanding() {
                         ? "w-full bg-emerald-600 hover:bg-emerald-700"
                         : "w-full"
                     }
-                    onClick={() => window.open("https://calendly.com/carlhvisagie-rxgb", "_blank")}
+                    onClick={() => {
+                      if (!user) {
+                        window.location.href = getLoginUrl();
+                        return;
+                      }
+                      if (tier.name === "Breakthrough") {
+                        window.location.href = '/dashboard';
+                      } else if (tier.name === "Essential") {
+                        subscribeMutation.mutate({ productId: "AI_ESSENTIAL" });
+                      } else if (tier.name === "Growth") {
+                        subscribeMutation.mutate({ productId: "AI_GROWTH" });
+                      }
+                    }}
                   >
                     {tier.cta}
                   </Button>

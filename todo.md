@@ -1006,3 +1006,56 @@
 - [x] Fix video playback (implemented YouTube iframe player with play button)
 - [x] Audit all buttons and fix non-working ones (all CTAs tested and working)
 - [x] Test all CTAs end-to-end after fixes (verified in browser)
+
+
+## MASTER PROMPT AUDIT - CRITICAL BUGS FIXED (Nov 20, 2025)
+
+- [x] BUG #1: Removed all AI content from enterprise landing page (violated Master Prompt - enterprise should be 100% human coaching)
+- [x] BUG #2: Removed duplicate /individual and /ai-coaching routes (created cognitive load - Master Prompt requires ZERO cognitive load)
+- [x] BUG #3: Fixed non-functional "See How It Works" button on IndividualLanding (added onClick handler to scroll to section)
+- [x] BUG #4: Added missing FAQ section to CorporateLanding (Master Prompt structure: Hero → Stakes → Services → Process → Proof → FAQ → CTA)
+- [x] BUG #5: Added missing Process/Implementation section to CorporateLanding (4-week implementation timeline with clear phases)
+- [x] BUG #6: Fixed IndividualLanding pricing buttons - changed from Calendly to Stripe checkout for AI subscriptions (CTA intent mismatch)
+
+## ROUTING STRUCTURE (FINAL)
+
+- `/` → CorporateLanding (Enterprise B2B, human coaching, ROI calculator, strategy calls)
+- `/individual-coaching` → IndividualLanding (Individual B2C, AI coaching, subscriptions)
+- All internal routes (dashboard, clients, sessions, etc.) remain unchanged
+
+## LANDING PAGE COMPLIANCE
+
+### CorporateLanding (/):
+- [x] Hero section (Reduce Healthcare Costs by 20%)
+- [x] Stakes section (Cost of Emotional Instability)
+- [x] Services section (Expert Human Coaches, Crisis Detection, Analytics, etc.)
+- [x] Process section (4-week implementation timeline)
+- [x] Proof section (Video testimonials, case studies, trusted orgs)
+- [x] FAQ section (6 key questions about ROI, compliance, support, integration, privacy)
+- [x] Final CTA section (Ready to Transform Your Organization?)
+- [x] Primary CTA: "Calculate Your ROI" (white button, prominent)
+- [x] Secondary CTA: "Schedule Strategy Call" (outline button, subordinate)
+- [x] Zero cognitive load (no conflicting CTAs)
+
+### IndividualLanding (/individual-coaching):
+- [x] Hero section (Feel Calm, Confident & In Control Again)
+- [x] Stakes section (You're Not Alone - pain points)
+- [x] Services section (The Solution - AI Coaching features)
+- [x] Process section (How It Works - 4 steps)
+- [x] Proof section (Testimonials from real users)
+- [x] FAQ section (6 key questions)
+- [x] Final CTA section (You Deserve to Feel Better)
+- [x] Primary CTA: "Start Your Journey" (emerald button, prominent)
+- [x] Secondary CTA: "See How It Works" (outline button, subordinate)
+- [x] Pricing section (3 tiers: Breakthrough $1, Essential $49, Growth $99)
+- [x] Pricing CTAs now use Stripe checkout (not Calendly)
+- [x] Zero cognitive load (no conflicting CTAs)
+
+## NEXT STEPS FOR USER
+
+1. Test both landing pages in browser to verify all CTAs work
+2. Test Stripe checkout flow for AI subscriptions
+3. Verify Calendly links on enterprise page work correctly
+4. Test exit-intent popups on both pages
+5. Verify responsive design on mobile
+6. Check all section IDs are correct for smooth scrolling

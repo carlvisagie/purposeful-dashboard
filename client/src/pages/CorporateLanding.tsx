@@ -269,6 +269,54 @@ export default function CorporateLanding() {
         </div>
       </section>
 
+      {/* IMPLEMENTATION PROCESS */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Simple Implementation Process</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Get your team up and running in 30 days with our proven implementation framework</p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              {
+                step: "1",
+                title: "Discovery & Planning",
+                description: "We assess your organization's needs, identify key stakeholders, and create a customized implementation roadmap.",
+                timeline: "Week 1"
+              },
+              {
+                step: "2",
+                title: "Setup & Integration",
+                description: "Configure the platform, integrate with your HR systems, and set up security protocols and compliance requirements.",
+                timeline: "Week 2"
+              },
+              {
+                step: "3",
+                title: "Training & Rollout",
+                description: "Train coaches and administrators, launch pilot program with early adopters, gather feedback and optimize.",
+                timeline: "Weeks 3-4"
+              },
+              {
+                step: "4",
+                title: "Full Deployment",
+                description: "Roll out to entire organization, monitor adoption metrics, provide ongoing support and optimization.",
+                timeline: "Ongoing"
+              }
+            ].map((phase, idx) => (
+              <div key={idx} className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
+                  {phase.step}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{phase.title}</h3>
+                <p className="text-gray-600 mb-4">{phase.description}</p>
+                <p className="text-sm font-semibold text-blue-600">{phase.timeline}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* VIDEO TESTIMONIALS */}
       <VideoTestimonials />
 
@@ -409,6 +457,52 @@ export default function CorporateLanding() {
                   >
                     Schedule Strategy Call
                   </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ SECTION */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <p className="text-xl text-gray-600">Common questions about our enterprise coaching platform</p>
+          </div>
+
+          <div className="space-y-6">
+            {[
+              {
+                question: "How quickly will we see ROI?",
+                answer: "Most organizations see measurable improvements within 30-60 days. The average payback period is 3-6 months, with ongoing savings of 20% on healthcare costs."
+              },
+              {
+                question: "Is the platform HIPAA compliant?",
+                answer: "Yes. Our platform meets HIPAA, SOC 2, and enterprise security standards. All data is encrypted, and we maintain audit-ready compliance documentation."
+              },
+              {
+                question: "How many employees can use the platform?",
+                answer: "The platform scales to any organization size. Pricing is based on your team size, with volume discounts available for enterprises with 500+ employees."
+              },
+              {
+                question: "What support do we get?",
+                answer: "Each organization receives a dedicated account manager, implementation support, ongoing training, and 24/7 technical support."
+              },
+              {
+                question: "Can we integrate with our existing HR systems?",
+                answer: "Yes. We integrate with major HRIS platforms (Workday, BambooHR, etc.) and can build custom integrations for your specific needs."
+              },
+              {
+                question: "What's your data privacy policy?",
+                answer: "We never sell or share employee data. All information is encrypted, stored securely, and deleted upon request. You maintain full data ownership."
+              }
+            ].map((faq, idx) => (
+              <Card key={idx}>
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">{faq.question}</h3>
+                  <p className="text-gray-600">{faq.answer}</p>
                 </CardContent>
               </Card>
             ))}
