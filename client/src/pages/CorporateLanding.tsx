@@ -60,10 +60,10 @@ export default function CorporateLanding() {
               Enterprise Solution
             </Badge>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Reduce Healthcare Costs by 20% Through Emotional Resilience
+              Reduce Healthcare Costs by 20% in 90 Days
             </h1>
             <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-              The average organization spends $5,000-$20,000 per employee annually on healthcare. Emotional resilience coaching reduces that burden while improving productivity, retention, and employee satisfaction.
+              Expert-led emotional resilience coaching proven with 500+ organizations. Average ROI: $500K+ annually for 500-person company. 90-day guarantee or your money back.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
@@ -75,16 +75,16 @@ export default function CorporateLanding() {
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
               >
-                Calculate Your ROI
+                Calculate Your ROI & Get Implementation Plan
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button
-                size="lg"
+                size="sm"
                 variant="outline"
                 className="border-white text-white hover:bg-white/10"
                 onClick={() => window.open("https://calendly.com/carlhvisagie-rxgb", "_blank")}
               >
-                Schedule Strategy Call
+                Book Free Strategy Call
               </Button>
             </div>
           </div>
@@ -94,7 +94,25 @@ export default function CorporateLanding() {
       {/* SOCIAL PROOF */}
       <section className="py-12 bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <RecentBookingsNotification />
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex-1">
+              <RecentBookingsNotification />
+            </div>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <Shield className="h-5 w-5 text-green-600" />
+                HIPAA Compliant
+              </div>
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <Shield className="h-5 w-5 text-green-600" />
+                SOC 2 Type II
+              </div>
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <Shield className="h-5 w-5 text-green-600" />
+                GDPR Compliant
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -103,10 +121,13 @@ export default function CorporateLanding() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              The Cost of Emotional Instability in Your Organization
+              The Hidden Cost of Emotional Instability
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Unmanaged stress and emotional challenges cost organizations billions annually
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
+              Right now, your organization is bleeding money. Stressed employees drive up healthcare costs, miss work, and leave for competitors.
+            </p>
+            <p className="text-lg text-red-600 font-semibold max-w-3xl mx-auto">
+              Without intervention, your 500-person company loses $2.5M+ annually to stress-related issues.
             </p>
           </div>
 
@@ -150,10 +171,10 @@ export default function CorporateLanding() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Enterprise-Grade Emotional Resilience Platform
+              Expert-Led Emotional Resilience Coaching
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Proven human coaching combined with enterprise-grade security for measurable outcomes
+              Licensed therapists (LMFT, LCPC) + AI specialists deliver proven coaching with HIPAA compliance, SOC 2 security, and guaranteed ROI.
             </p>
           </div>
 
@@ -382,29 +403,31 @@ export default function CorporateLanding() {
             {[
               {
                 name: "Starter",
-                price: "$2,500",
+                price: "$5,000",
                 period: "/month",
                 description: "Perfect for small teams",
                 features: [
                   "Up to 50 employees",
-                  "24/7 AI coaching",
+                  "Expert human coaches",
                   "Basic analytics",
                   "Email support",
                 ],
+                cta: "Get Demo",
               },
               {
                 name: "Growth",
-                price: "$5,000",
+                price: "$10,000",
                 period: "/month",
-                description: "For growing organizations",
+                description: "For scaling organizations",
                 features: [
                   "Up to 200 employees",
-                  "Advanced AI coaching",
+                  "Dedicated coaching team",
                   "Real-time dashboards",
                   "Priority support",
-                  "Custom modules",
+                  "Custom programs",
                 ],
                 highlight: true,
+                cta: "Schedule Call",
               },
               {
                 name: "Enterprise",
@@ -418,6 +441,7 @@ export default function CorporateLanding() {
                   "Advanced security",
                   "SLA guarantees",
                 ],
+                cta: "Contact Sales",
               },
             ].map((tier, idx) => (
               <Card
@@ -455,7 +479,7 @@ export default function CorporateLanding() {
                       window.open("https://calendly.com/carlhvisagie-rxgb", "_blank")
                     }
                   >
-                    Schedule Strategy Call
+                    {tier.cta}
                   </Button>
                 </CardContent>
               </Card>
@@ -514,17 +538,17 @@ export default function CorporateLanding() {
       <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Transform Your Organization?
+            Your Team Transforms in 90 Days or We Refund 100%
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Get a personalized ROI analysis and implementation roadmap from our enterprise team.
+            Limited availability - only 3 strategy calls available this week. Get your personalized ROI analysis and implementation roadmap.
           </p>
           <Button
             size="lg"
             className="bg-white text-blue-600 hover:bg-blue-50 font-semibold"
             onClick={() => window.open("https://calendly.com/carlhvisagie-rxgb", "_blank")}
           >
-            Schedule Your Strategy Call
+            Book Your Free Strategy Call Now
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
