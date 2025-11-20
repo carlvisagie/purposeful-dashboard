@@ -13,14 +13,9 @@ export function SocialProofWidget({
 }: SocialProofWidgetProps) {
   const [showNotification, setShowNotification] = useState(false);
 
-  // Get page activity (viewers)
-  const { data: activityData, isLoading: activityLoading } =
-    trpc.socialProof.getPageActivity.useQuery(
-      { pageType },
-      {
-        refetchInterval: 10000, // Update every 10 seconds
-      }
-    );
+  // Page activity removed - no fake viewer counts
+  const activityData = null;
+  const activityLoading = false;
 
   // Get recent bookings
   const { data: bookingsData, isLoading: bookingsLoading } =
@@ -40,21 +35,13 @@ export function SocialProofWidget({
     }
   }, [bookingsData]);
 
-  if (activityLoading || bookingsLoading) {
+  if (bookingsLoading) {
     return null;
   }
 
   return (
     <div className="space-y-3">
-      {/* Viewers Widget */}
-      {(variant === "viewers" || variant === "both") && activityData && (
-        <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-          <Eye className="h-4 w-4" />
-          <span>
-            <strong>{activityData.viewersCount}</strong> people viewing this page
-          </span>
-        </div>
-      )}
+      {/* Viewers Widget - Disabled - No fake data */}
 
       {/* Recent Bookings Notification */}
       {(variant === "bookings" || variant === "both") &&
@@ -90,26 +77,19 @@ export function SocialProofBadge({
   pageType: "decision-tree" | "ai-coaching" | "book-session" | "enterprise";
   type?: "viewers" | "bookings";
 }) {
-  const { data: activityData } = trpc.socialProof.getPageActivity.useQuery(
-    { pageType },
-    { refetchInterval: 10000 }
-  );
+  // Viewers data removed - only showing real bookings
+  const activityData = null;
 
   const { data: bookingsData } = trpc.socialProof.getRecentBookings.useQuery(
     { limit: 1 },
     { refetchInterval: 15000 }
   );
 
-  if (type === "viewers" && activityData) {
-    return (
-      <div className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
-        <Eye className="h-3 w-3" />
-        {activityData.viewersCount} viewing
-      </div>
-    );
+  if (false && type === "viewers" && activityData) {
+    return null;
   }
 
-  if (type === "bookings" && bookingsData && bookingsData.length > 0) {
+  if (bookingsData && bookingsData.length > 0) {
     return (
       <div className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
         <CheckCircle2 className="h-3 w-3" />
