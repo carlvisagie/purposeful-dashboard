@@ -7,6 +7,7 @@ import { Users, BookOpen, Brain, Calendar, TrendingUp, AlertCircle, Video, Dolla
 import { ZOOM_MEETING_URL } from "@/config/zoom";
 import { Badge } from "@/components/ui/badge";
 import AITierToggle from "@/components/AITierToggle";
+import { getLoginUrl } from "@/const";
 
 export default function Dashboard() {
   const { data: user } = trpc.auth.me.useQuery();
@@ -89,7 +90,7 @@ export default function Dashboard() {
             <CardDescription>Please sign in to access your dashboard</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button className="w-full" onClick={() => window.location.href = "/api/oauth/login"}>
+            <Button className="w-full" onClick={() => window.location.href = getLoginUrl()}>
               Sign In
             </Button>
           </CardContent>

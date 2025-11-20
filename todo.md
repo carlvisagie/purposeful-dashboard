@@ -1059,3 +1059,35 @@
 4. Test exit-intent popups on both pages
 5. Verify responsive design on mobile
 6. Check all section IDs are correct for smooth scrolling
+
+
+## CONVERSION AUDIT - CRITICAL FIXES
+
+### Tier 1 - CRITICAL (Revenue Blocking)
+- [ ] Fix OAuth login endpoint (dashboard 404 error)
+- [ ] Add HIPAA/SOC 2/encryption trust badges to all pages
+- [ ] Add money-back guarantee to corporate landing page
+- [ ] Standardize CTA button text and placement across all pages
+- [ ] Add secondary CTAs ("View Pricing", "Buy Now") to all landing pages
+
+### Tier 2 - HIGH PRIORITY (10-15% conversion lift)
+- [ ] Enhance FAQ sections with real objection handling
+- [ ] Add expert credentials and coach bios
+- [ ] Improve social proof (add customer count, specific metrics)
+- [ ] Add scarcity/urgency messaging to corporate page
+- [ ] Optimize mobile CTA buttons (thumb-friendly sizing)
+
+### Tier 3 - MEDIUM PRIORITY (5-10% conversion lift)
+- [ ] Add video testimonials to landing pages
+- [ ] Create AI vs. Therapy comparison table
+- [ ] Create pricing comparison table
+- [ ] Implement exit-intent popup on corporate page
+- [ ] Add progress indicators to booking flow
+
+### Conversion Optimization
+- [ ] Rewrite generic "Why Choose Us" section with specific differentiators
+- [ ] Add free trial CTA to individual coaching page
+- [ ] Verify "Only 3 spots remaining" claim (remove if false)
+- [ ] Add "Join X,000+ users" social proof number
+- [ ] Test CTA button colors for contrast and conversion
+
