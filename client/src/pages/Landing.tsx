@@ -465,7 +465,7 @@ export default function Landing() {
                     <span>Starting at $49/month (up to $99/month)</span>
                   </li>
                 </ul>
-              <Link href="/ai-coaching">
+              <Link to="/ai-coaching">
                 <Button 
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                 >
@@ -502,7 +502,7 @@ export default function Landing() {
                     <span>Starting at $99/month (1-on-1 coaching)</span>
                   </li>
                 </ul>
-                <Link href="/book-session">
+                <Link to="/book-session">
                   <Button 
                     className="w-full bg-purple-600 hover:bg-purple-700 text-white"
                   >
@@ -728,7 +728,7 @@ export default function Landing() {
               Book Your Strategy Call
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
-            <Link href="#packages">
+            <Link to="#packages">
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-blue-700 text-lg px-8 py-6">
                 View Packages
               </Button>

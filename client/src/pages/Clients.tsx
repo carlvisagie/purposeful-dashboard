@@ -26,10 +26,10 @@ export default function Clients() {
               <p className="text-sm text-gray-600 mt-1">Manage and track your coaching clients</p>
             </div>
             <div className="flex items-center gap-4">
-              <Link href="/">
+              <Link to="/">
                 <Button variant="outline">Dashboard</Button>
               </Link>
-              <Link href="/clients/new">
+              <Link to="/clients/new">
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
                   Add Client
@@ -77,7 +77,7 @@ export default function Clients() {
             ) : filteredClients && filteredClients.length > 0 ? (
               <div className="space-y-4">
                 {filteredClients.map((client) => (
-                  <Link key={client.id} href={`/clients/${client.id}`}>
+                    <Link key={client.id} to={`/clients/${client.id}`}>
                     <div className="flex items-center justify-between p-6 border rounded-lg hover:bg-gray-50 hover:shadow-md transition-all cursor-pointer">
                       <div className="flex items-center gap-6">
                         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-2xl shadow-lg">
@@ -135,7 +135,7 @@ export default function Clients() {
                 </p>
                 {!searchTerm && (
                   <div className="mt-6">
-                    <Link href="/clients/new">
+                    <Link to="/clients/new">
                       <Button>
                         <Plus className="mr-2 h-4 w-4" />
                         Add Your First Client

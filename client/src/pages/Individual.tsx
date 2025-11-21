@@ -328,7 +328,7 @@ export default function Individual() {
                     </div>
                     <p className="text-gray-600 mb-6 min-h-[60px]">{type.description}</p>
                     
-                    <WouterLink href="/book-session">
+                    <WouterLink to="/book-session">
                       <Button 
                         className={`w-full ${index === 1 ? 'bg-rose-500 hover:bg-rose-600' : 'bg-gray-900 hover:bg-gray-800'}`}
                         size="lg"
