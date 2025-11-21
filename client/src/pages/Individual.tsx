@@ -12,6 +12,38 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Link as WouterLink } from "wouter";
 import { useExitIntent } from "@/hooks/useExitIntent";
 import { ExitIntentPopup } from "@/components/ExitIntentPopup";
+import { useState } from "react";
+
+// Subscribe Button Component
+function SubscribeButton({ sessionTypeId, className }: { sessionTypeId: number; className: string }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const createCheckout = trpc.stripe.createPublicCheckoutSession.useMutation();
+
+  const handleSubscribe = async () => {
+    setIsLoading(true);
+    try {
+      const result = await createCheckout.mutateAsync({ sessionTypeId });
+      if (result.url) {
+        window.location.href = result.url;
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Failed to start checkout. Please try again.');
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Button 
+      className={className}
+      size="lg"
+      onClick={handleSubscribe}
+      disabled={isLoading}
+    >
+      {isLoading ? 'Loading...' : 'Start Now'}
+    </Button>
+  );
+}
 
 
 /**
@@ -328,14 +360,10 @@ export default function Individual() {
                     </div>
                     <p className="text-gray-600 mb-6 min-h-[60px]">{type.description}</p>
                     
-                    <WouterLink to="/book-session">
-                      <Button 
-                        className={`w-full ${index === 1 ? 'bg-rose-500 hover:bg-rose-600' : 'bg-gray-900 hover:bg-gray-800'}`}
-                        size="lg"
-                      >
-                        Book This Session
-                      </Button>
-                    </WouterLink>
+                    <SubscribeButton 
+                      sessionTypeId={type.id}
+                      className={`w-full ${index === 1 ? 'bg-rose-500 hover:bg-rose-600' : 'bg-gray-900 hover:bg-gray-800'}`}
+                    />
 
                     <div className="mt-6 space-y-3">
                       <div className="flex items-start gap-2 text-sm">

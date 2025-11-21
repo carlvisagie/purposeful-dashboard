@@ -93,7 +93,65 @@ export const stripeRouter = router({
     }),
 
   /**
-   * Create Stripe checkout session for subscription purchase
+   * Create Stripe checkout session for subscription purchase (PUBLIC - no auth required)
+   */
+  createPublicCheckoutSession: publicProcedure
+    .input(
+      z.object({
+        sessionTypeId: z.number(),
+        email: z.string().email().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const stripeClient = requireStripe();
+      const db = await getDb();
+      if (!db) throw new Error("Database not available");
+
+      // Get session type details
+      const [sessionType] = await db
+        .select()
+        .from(sessionTypes)
+        .where(eq(sessionTypes.id, input.sessionTypeId))
+        .limit(1);
+
+      if (!sessionType) {
+        throw new Error("Session type not found");
+      }
+
+      if (!sessionType.stripePriceId) {
+        throw new Error("This session type is not available for subscription. Please contact support.");
+      }
+
+      const origin = ctx.req.headers.origin || "http://localhost:3000";
+
+      // Create Stripe checkout session
+      const session = await stripeClient.checkout.sessions.create({
+        mode: "subscription",
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price: sessionType.stripePriceId,
+            quantity: 1,
+          },
+        ],
+        customer_email: input.email || undefined,
+        metadata: {
+          session_type_id: sessionType.id.toString(),
+          session_type_name: sessionType.name,
+        },
+        success_url: `${origin}/welcome?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/?payment=cancelled`,
+        allow_promotion_codes: true,
+      });
+
+      return {
+        url: session.url,
+        sessionId: session.id,
+      };
+    }),
+
+  /**
+   * Create Stripe checkout session for subscription purchase (PROTECTED - requires auth)
    */
   createCheckoutSession: protectedProcedure
     .input(
