@@ -4,7 +4,6 @@ import { ENV } from "../_core/env";
 import { getDb } from "../db";
 import { subscriptions, users, sessions, clients } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
-import { sendSubscriptionEmail } from "../services/emailService";
 
 const stripe = new Stripe(ENV.stripeSecretKey, {
   apiVersion: "2025-10-29.clover",
@@ -24,7 +23,6 @@ webhookRouter.post("/stripe", async (req, res) => {
   console.log("[Webhook] Signature value:", typeof sig === 'string' ? sig.substring(0, 50) + '...' : sig);
   console.log("[Webhook] Webhook secret configured:", !!ENV.stripeWebhookSecret);
   console.log("[Webhook] Webhook secret length:", ENV.stripeWebhookSecret?.length || 0);
-  console.log("[Webhook] Webhook secret value:", ENV.stripeWebhookSecret);
 
   if (!sig) {
     console.error("[Webhook] Missing Stripe signature");
@@ -44,15 +42,10 @@ webhookRouter.post("/stripe", async (req, res) => {
     console.log("[Webhook] req.body type:", typeof req.body);
     console.log("[Webhook] req.body is Buffer:", Buffer.isBuffer(req.body));
     
-    // Stripe needs the raw Buffer, not a string!
-    // TEMPORARY: Hardcode secret for testing
-    const webhookSecret = ENV.stripeWebhookSecret || "whsec_7i3dtKBVGyg1bYj9PZ1Y3TvBrWAKh2cK";
-    console.log("[Webhook] Using secret:", webhookSecret.substring(0, 15) + '...');
-    
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
-      webhookSecret
+      ENV.stripeWebhookSecret
     );
     console.log("[Webhook] Signature verification successful!");
   } catch (err) {
@@ -89,12 +82,12 @@ webhookRouter.post("/stripe", async (req, res) => {
         break;
 
       default:
-        console.log(`[Webhook] Unhandled event type: \${event.type}`);
+        console.log(`[Webhook] Unhandled event type: ${event.type}`);
     }
 
     res.json({ received: true });
   } catch (error) {
-    console.error(`[Webhook] Error processing event \${event.type}:`, error);
+    console.error(`[Webhook] Error processing event ${event.type}:`, error);
     res.status(500).send("Webhook processing failed");
   }
 });
@@ -175,19 +168,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000),
   });
 
-  console.log(`[Webhook] Created subscription record for user \${userId}`);
-
-  // Send welcome email
-  if (customerEmail) {
-    await sendSubscriptionEmail({
-      type: "new_subscription",
-      to: customerEmail,
-      customerName: customerName || "Valued Customer",
-      productName: productId,
-      amount: stripeSubscription.items.data[0].price.unit_amount || 0,
-      subscriptionId: subscriptionId,
-    });
-  }
+  console.log(`[Webhook] Created subscription record for user ${userId}`);
 }
 
 /**
@@ -263,7 +244,7 @@ async function handleSessionBooking(session: Stripe.Checkout.Session, db: any, u
 
 /**
  * Handle successful payment
- * Sends payment confirmation email
+ * Updates subscription status
  */
 async function handlePaymentSucceeded(invoice: any) {
   console.log("[Webhook] Processing invoice.payment_succeeded");
@@ -280,37 +261,12 @@ async function handlePaymentSucceeded(invoice: any) {
     .set({ status: "active" })
     .where(eq(subscriptions.stripeSubscriptionId, subscriptionId));
 
-  // Get user email
-  const subscription = await db
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.stripeSubscriptionId, subscriptionId))
-    .limit(1);
-
-  if (subscription.length === 0) return;
-
-  const user = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, subscription[0].userId))
-    .limit(1);
-
-  if (user.length === 0 || !user[0].email) return;
-
-  // Send payment confirmation email
-  await sendSubscriptionEmail({
-    type: "payment_confirmed",
-    to: user[0].email,
-    customerName: user[0].name || "Valued Customer",
-    amount: invoice.amount_paid,
-    invoiceUrl: invoice.hosted_invoice_url || undefined,
-    subscriptionId: subscriptionId,
-  });
+  console.log(`[Webhook] Payment confirmed for subscription ${subscriptionId}`);
 }
 
 /**
  * Handle failed payment
- * Sends payment failure notification
+ * Updates subscription status to past_due
  */
 async function handlePaymentFailed(invoice: any) {
   console.log("[Webhook] Processing invoice.payment_failed");
@@ -327,37 +283,12 @@ async function handlePaymentFailed(invoice: any) {
     .set({ status: "past_due" })
     .where(eq(subscriptions.stripeSubscriptionId, subscriptionId));
 
-  // Get user email
-  const subscription = await db
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.stripeSubscriptionId, subscriptionId))
-    .limit(1);
-
-  if (subscription.length === 0) return;
-
-  const user = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, subscription[0].userId))
-    .limit(1);
-
-  if (user.length === 0 || !user[0].email) return;
-
-  // Send payment failure email
-  await sendSubscriptionEmail({
-    type: "payment_failed",
-    to: user[0].email,
-    customerName: user[0].name || "Valued Customer",
-    amount: invoice.amount_due,
-    invoiceUrl: invoice.hosted_invoice_url || undefined,
-    subscriptionId: subscriptionId,
-  });
+  console.log(`[Webhook] Payment failed for subscription ${subscriptionId}`);
 }
 
 /**
  * Handle subscription cancellation
- * Sends cancellation confirmation email
+ * Updates subscription status to cancelled
  */
 async function handleSubscriptionCancelled(subscription: any) {
   console.log("[Webhook] Processing customer.subscription.deleted");
@@ -374,31 +305,7 @@ async function handleSubscriptionCancelled(subscription: any) {
     })
     .where(eq(subscriptions.stripeSubscriptionId, subscription.id));
 
-  // Get user email
-  const subRecord = await db
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.stripeSubscriptionId, subscription.id))
-    .limit(1);
-
-  if (subRecord.length === 0) return;
-
-  const user = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, subRecord[0].userId))
-    .limit(1);
-
-  if (user.length === 0 || !user[0].email) return;
-
-  // Send cancellation email
-  await sendSubscriptionEmail({
-    type: "subscription_cancelled",
-    to: user[0].email,
-    customerName: user[0].name || "Valued Customer",
-    subscriptionId: subscription.id,
-    cancellationDate: new Date(),
-  });
+  console.log(`[Webhook] Subscription cancelled: ${subscription.id}`);
 }
 
 /**

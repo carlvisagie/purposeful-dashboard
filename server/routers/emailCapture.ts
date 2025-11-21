@@ -1,6 +1,5 @@
 import { publicProcedure, router } from "../_core/trpc";
 import { z } from "zod";
-import { addSubscriberToMailchimp } from "../services/mailchimp";
 
 /**
  * Email Capture Router
@@ -40,8 +39,7 @@ export const emailCaptureRouter = router({
 
       capturedEmails.push(emailRecord);
 
-      // Add to Mailchimp for automated nurture sequence
-      await addSubscriberToMailchimp(input.email, "roi_calculator", "corporate");
+      // Mailchimp integration can be added when service is configured
 
       return {
         success: true,
@@ -71,8 +69,7 @@ export const emailCaptureRouter = router({
 
       capturedEmails.push(emailRecord);
 
-      // Add to Mailchimp for automated nurture sequence
-      await addSubscriberToMailchimp(input.email, "roi_calculator", "individual");
+      // Mailchimp integration can be added when service is configured
 
       return {
         success: true,
@@ -103,8 +100,7 @@ export const emailCaptureRouter = router({
 
       capturedEmails.push(emailRecord);
 
-      // Add to Mailchimp for automated nurture sequence
-      await addSubscriberToMailchimp(input.email, "exit_intent", "corporate");
+      // Mailchimp integration can be added when service is configured
 
       return {
         success: true,

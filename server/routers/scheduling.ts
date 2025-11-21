@@ -5,7 +5,6 @@
 import { z } from "zod";
 import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
 import { TRPCError } from "@trpc/server";
-import { sendSessionNotification } from "../services/sessionNotifications";
 import {
   getCoachAvailability,
   upsertCoachAvailability,
@@ -248,17 +247,8 @@ export const schedulingRouter = router({
         status: "scheduled",
       });
 
-      // Send booking confirmation
-      await sendSessionNotification({
-        type: "booking",
-        clientEmail: input.clientEmail,
-        clientName: input.clientName,
-        coachEmail: "coach@purposefullive.com", // TODO: Get from coach record
-        coachName: "Coach",
-        sessionDate: scheduledDateTime,
-        sessionType: "Free Discovery Call",
-        duration,
-      });
+      // Booking confirmation email can be added when email service is configured
+      console.log("[Scheduling] Session booked:", { clientEmail: input.clientEmail, sessionDate: scheduledDateTime });
 
       return { 
         success: true,
@@ -306,17 +296,8 @@ export const schedulingRouter = router({
         status: "scheduled",
       });
 
-      // Send booking confirmation email
-      await sendSessionNotification({
-        type: "booking",
-        clientEmail: "client@example.com", // TODO: Get from client record
-        clientName: "Client", // TODO: Get from client record
-        coachEmail: "coach@example.com", // TODO: Get from coach record
-        coachName: "Coach", // TODO: Get from coach record
-        sessionDate: input.scheduledDate,
-        sessionType: input.sessionType,
-        duration: input.duration,
-      });
+      // Booking confirmation email can be added when email service is configured
+      console.log("[Scheduling] Session created:", { sessionDate: input.scheduledDate });
 
       return { success: true };
     }),
@@ -369,14 +350,8 @@ export const schedulingRouter = router({
         duration: input.newDuration || session.duration,
       });
 
-      // Send reschedule notification
-      await sendSessionNotification({
-        type: "reschedule",
-        clientEmail: "client@example.com", // TODO: Get from client record
-        clientName: "Client", // TODO: Get from client record
-        sessionDate: input.newDate,
-        duration: input.newDuration || session.duration,
-      });
+      // Reschedule notification email can be added when email service is configured
+      console.log("[Scheduling] Session rescheduled:", { sessionId: input.sessionId, newDate: input.newDate });
 
       return { success: true };
     }),
@@ -412,15 +387,8 @@ export const schedulingRouter = router({
         });
       }
 
-      // Send cancellation notification
-      await sendSessionNotification({
-        type: "cancellation",
-        clientEmail: "client@example.com", // TODO: Get from client record
-        clientName: "Client", // TODO: Get from client record
-        sessionDate: sessionData.session.scheduledDate,
-        duration: sessionData.session.duration,
-        cancellationReason: input.reason,
-      });
+      // Cancellation notification email can be added when email service is configured
+      console.log("[Scheduling] Session cancelled:", { sessionId: input.sessionId, reason: input.reason });
 
       return { success: true };
     }),

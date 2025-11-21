@@ -145,7 +145,7 @@ export default function Dashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Link href="/coach/setup">
+              <Link to="/coach/setup">
                 <Button>Create Coach Profile</Button>
               </Link>
             </CardContent>
@@ -279,25 +279,25 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Link href="/ai-coach">
+                  <Link to="/ai-coach">
                     <Button className="w-full bg-gradient-to-r from-rose-500 to-purple-600 text-white hover:from-rose-600 hover:to-purple-700">
                       <Brain className="mr-2 h-4 w-4" />
                       AI Coach Chat
                     </Button>
                   </Link>
-                  <Link href="/emotions">
+                  <Link to="/emotions">
                     <Button className="w-full" variant="outline">
                       <TrendingUp className="mr-2 h-4 w-4" />
                       Track Emotions
                     </Button>
                   </Link>
-                  <Link href="/insights">
+                  <Link to="/insights">
                     <Button className="w-full" variant="outline">
                       <Brain className="mr-2 h-4 w-4" />
                       View Insights
                     </Button>
                   </Link>
-                  <Link href="/clients">
+                  <Link to="/clients">
                     <Button className="w-full" variant="outline">
                       <Users className="mr-2 h-4 w-4" />
                       Manage Clients
@@ -315,7 +315,7 @@ export default function Dashboard() {
                     <CardTitle>Recent Clients</CardTitle>
                     <CardDescription>Your most recently added or updated clients</CardDescription>
                   </div>
-                  <Link href="/clients">
+                  <Link to="/clients">
                     <Button variant="ghost" size="sm">View All</Button>
                   </Link>
                 </div>
@@ -355,7 +355,7 @@ export default function Dashboard() {
                     <h3 className="mt-2 text-sm font-medium text-gray-900">No clients yet</h3>
                     <p className="mt-1 text-sm text-gray-500">Clients will appear here after their first booking.</p>
                     <div className="mt-6">
-                      <Link href="/book-session">
+                      <Link to="/book-session">
                         <Button>
                           <Calendar className="mr-2 h-4 w-4" />
                           View Booking Page
