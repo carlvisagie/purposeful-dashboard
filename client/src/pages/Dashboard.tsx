@@ -324,7 +324,7 @@ export default function Dashboard() {
                 {clients && clients.length > 0 ? (
                   <div className="space-y-4">
                     {clients.slice(0, 5).map((client) => (
-                      <Link key={client.id} href={`/clients/${client.id}`}>
+                      <Link key={client.id} to={`/clients/${client.id}`}>
                         <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
                           <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-semibold text-lg">
