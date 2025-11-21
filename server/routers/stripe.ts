@@ -7,9 +7,18 @@ import { subscriptions, sessionTypes } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 import { PRODUCTS, type ProductId } from "../products";
 
-const stripe = new Stripe(ENV.stripeSecretKey, {
-  apiVersion: "2025-10-29.clover",
-});
+const stripe = ENV.stripeSecretKey 
+  ? new Stripe(ENV.stripeSecretKey, {
+      apiVersion: "2025-10-29.clover",
+    })
+  : null;
+
+function requireStripe() {
+  if (!stripe) {
+    throw new Error("Stripe is not configured. Please add STRIPE_SECRET_KEY to environment variables.");
+  }
+  return stripe;
+}
 
 export const stripeRouter = router({
   /**
@@ -25,6 +34,7 @@ export const stripeRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const stripeClient = requireStripe();
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
@@ -51,7 +61,7 @@ export const stripeRouter = router({
       const origin = ctx.req.headers.origin || "http://localhost:3000";
 
       // Create Stripe checkout session
-      const session = await stripe.checkout.sessions.create({
+      const session = await stripeClient.checkout.sessions.create({
         mode: input.pricingModel === 'one-time' ? 'payment' : 'subscription',
         payment_method_types: ["card"],
         line_items: [
@@ -92,6 +102,7 @@ export const stripeRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const stripeClient = requireStripe();
       const product = PRODUCTS[input.productId as ProductId];
       
       if (!product) {
@@ -104,7 +115,7 @@ export const stripeRouter = router({
 
       const origin = ctx.req.headers.origin || "http://localhost:3000";
 
-      const session = await stripe.checkout.sessions.create({
+      const session = await stripeClient.checkout.sessions.create({
         mode: "subscription",
         payment_method_types: ["card"],
         line_items: [
@@ -157,6 +168,7 @@ export const stripeRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const stripeClient = requireStripe();
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
@@ -173,7 +185,7 @@ export const stripeRouter = router({
 
       // Cancel in Stripe
       if (sub[0].stripeSubscriptionId) {
-        await stripe.subscriptions.cancel(sub[0].stripeSubscriptionId);
+        await stripeClient.subscriptions.cancel(sub[0].stripeSubscriptionId);
       }
 
       // Update local record
@@ -200,11 +212,12 @@ export const stripeRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const stripeClient = requireStripe();
       const db = await getDb();
       if (!db) throw new Error("Database not available");
 
       // Retrieve the checkout session from Stripe
-      const session = await stripe.checkout.sessions.retrieve(input.sessionId);
+      const session = await stripeClient.checkout.sessions.retrieve(input.sessionId);
 
       // Verify payment was successful
       if (session.payment_status !== 'paid') {

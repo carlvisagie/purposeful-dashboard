@@ -5,9 +5,11 @@ import { getDb } from "../db";
 import { subscriptions, users, sessions, clients } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 
-const stripe = new Stripe(ENV.stripeSecretKey, {
-  apiVersion: "2025-10-29.clover",
-});
+const stripe = ENV.stripeSecretKey 
+  ? new Stripe(ENV.stripeSecretKey, {
+      apiVersion: "2025-10-29.clover",
+    })
+  : null;
 
 export const webhookRouter = Router();
 
@@ -27,6 +29,11 @@ webhookRouter.post("/stripe", async (req, res) => {
   if (!sig) {
     console.error("[Webhook] Missing Stripe signature");
     return res.status(400).send("Missing signature");
+  }
+
+  if (!stripe) {
+    console.error("[Webhook] Stripe not configured!");
+    return res.status(500).send("Stripe not configured");
   }
 
   if (!ENV.stripeWebhookSecret) {

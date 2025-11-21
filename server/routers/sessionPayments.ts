@@ -8,9 +8,18 @@ import { TRPCError } from "@trpc/server";
 import Stripe from "stripe";
 import { ENV } from "../_core/env";
 
-const stripe = new Stripe(ENV.stripeSecretKey, {
-  apiVersion: "2025-10-29.clover",
-});
+const stripe = ENV.stripeSecretKey 
+  ? new Stripe(ENV.stripeSecretKey, {
+      apiVersion: "2025-10-29.clover",
+    })
+  : null;
+
+function requireStripe() {
+  if (!stripe) {
+    throw new Error("Stripe is not configured. Please add STRIPE_SECRET_KEY to environment variables.");
+  }
+  return stripe;
+}
 
 export const sessionPaymentsRouter = router({
   /**
@@ -32,7 +41,8 @@ export const sessionPaymentsRouter = router({
     .mutation(async ({ input, ctx }) => {
       try {
         // Create Stripe checkout session
-        const session = await stripe.checkout.sessions.create({
+        const stripeClient = requireStripe();
+        const session = await stripeClient.checkout.sessions.create({
           payment_method_types: ["card"],
           line_items: [
             {
