@@ -24,6 +24,13 @@ import { abTestingRouter } from "./routers/abTesting";
 import { chatRouter } from "./routers/chat";
 import { analyticsRouter } from "./routers/analytics";
 import { videoTestimonialsRouter } from "./routers/videoTestimonials";
+import { crisisManagementRouter } from "./routers/crisisManagement";
+import { emergencyContactsRouter } from "./routers/emergencyContacts";
+import { safetyPlansRouter } from "./routers/safetyPlans";
+import { gamificationRouter } from "./routers/gamification";
+import { wearablesRouter } from "./routers/wearables";
+import { businessIntelligenceRouter } from "./routers/businessIntelligence";
+import { healthRecordsRouter } from "./routers/healthRecords";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -60,6 +67,15 @@ export const appRouter = router({
   chat: chatRouter,
   analytics: analyticsRouter,
   videoTestimonials: videoTestimonialsRouter,
+  
+  // Advanced features
+  crisisManagement: crisisManagementRouter,
+  emergencyContacts: emergencyContactsRouter,
+  safetyPlans: safetyPlansRouter,
+  gamification: gamificationRouter,
+  wearables: wearablesRouter,
+  businessIntelligence: businessIntelligenceRouter,
+  healthRecords: healthRecordsRouter,
 });
 
 export type AppRouter = typeof appRouter;

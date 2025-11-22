@@ -363,3 +363,215 @@ export const videoTestimonials = mysqlTable("videoTestimonials", {
 
 export type VideoTestimonial = typeof videoTestimonials.$inferSelect;
 export type InsertVideoTestimonial = typeof videoTestimonials.$inferInsert;
+
+// Emergency Contacts for Crisis Management
+export const emergencyContacts = mysqlTable("emergency_contacts", {
+  id: int("id").primaryKey().autoincrement(),
+  clientId: int("client_id").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  relationship: varchar("relationship", { length: 100 }),
+  phone: varchar("phone", { length: 50 }).notNull(),
+  email: varchar("email", { length: 320 }),
+  isPrimary: boolean("is_primary").default(false),
+  notifyOnCrisis: boolean("notify_on_crisis").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Crisis Events Tracking
+export const crisisEvents = mysqlTable("crisis_events", {
+  id: int("id").primaryKey().autoincrement(),
+  clientId: int("client_id").notNull(),
+  detectedAt: timestamp("detected_at").defaultNow(),
+  severity: mysqlEnum("severity", ["medium", "high", "critical"]).notNull(),
+  triggerType: varchar("trigger_type", { length: 100 }),
+  triggerData: text("trigger_data"),
+  actionsTaken: text("actions_taken"),
+  notificationsSent: text("notifications_sent"),
+  resolvedAt: timestamp("resolved_at"),
+  notes: text("notes"),
+});
+
+// Safety Plans
+export const safetyPlans = mysqlTable("safety_plans", {
+  id: int("id").primaryKey().autoincrement(),
+  clientId: int("client_id").notNull(),
+  warningSign: text("warning_sign"),
+  copingStrategy: text("coping_strategy"),
+  socialSupport: text("social_support"),
+  professionalContact: text("professional_contact"),
+  environmentSafety: text("environment_safety"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+// Gamification - User Points
+export const userPoints = mysqlTable("user_points", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").notNull(),
+  points: int("points").default(0),
+  level: int("level").default(1),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+// Achievements
+export const achievements = mysqlTable("achievements", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  icon: varchar("icon", { length: 255 }),
+  pointValue: int("point_value").default(0),
+  category: varchar("category", { length: 100 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// User Achievements
+export const userAchievements = mysqlTable("user_achievements", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").notNull(),
+  achievementId: int("achievement_id").notNull(),
+  earnedAt: timestamp("earned_at").defaultNow(),
+});
+
+// Streaks
+export const streaks = mysqlTable("streaks", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").notNull(),
+  activityType: varchar("activity_type", { length: 100 }).notNull(),
+  currentStreak: int("current_streak").default(0),
+  longestStreak: int("longest_streak").default(0),
+  lastActivityDate: date("last_activity_date"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+// Wearable Devices
+export const wearableDevices = mysqlTable("wearable_devices", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").notNull(),
+  deviceType: varchar("device_type", { length: 100 }).notNull(),
+  deviceId: varchar("device_id", { length: 255 }),
+  isActive: boolean("is_active").default(true),
+  lastSyncAt: timestamp("last_sync_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Health Metrics
+export const healthMetrics = mysqlTable("health_metrics", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").notNull(),
+  metricDate: timestamp("metric_date").notNull(),
+  heartRate: int("heart_rate"),
+  hrv: int("hrv"),
+  steps: int("steps"),
+  sleepDuration: int("sleep_duration"),
+  sleepQuality: int("sleep_quality"),
+  restingHeartRate: int("resting_heart_rate"),
+  activeMinutes: int("active_minutes"),
+  calories: int("calories"),
+  deviceId: int("device_id"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// A/B Tests
+export const abTests = mysqlTable("ab_tests", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  startDate: timestamp("start_date"),
+  endDate: timestamp("end_date"),
+  status: mysqlEnum("status", ["draft", "active", "completed", "archived"]).default("draft"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// A/B Test Variants
+export const abTestVariants = mysqlTable("ab_test_variants", {
+  id: int("id").primaryKey().autoincrement(),
+  testId: int("test_id").notNull(),
+  variantName: varchar("variant_name", { length: 100 }).notNull(),
+  description: text("description"),
+  trafficAllocation: int("traffic_allocation").default(50),
+  conversions: int("conversions").default(0),
+  impressions: int("impressions").default(0),
+});
+
+// User Cohorts
+export const userCohorts = mysqlTable("user_cohorts", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").notNull(),
+  cohortDate: date("cohort_date").notNull(),
+  acquisitionChannel: varchar("acquisition_channel", { length: 100 }),
+  initialPlan: varchar("initial_plan", { length: 100 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Revenue Metrics
+export const revenueMetrics = mysqlTable("revenue_metrics", {
+  id: int("id").primaryKey().autoincrement(),
+  date: date("date").notNull(),
+  mrr: int("mrr").default(0),
+  arr: int("arr").default(0),
+  newMrr: int("new_mrr").default(0),
+  churnedMrr: int("churned_mrr").default(0),
+  expansionMrr: int("expansion_mrr").default(0),
+  activeSubscriptions: int("active_subscriptions").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Video Sessions
+export const videoSessions = mysqlTable("video_sessions", {
+  id: int("id").primaryKey().autoincrement(),
+  sessionId: int("session_id").notNull(),
+  zoomMeetingId: varchar("zoom_meeting_id", { length: 255 }),
+  recordingUrl: varchar("recording_url", { length: 500 }),
+  duration: int("duration"),
+  startedAt: timestamp("started_at"),
+  endedAt: timestamp("ended_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Health Records
+export const healthRecords = mysqlTable("health_records", {
+  id: int("id").primaryKey().autoincrement(),
+  clientId: int("client_id").notNull(),
+  recordType: varchar("record_type", { length: 100 }).notNull(),
+  recordDate: timestamp("record_date").notNull(),
+  provider: varchar("provider", { length: 255 }),
+  diagnosis: text("diagnosis"),
+  treatment: text("treatment"),
+  medications: text("medications"),
+  labResults: text("lab_results"),
+  notes: text("notes"),
+  fhirResourceId: varchar("fhir_resource_id", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Medications
+export const medications = mysqlTable("medications", {
+  id: int("id").primaryKey().autoincrement(),
+  clientId: int("client_id").notNull(),
+  medicationName: varchar("medication_name", { length: 255 }).notNull(),
+  dosage: varchar("dosage", { length: 100 }),
+  frequency: varchar("frequency", { length: 100 }),
+  startDate: date("start_date"),
+  endDate: date("end_date"),
+  prescribedBy: varchar("prescribed_by", { length: 255 }),
+  purpose: text("purpose"),
+  sideEffects: text("side_effects"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Lab Results
+export const labResults = mysqlTable("lab_results", {
+  id: int("id").primaryKey().autoincrement(),
+  clientId: int("client_id").notNull(),
+  testDate: timestamp("test_date").notNull(),
+  testName: varchar("test_name", { length: 255 }).notNull(),
+  result: varchar("result", { length: 255 }),
+  unit: varchar("unit", { length: 50 }),
+  referenceRange: varchar("reference_range", { length: 100 }),
+  status: mysqlEnum("status", ["normal", "abnormal", "critical"]),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
