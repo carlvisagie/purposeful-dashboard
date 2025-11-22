@@ -151,9 +151,9 @@ export const stripeRouter = router({
     }),
 
   /**
-   * Create Stripe checkout session for subscription purchase (PROTECTED - requires auth)
+   * Create Stripe checkout session for subscription purchase (PUBLIC - no auth required)
    */
-  createCheckoutSession: protectedProcedure
+  createCheckoutSession: publicProcedure
     .input(
       z.object({
         productId: z.string(),
@@ -182,12 +182,12 @@ export const stripeRouter = router({
             quantity: 1,
           },
         ],
-        customer_email: ctx.user.email || undefined,
-        client_reference_id: ctx.user.id.toString(),
+        customer_email: ctx.user?.email || undefined,
+        client_reference_id: ctx.user?.id.toString() || undefined,
         metadata: {
-          user_id: ctx.user.id.toString(),
-          customer_email: ctx.user.email || "",
-          customer_name: ctx.user.name || "",
+          user_id: ctx.user?.id.toString() || "guest",
+          customer_email: ctx.user?.email || "",
+          customer_name: ctx.user?.name || "",
           product_id: product.id,
         },
         success_url: `${origin}/dashboard?payment=success`,

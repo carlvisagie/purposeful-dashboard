@@ -400,10 +400,7 @@ export default function IndividualLanding() {
                         : "w-full"
                     }
                     onClick={() => {
-                      if (!user) {
-                        window.location.href = getLoginUrl();
-                        return;
-                      }
+                      // Direct checkout without authentication requirement
                       if (tier.name === "Essential") {
                         subscribeMutation.mutate({ productId: "AI_ESSENTIAL" });
                       } else if (tier.name === "Growth") {
