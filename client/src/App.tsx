@@ -24,12 +24,14 @@ import InsightsDashboard from "./pages/InsightsDashboard";
 import CoachDashboard from "./pages/CoachDashboard";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import AICoaching from "./pages/AICoaching";
+import EnterpriseLanding from "./pages/EnterpriseLanding";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={IndividualLanding} />
+      <Route path={"/enterprise"} component={EnterpriseLanding} />
       <Route path="/individual-coaching" component={IndividualLanding} />
       <Route path="/ai-coaching" component={AICoaching} />
       <Route path="/dashboard" component={Dashboard} />
