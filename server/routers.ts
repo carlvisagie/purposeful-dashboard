@@ -2,6 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
+
 import {
   coachesRouter,
   clientsRouter,
@@ -10,6 +11,7 @@ import {
   copingStrategiesRouter,
   sessionsRouter,
 } from "./routers/coaching";
+
 import { aiInsightsRouter } from "./routers/aiInsights";
 import { stripeRouter } from "./routers/stripe";
 import { schedulingRouter } from "./routers/scheduling";
@@ -24,31 +26,32 @@ import { abTestingRouter } from "./routers/abTesting";
 import { chatRouter } from "./routers/chat";
 import { analyticsRouter } from "./routers/analytics";
 import { videoTestimonialsRouter } from "./routers/videoTestimonials";
-import { crisisManagementRouter } from "./routers/crisisManagement";
+
+// ✅ FIXED imports — using default exports from your new MVP routers:
+import crisisManagement from "./routers/crisisManagement";
+import psychologicalProfiling from "./routers/psychologicalProfiling";
+import traumaCare from "./routers/traumaCare";
+
 import { emergencyContactsRouter } from "./routers/emergencyContacts";
 import { safetyPlansRouter } from "./routers/safetyPlans";
 import { gamificationRouter } from "./routers/gamification";
 import { wearablesRouter } from "./routers/wearables";
 import { businessIntelligenceRouter } from "./routers/businessIntelligence";
 import { healthRecordsRouter } from "./routers/healthRecords";
-import { psychologicalProfilingRouter } from "./routers/psychologicalProfiling";
-import { traumaCareRouter } from "./routers/traumaCare";
 import { environmentalHealthRouter } from "./routers/environmentalHealth";
 import { smartHomeRouter } from "./routers/smartHome";
 import { digitalWellnessRouter } from "./routers/digitalWellness";
 import { professionalNetworkRouter } from "./routers/professionalNetwork";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
+
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
+      return { success: true } as const;
     }),
   }),
 
@@ -73,17 +76,18 @@ export const appRouter = router({
   chat: chatRouter,
   analytics: analyticsRouter,
   videoTestimonials: videoTestimonialsRouter,
-  
-  // Advanced features
-  crisisManagement: crisisManagementRouter,
+
+  // 🚀 FIXED: MVP-safe versions of advanced routers
+  crisisManagement: crisisManagement,
+  psychologicalProfiling: psychologicalProfiling,
+  traumaCare: traumaCare,
+
   emergencyContacts: emergencyContactsRouter,
   safetyPlans: safetyPlansRouter,
   gamification: gamificationRouter,
   wearables: wearablesRouter,
   businessIntelligence: businessIntelligenceRouter,
   healthRecords: healthRecordsRouter,
-  psychologicalProfiling: psychologicalProfilingRouter,
-  traumaCare: traumaCareRouter,
   environmentalHealth: environmentalHealthRouter,
   smartHome: smartHomeRouter,
   digitalWellness: digitalWellnessRouter,
@@ -91,3 +95,4 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
