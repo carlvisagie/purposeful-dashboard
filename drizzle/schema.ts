@@ -575,3 +575,166 @@ export const labResults = mysqlTable("lab_results", {
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+// Advanced Psychological Profiling
+export const nlpPatterns = mysqlTable("nlp_patterns", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  patternType: varchar("pattern_type", { length: 100 }).notNull(),
+  pattern: text("pattern").notNull(),
+  frequency: int("frequency").default(1),
+  context: text("context"),
+  detectedAt: timestamp("detected_at").defaultNow(),
+});
+
+export const microExpressions = mysqlTable("micro_expressions", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  sessionId: int("session_id").references(() => sessions.id),
+  expression: varchar("expression", { length: 100 }).notNull(),
+  intensity: int("intensity").notNull(),
+  timestamp: timestamp("timestamp").defaultNow(),
+  context: text("context"),
+});
+
+// Trauma-Informed Care (Advanced)
+export const traumaTimelines = mysqlTable("trauma_timelines", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  eventDate: date("event_date"),
+  eventDescription: text("event_description").notNull(),
+  impactLevel: mysqlEnum("impact_level", ["low", "medium", "high", "severe"]).notNull(),
+  processingStatus: varchar("processing_status", { length: 50 }).default("unprocessed"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").onUpdateNow(),
+});
+
+export const emdrSessions = mysqlTable("emdr_sessions", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  targetMemory: text("target_memory").notNull(),
+  sudsInitial: int("suds_initial").notNull(),
+  sudsFinal: int("suds_final"),
+  vocInitial: int("voc_initial").notNull(),
+  vocFinal: int("voc_final"),
+  sessionNotes: text("session_notes"),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Environmental Health Monitoring
+export const environmentalMetrics = mysqlTable("environmental_metrics", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  metricType: varchar("metric_type", { length: 100 }).notNull(),
+  value: decimal("value", { precision: 10, scale: 2 }).notNull(),
+  unit: varchar("unit", { length: 50 }).notNull(),
+  location: varchar("location", { length: 255 }),
+  recordedAt: timestamp("recorded_at").defaultNow(),
+});
+
+export const sleepEnvironment = mysqlTable("sleep_environment", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  temperature: decimal("temperature", { precision: 4, scale: 1 }),
+  humidity: decimal("humidity", { precision: 4, scale: 1 }),
+  lightLevel: int("light_level"),
+  noiseLevel: int("noise_level"),
+  airQuality: int("air_quality"),
+  sleepQuality: int("sleep_quality"),
+  recordedAt: timestamp("recorded_at").defaultNow(),
+});
+
+// Smart Home & IoT Integration
+export const smartDevices = mysqlTable("smart_devices", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  deviceType: varchar("device_type", { length: 100 }).notNull(),
+  deviceName: varchar("device_name", { length: 255 }).notNull(),
+  deviceId: varchar("device_id", { length: 255 }).notNull().unique(),
+  manufacturer: varchar("manufacturer", { length: 100 }),
+  status: varchar("status", { length: 50 }).default("connected"),
+  lastSync: timestamp("last_sync"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const iotAutomations = mysqlTable("iot_automations", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  deviceId: int("device_id").notNull().references(() => smartDevices.id),
+  triggerType: varchar("trigger_type", { length: 100 }).notNull(),
+  triggerCondition: text("trigger_condition").notNull(),
+  action: text("action").notNull(),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Social Media & Digital Wellness
+export const socialMediaAccounts = mysqlTable("social_media_accounts", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  platform: varchar("platform", { length: 50 }).notNull(),
+  accountId: varchar("account_id", { length: 255 }).notNull(),
+  connectedAt: timestamp("connected_at").defaultNow(),
+  lastSync: timestamp("last_sync"),
+});
+
+export const screenTimeLogs = mysqlTable("screen_time_logs", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  date: date("date").notNull(),
+  totalMinutes: int("total_minutes").notNull(),
+  appBreakdown: json("app_breakdown"),
+  productiveMinutes: int("productive_minutes"),
+  distractingMinutes: int("distracting_minutes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const digitalWellnessMetrics = mysqlTable("digital_wellness_metrics", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  date: date("date").notNull(),
+  wellnessScore: int("wellness_score").notNull(),
+  socialMediaSentiment: decimal("social_media_sentiment", { precision: 3, scale: 2 }),
+  screenTimeGoalMet: boolean("screen_time_goal_met"),
+  detoxDaysCompleted: int("detox_days_completed").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Professional Escalation Network (Advanced)
+export const therapistNetwork = mysqlTable("therapist_network", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  specialization: varchar("specialization", { length: 255 }),
+  licenseNumber: varchar("license_number", { length: 100 }),
+  contactEmail: varchar("contact_email", { length: 255 }),
+  contactPhone: varchar("contact_phone", { length: 50 }),
+  availabilityStatus: varchar("availability_status", { length: 50 }).default("available"),
+  acceptsInsurance: boolean("accepts_insurance").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const professionalReferrals = mysqlTable("professional_referrals", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  therapistId: int("therapist_id").references(() => therapistNetwork.id),
+  referralType: varchar("referral_type", { length: 100 }).notNull(),
+  urgency: mysqlEnum("urgency", ["low", "medium", "high", "critical"]).notNull(),
+  reason: text("reason").notNull(),
+  status: varchar("status", { length: 50 }).default("pending"),
+  referredAt: timestamp("referred_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+export const insuranceClaims = mysqlTable("insurance_claims", {
+  id: serial("id").primaryKey(),
+  userId: int("user_id").notNull().references(() => users.id),
+  sessionId: int("session_id").references(() => sessions.id),
+  claimNumber: varchar("claim_number", { length: 100 }).unique(),
+  insuranceProvider: varchar("insurance_provider", { length: 255 }),
+  claimAmount: decimal("claim_amount", { precision: 10, scale: 2 }),
+  status: varchar("status", { length: 50 }).default("submitted"),
+  submittedAt: timestamp("submitted_at").defaultNow(),
+  processedAt: timestamp("processed_at"),
+});
+

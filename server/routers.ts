@@ -31,6 +31,12 @@ import { gamificationRouter } from "./routers/gamification";
 import { wearablesRouter } from "./routers/wearables";
 import { businessIntelligenceRouter } from "./routers/businessIntelligence";
 import { healthRecordsRouter } from "./routers/healthRecords";
+import { psychologicalProfilingRouter } from "./routers/psychologicalProfiling";
+import { traumaCareRouter } from "./routers/traumaCare";
+import { environmentalHealthRouter } from "./routers/environmentalHealth";
+import { smartHomeRouter } from "./routers/smartHome";
+import { digitalWellnessRouter } from "./routers/digitalWellness";
+import { professionalNetworkRouter } from "./routers/professionalNetwork";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -76,6 +82,12 @@ export const appRouter = router({
   wearables: wearablesRouter,
   businessIntelligence: businessIntelligenceRouter,
   healthRecords: healthRecordsRouter,
+  psychologicalProfiling: psychologicalProfilingRouter,
+  traumaCare: traumaCareRouter,
+  environmentalHealth: environmentalHealthRouter,
+  smartHome: smartHomeRouter,
+  digitalWellness: digitalWellnessRouter,
+  professionalNetwork: professionalNetworkRouter,
 });
 
 export type AppRouter = typeof appRouter;
